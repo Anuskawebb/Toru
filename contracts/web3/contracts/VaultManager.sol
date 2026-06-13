@@ -13,9 +13,9 @@ pragma solidity ^0.8.20;
 //
 //  ── KNOWN GAP: agent pipeline is non-functional on Mantle ──────────────────
 //  checkLeaderActivity / onWatcherResponse / onStrategistResponse and
-//  updatePrice / onPriceUpdate all call out to ISomniaAgentPlatform at
-//  0x037Bb9C718F3f7fe5eCBDB0b600D607b52706776 — Somnia's bespoke on-chain
-//  AI-agent dispatch system (JSON API agent + LLM agent). No equivalent has
+//  updatePrice / onPriceUpdate all call out to IAgentPlatform at
+//  0x037Bb9C718F3f7fe5eCBDB0b600D607b52706776 — a bespoke on-chain AI-agent
+//  dispatch system (JSON API agent + LLM agent). No equivalent has
 //  been verified on Mantle Sepolia. These functions will revert until a
 //  Mantle-compatible agent/oracle network is confirmed and wired in (see
 //  frontend/docs/mantle-dex-integration.md). Vault management functions
@@ -25,9 +25,9 @@ pragma solidity ^0.8.20;
 
 // ── External interfaces ───────────────────────────────────────────────────────
 
-// Confirmed against a live failed callback trace + the vendored
-// `ISomniaAgents.sol` from github.com/Alike001/auspex (sdk-snippets.md §1,
-// Somnia Agentathon 2026). Two things our original guess got wrong:
+// Confirmed against a live failed callback trace + a vendored
+// `IAgents.sol` reference (sdk-snippets.md §1). Two things our original
+// guess got wrong:
 //
 //   1. `createRequest`'s `data` is NOT `abi.encode(url, jsonPath)` — it must be
 //      a real encoded call to one of the agent's typed fetch functions
@@ -74,10 +74,10 @@ struct AgentRequestInfo {
 }
 
 /**
- * @notice Somnia Agent Platform — dispatches work to the off-chain agent fleet.
- * @dev Deployed at 0x037Bb9C718F3f7fe5eCBDB0b600D607b52706776 on Somnia testnet.
+ * @notice Agent Platform — dispatches work to the off-chain agent fleet.
+ * @dev Deployed at 0x037Bb9C718F3f7fe5eCBDB0b600D607b52706776.
  */
-interface ISomniaAgentPlatform {
+interface IAgentPlatform {
     function createRequest(
         uint256      agentId,
         address      cbContract,
@@ -633,7 +633,7 @@ contract VaultManager {
 
         // Reserve enough for JSON API call + LLM call.
         // JSON API: opDeposit + 0.09 STT (0.03/validator × 3), LLM: opDeposit + 0.21 STT (0.07/validator × 3).
-        uint256 opDeposit = ISomniaAgentPlatform(AGENT_PLATFORM).getRequestDeposit();
+        uint256 opDeposit = IAgentPlatform(AGENT_PLATFORM).getRequestDeposit();
         uint256 jsonFee   = opDeposit + 0.09 ether;
         uint256 llmFee    = opDeposit + 0.21 ether;
         require(msg.value >= jsonFee + llmFee, "VM: insufficient deposit (need >= jsonFee+llmFee)");
@@ -650,7 +650,7 @@ contract VaultManager {
             "swap.encoded"
         );
 
-        uint256 requestId = ISomniaAgentPlatform(AGENT_PLATFORM).createRequest{value: jsonFee}(
+        uint256 requestId = IAgentPlatform(AGENT_PLATFORM).createRequest{value: jsonFee}(
             JSON_API_AGENT_ID,
             address(this),
             this.onWatcherResponse.selector,
@@ -667,7 +667,7 @@ contract VaultManager {
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * @notice Called by the Somnia Agent Platform after the JSON API Agent
+     * @notice Called by the Agent Platform after the JSON API Agent
      *         fetches the leader's latest swap from the Aionis API.
      *
      * @dev    The platform's real callback ABI is always
@@ -760,7 +760,7 @@ contract VaultManager {
         );
 
         // Use contract balance (pre-funded by checkLeaderActivity msg.value) for LLM fee
-        uint256 llmOpDeposit = ISomniaAgentPlatform(AGENT_PLATFORM).getRequestDeposit();
+        uint256 llmOpDeposit = IAgentPlatform(AGENT_PLATFORM).getRequestDeposit();
         uint256 llmFee       = llmOpDeposit + 0.21 ether;
 
         bytes memory llmPayload = abi.encodeWithSelector(
@@ -772,7 +772,7 @@ contract VaultManager {
             false
         );
 
-        uint256 llmRequestId = ISomniaAgentPlatform(AGENT_PLATFORM).createRequest{value: llmFee}(
+        uint256 llmRequestId = IAgentPlatform(AGENT_PLATFORM).createRequest{value: llmFee}(
             LLM_AGENT_ID,
             address(this),
             this.onStrategistResponse.selector,
@@ -789,7 +789,7 @@ contract VaultManager {
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * @notice Called by the Somnia Agent Platform after the LLM Strategist
+     * @notice Called by the Agent Platform after the LLM Strategist
      *         evaluates the trade.
      *
      * @dev    Real callback ABI: `(uint256, AgentValidatorResponse[],
@@ -976,7 +976,7 @@ contract VaultManager {
     function updatePrice(address token) external payable {
         require(token != address(0), "VM: zero token");
 
-        uint256 opDeposit = ISomniaAgentPlatform(AGENT_PLATFORM).getRequestDeposit();
+        uint256 opDeposit = IAgentPlatform(AGENT_PLATFORM).getRequestDeposit();
         require(msg.value >= opDeposit + 0.09 ether, "VM: insufficient deposit for price update");
 
         string memory url = string.concat(PRICE_API_BASE, _toHexString(token));
@@ -987,7 +987,7 @@ contract VaultManager {
             uint8(10)
         );
 
-        uint256 requestId = ISomniaAgentPlatform(AGENT_PLATFORM).createRequest{value: msg.value}(
+        uint256 requestId = IAgentPlatform(AGENT_PLATFORM).createRequest{value: msg.value}(
             JSON_API_AGENT_ID,
             address(this),
             this.onPriceUpdate.selector,
@@ -998,7 +998,7 @@ contract VaultManager {
     }
 
     /**
-     * @notice Called by the Somnia Agent Platform with the latest price.
+     * @notice Called by the Agent Platform with the latest price.
      * @dev    Real callback ABI: `(uint256, AgentValidatorResponse[],
      *         AgentResponseStatus, AgentRequestInfo)`. We dispatched via
      *         `IJsonApiAgent.fetchUint(..., decimals=10)`, so
@@ -1136,7 +1136,7 @@ contract VaultManager {
         uint256 priceWhole       = currentPrice / 1e10;
 
         string memory header = string.concat(
-            "You are a risk management engine for Aionis, a copy-trading platform on Somnia.\n",
+            "You are a risk management engine for Aionis, a copy-trading platform on Mantle.\n",
             "Evaluate the trade below and decide what percentage of the follower vault to allocate.\n\n",
             "OUTPUT: Respond with ONLY a single integer 0-100. No explanation. No text. Just the number.\n\n",
             "SCORING SCALE:\n",

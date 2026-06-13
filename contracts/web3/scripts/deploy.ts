@@ -1,19 +1,19 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  console.log("Starting deployment of SomniaGreeting contract...");
+  console.log("Starting deployment of Greeting contract...");
 
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address);
 
-  const initialGreeting = "Hello Somnia Shannon Testnet!";
-  const SomniaGreeting = await ethers.getContractFactory("SomniaGreeting");
-  const contract = await SomniaGreeting.deploy(initialGreeting);
+  const initialGreeting = "Hello Mantle Sepolia Testnet!";
+  const Greeting = await ethers.getContractFactory("Greeting");
+  const contract = await Greeting.deploy(initialGreeting);
 
   await contract.waitForDeployment();
 
   const address = await contract.getAddress();
-  console.log("SomniaGreeting contract deployed to:", address);
+  console.log("Greeting contract deployed to:", address);
   console.log("Initial greeting set to:", initialGreeting);
 }
 

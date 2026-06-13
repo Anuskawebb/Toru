@@ -322,7 +322,7 @@ export default function Home() {
           <div className="step-card">
             <span className="step-number">01</span>
             <h3>Connect your wallet</h3>
-            <p>Sign in with email or wallet via Privy — fully non-custodial, deployed on the Somnia Testnet.</p>
+            <p>Sign in with email or wallet via Privy — fully non-custodial, deployed on the Mantle Sepolia Testnet.</p>
           </div>
           <div className="step-card">
             <span className="step-number">02</span>
@@ -374,7 +374,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="site-footer">
-        <span>© 2026 Aionis · Built on Somnia Testnet</span>
+        <span>© 2026 Aionis · Built on Mantle Sepolia Testnet</span>
         <div className="site-footer-links">
           <a href="https://aionis-agent.vercel.app/traders">Leaderboard</a>
           <a href="https://aionis-agent.vercel.app/watcher">Live Activity</a>

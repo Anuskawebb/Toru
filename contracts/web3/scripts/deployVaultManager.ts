@@ -58,7 +58,7 @@ async function main() {
   console.log('\nNext steps:');
   console.log('  1. Copy to .env.local:  NEXT_PUBLIC_VAULT_MANAGER_ADDRESS=' + vmAddress);
   console.log('  2. Copy to watcher/.env: VAULT_MANAGER_ADDRESS=' + vmAddress);
-  console.log('  3. NOTE: checkLeaderActivity/updatePrice depend on ISomniaAgentPlatform,');
+  console.log('  3. NOTE: checkLeaderActivity/updatePrice depend on IAgentPlatform,');
   console.log('     which has no Mantle equivalent yet — these calls will revert until');
   console.log('     the on-chain agent pipeline is rebuilt for Mantle (see docs).');
 }

@@ -15,13 +15,13 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Aionis — AI copy-trading agents on Somnia",
-  description: "Deploy AI agents that copy top traders on Somnia — on-chain, in real time, fully autonomous.",
-  keywords: ["copy trading", "AI agents", "Somnia", "DeFi", "on-chain trading", "aionis"],
+  title: "Aionis — AI copy-trading agents on Mantle",
+  description: "Deploy AI agents that copy top traders on Mantle — on-chain, in real time, fully autonomous.",
+  keywords: ["copy trading", "AI agents", "Mantle", "DeFi", "on-chain trading", "aionis"],
   authors: [{ name: "Aionis" }],
   openGraph: {
-    title: "Aionis — AI copy-trading agents on Somnia",
-    description: "Deploy AI agents that copy top traders on Somnia — on-chain, in real time, fully autonomous.",
+    title: "Aionis — AI copy-trading agents on Mantle",
+    description: "Deploy AI agents that copy top traders on Mantle — on-chain, in real time, fully autonomous.",
     type: "website",
   },
 };

@@ -1,18 +1,18 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-describe("SomniaGreeting", function () {
+describe("Greeting", function () {
   async function deployFixture() {
     const [owner, otherAccount] = await ethers.getSigners();
-    const SomniaGreeting = await ethers.getContractFactory("SomniaGreeting");
-    const greeting = await SomniaGreeting.deploy("Hello Somnia!");
+    const Greeting = await ethers.getContractFactory("Greeting");
+    const greeting = await Greeting.deploy("Hello Mantle!");
     return { greeting, owner, otherAccount };
   }
 
   describe("Deployment", function () {
     it("Should set the right greeting", async function () {
       const { greeting } = await deployFixture();
-      expect(await greeting.greeting()).to.equal("Hello Somnia!");
+      expect(await greeting.greeting()).to.equal("Hello Mantle!");
     });
 
     it("Should set the right owner", async function () {

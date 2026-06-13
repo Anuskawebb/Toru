@@ -3,7 +3,7 @@
   "configVersion": 0,
   "workspaces": {
     "": {
-      "name": "somnia",
+      "name": "aether",
       "dependencies": {
         "@rainbow-me/rainbowkit": "^2.2.11",
         "@tailwindcss/postcss": "^4.3.0",

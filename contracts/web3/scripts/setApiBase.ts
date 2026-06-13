@@ -5,7 +5,7 @@ const NGROK_URL     = process.env.NGROK_URL ?? '';
 
 async function main() {
   if (!NGROK_URL) {
-    console.error('Usage: NGROK_URL=https://xxxx.ngrok-free.app npx hardhat run scripts/setApiBase.ts --network somnia');
+    console.error('Usage: NGROK_URL=https://xxxx.ngrok-free.app npx hardhat run scripts/setApiBase.ts --network mantleSepolia');
     process.exit(1);
   }
 
