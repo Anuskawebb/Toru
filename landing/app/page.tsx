@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import Aurora from "@/components/ui/Aurora";
 
 // Micro sun/asterisk icon
 const SunAsteriskIcon = () => (
@@ -90,115 +91,29 @@ function LocalTime() {
 
 export default function Home() {
 
-  // SVG Stencil gradient animation elements
-  const circleRef = useRef<SVGCircleElement>(null);
-  const blurFilterRef = useRef<SVGFEGaussianBlurElement>(null);
-  const stop1Ref = useRef<SVGStopElement>(null);
-  const stop2Ref = useRef<SVGStopElement>(null);
-
-  useEffect(() => {
-    let animationFrameId: number;
-    const startTime = Date.now();
-
-    // Physics positions (starting pooled at left 'A' / 'I')
-    let curX = 380;
-    let curRadius = 240;
-    let curBlur = 48;
-    let curCoreOpacity = 1.0;
-    let curEdgeOpacity = 0.9;
-
-    const tick = () => {
-      const elapsed = (Date.now() - startTime) % 12000;
-
-      let targetX = 380;
-      let targetRadius = 240;
-      let targetBlur = 48;
-      let targetCoreOpacity = 1.0;
-      let targetEdgeOpacity = 0.9;
-
-      // Chronological Animation Timeline
-      if (elapsed >= 0 && elapsed < 2000) {
-        // 00:00 - 00:02 Left Anchor (Pooled behind 'A' and 'I')
-        targetX = 380;
-        targetRadius = 240;
-        targetBlur = 48;
-        targetCoreOpacity = 1.0;
-        targetEdgeOpacity = 0.95;
-      } else if (elapsed >= 2000 && elapsed < 5000) {
-        // 00:02 - 00:05 Horizontal liquid drift to the right (towards 'S')
-        targetX = 1120;
-        targetRadius = 240;
-        targetBlur = 50;
-        targetCoreOpacity = 1.0;
-        targetEdgeOpacity = 0.95;
-      } else if (elapsed >= 5000 && elapsed < 6000) {
-        // 00:05 - 00:06 Right Peak (Settle behind 'S' in electric-orange)
-        targetX = 1120;
-        targetRadius = 240;
-        targetBlur = 48;
-        targetCoreOpacity = 1.0;
-        targetEdgeOpacity = 0.95;
-      } else if (elapsed >= 6000 && elapsed < 6200) {
-        // 00:06 - 00:06.2 Sudden blackout/pull away
-        targetX = 1120;
-        targetRadius = 120;
-        targetBlur = 24;
-        targetCoreOpacity = 0.0;
-        targetEdgeOpacity = 0.0;
-      } else if (elapsed >= 6200 && elapsed < 7200) {
-        // 00:06.2 - 00:07.2 Rapid bloom reset from center-left
-        const bloomProgress = (elapsed - 6200) / 1000; // 0 to 1
-        targetX = 380;
-        // Start massive and highly diffused, then shrink back
-        targetRadius = 600 - bloomProgress * 360;
-        targetBlur = 160 - bloomProgress * 112;
-        targetCoreOpacity = Math.min(1.0, bloomProgress * 1.6);
-        targetEdgeOpacity = Math.min(0.95, bloomProgress * 1.6);
-      } else {
-        // 00:07.2 - 00:12 Stabilizer at starting position
-        targetX = 380;
-        targetRadius = 240;
-        targetBlur = 48;
-        targetCoreOpacity = 1.0;
-        targetEdgeOpacity = 0.95;
-      }
-
-      // Physics constants (heavy-inertia easing values)
-      const easingX = 0.022; // Slow glide
-      const easingRadius = 0.035;
-      const easingBlur = 0.035;
-      const easingOpacity = 0.07;
-
-      curX += (targetX - curX) * easingX;
-      curRadius += (targetRadius - curRadius) * easingRadius;
-      curBlur += (targetBlur - curBlur) * easingBlur;
-      curCoreOpacity += (targetCoreOpacity - curCoreOpacity) * easingOpacity;
-      curEdgeOpacity += (targetEdgeOpacity - curEdgeOpacity) * easingOpacity;
-
-      // Directly update DOM elements for maximum rendering speed and 60fps consistency
-      if (circleRef.current) {
-        circleRef.current.setAttribute("cx", curX.toFixed(2));
-        circleRef.current.setAttribute("r", curRadius.toFixed(2));
-      }
-      if (blurFilterRef.current) {
-        blurFilterRef.current.setAttribute("stdDeviation", curBlur.toFixed(2));
-      }
-      if (stop1Ref.current) {
-        stop1Ref.current.setAttribute("stop-opacity", curCoreOpacity.toFixed(3));
-      }
-      if (stop2Ref.current) {
-        stop2Ref.current.setAttribute("stop-opacity", curEdgeOpacity.toFixed(3));
-      }
-
-      animationFrameId = requestAnimationFrame(tick);
-    };
-
-    animationFrameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, []);
-
   return (
     <>
+      {/* Aurora background — fixed behind the whole page. The wrapper is sized
+          explicitly (inset:0) since the app has no Tailwind, so Aurora's
+          internal `w-full h-full` resolves against a real size. */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+          // Flip vertically so the aurora sits at the bottom, black at the top.
+          transform: "scaleY(-1)",
+        }}
+      >
+        <Aurora
+          colorStops={["#C9B8F3", "#9D7BE6", "#5B2BD6"]}
+          blend={0.5}
+          amplitude={1.6}
+          speed={0.5}
+        />
+      </div>
+
       {/* Global Grain/Noise Overlay */}
       <div className="noise-overlay" />
 
@@ -225,7 +140,7 @@ export default function Home() {
                 d="M 35 230 A 125 125 0 0 0 260 305 A 125 125 0 0 0 485 230 C 485 190 460 160 430 145 L 260 55 C 230 40 190 90 160 90 C 140 90 110 40 90 40 C 60 40 35 130 35 230 Z M 250 230 A 90 90 0 1 0 70 230 A 90 90 0 1 0 250 230 Z M 450 230 A 90 90 0 1 0 270 230 A 90 90 0 1 0 450 230 Z M 227 265 A 32 32 0 1 0 163 265 A 32 32 0 1 0 227 265 Z M 427 265 A 32 32 0 1 0 363 265 A 32 32 0 1 0 427 265 Z"
               />
             </svg>
-            <span className="logo-text">Aionis</span>
+            <span className="logo-text">Aether</span>
           </div>
 
 
@@ -241,12 +156,18 @@ export default function Home() {
           </a>
         </header>
 
-
+        {/* Hero tagline — upper-right, mirrors the reference's placement/style */}
+        <div className="hero-wrapper">
+          <h1 className="hero-text">
+            For those who want to trade like the best
+            without ever watching the charts.
+          </h1>
+        </div>
 
       </main>
 
 
-      {/* Footer Row — floats just above the AIONIS stencil */}
+      {/* Footer Row — floats just above the AETHER stencil */}
       <footer className="footer-row footer-above-stencil interactive-element">
         <div className="footer-left" id="footer-left-status">
           <SunAsteriskIcon />
@@ -260,7 +181,9 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* Massive AIONIS Stencil & Animation Layer */}
+      {/* Massive AETHER wordmark — a color-dodge stencil: the letters stay pure
+          black where the backdrop is dark, and bloom bright only where the aurora
+          light passes behind them (the MIDU reveal behaviour). */}
       <div className="midu-stencil-container">
         <svg
           className="stencil-svg"
@@ -268,48 +191,25 @@ export default function Home() {
           preserveAspectRatio="xMidYMax slice"
         >
           <defs>
-            {/* The SVG Stencil Mask: Letters are white, background is black */}
-            <mask id="midu-mask" maskUnits="userSpaceOnUse">
-              <rect width="1400" height="550" fill="black" />
-              <text
-                x="50%"
-                y="465"
-                textAnchor="middle"
-                className="stencil-text"
-                fontSize="260"
-              >
-                AIONIS
-              </text>
-            </mask>
-
-            {/* Glowing radial gradient with golden yellow core and amber edges */}
-            <radialGradient id="liquid-gradient" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#edc564" ref={stop1Ref} stopOpacity="1" />
-              <stop offset="55%" stopColor="#e8b848" ref={stop2Ref} stopOpacity="0.95" />
-              <stop offset="100%" stopColor="#e8b848" stopOpacity="0" />
-            </radialGradient>
-
-            {/* High Gaussian Blur filter to blend the radial gradient into a smoke/fluid light blob */}
-            <filter id="glow-blur" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur ref={blurFilterRef} stdDeviation="60" />
-            </filter>
+            {/* Opaque grey fill drives the color-dodge: brighter grey = stronger
+                bloom where light hits. Heavier toward the baseline (where the
+                flipped aurora sits) so the bottoms of the letters light up. */}
+            <linearGradient id="aether-fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#2c2c2c" />
+              <stop offset="100%" stopColor="#8a8a8a" />
+            </linearGradient>
           </defs>
 
-          {/* This group contains the glowing fluid light masked by the letters */}
-          <g mask="url(#midu-mask)">
-            {/* Base layer background */}
-            <rect width="1400" height="550" fill="#000000" />
-            
-            {/* Animated liquid light circle with blur filter */}
-            <circle
-              ref={circleRef}
-              cx="380"
-              cy="260"
-              r="240"
-              fill="url(#liquid-gradient)"
-              filter="url(#glow-blur)"
-            />
-          </g>
+          <text
+            x="50%"
+            y="525"
+            textAnchor="middle"
+            className="stencil-text"
+            fontSize="345"
+            fill="url(#aether-fill)"
+          >
+            AETHER
+          </text>
         </svg>
       </div>
 
@@ -337,13 +237,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why Aionis */}
+      {/* Why Aether */}
       <section className="content-section features">
-        <h2 className="section-title">Why Aionis</h2>
+        <h2 className="section-title">Why Aether</h2>
         <div className="features-grid">
           <div className="feature-card">
             <h3>Non-custodial vaults</h3>
-            <p>Your funds stay in a smart contract vault you control — Aionis never takes custody of your assets.</p>
+            <p>Your funds stay in a smart contract vault you control — Aether never takes custody of your assets.</p>
           </div>
           <div className="feature-card">
             <h3>Real-time execution</h3>
@@ -374,7 +274,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="site-footer">
-        <span>© 2026 Aionis · Built on Mantle Sepolia Testnet</span>
+        <span>© 2026 Aether · Built on Mantle Sepolia Testnet</span>
         <div className="site-footer-links">
           <a href="https://aionis-agent.vercel.app/traders">Leaderboard</a>
           <a href="https://aionis-agent.vercel.app/watcher">Live Activity</a>

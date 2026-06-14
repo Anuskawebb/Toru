@@ -22,7 +22,7 @@ const config: HardhatUserConfig = {
     },
   },
   paths: {
-    artifacts: "../../src/contracts/artifacts",
+    artifacts: "../../frontend/contracts/artifacts",
   },
 };
 
