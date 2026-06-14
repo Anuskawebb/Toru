@@ -23,80 +23,6 @@ import type {
   TypedContractMethod,
 } from "../../common";
 
-export type AgentValidatorResponseStruct = {
-  validator: AddressLike;
-  result: BytesLike;
-  status: BigNumberish;
-  receipt: BigNumberish;
-  timestamp: BigNumberish;
-  executionCost: BigNumberish;
-};
-
-export type AgentValidatorResponseStructOutput = [
-  validator: string,
-  result: string,
-  status: bigint,
-  receipt: bigint,
-  timestamp: bigint,
-  executionCost: bigint
-] & {
-  validator: string;
-  result: string;
-  status: bigint;
-  receipt: bigint;
-  timestamp: bigint;
-  executionCost: bigint;
-};
-
-export type AgentRequestInfoStruct = {
-  id: BigNumberish;
-  requester: AddressLike;
-  callbackAddress: AddressLike;
-  callbackSelector: BytesLike;
-  subcommittee: AddressLike[];
-  responses: AgentValidatorResponseStruct[];
-  responseCount: BigNumberish;
-  failureCount: BigNumberish;
-  threshold: BigNumberish;
-  createdAt: BigNumberish;
-  deadline: BigNumberish;
-  status: BigNumberish;
-  consensusType: BigNumberish;
-  remainingBudget: BigNumberish;
-};
-
-export type AgentRequestInfoStructOutput = [
-  id: bigint,
-  requester: string,
-  callbackAddress: string,
-  callbackSelector: string,
-  subcommittee: string[],
-  responses: AgentValidatorResponseStructOutput[],
-  responseCount: bigint,
-  failureCount: bigint,
-  threshold: bigint,
-  createdAt: bigint,
-  deadline: bigint,
-  status: bigint,
-  consensusType: bigint,
-  remainingBudget: bigint
-] & {
-  id: bigint;
-  requester: string;
-  callbackAddress: string;
-  callbackSelector: string;
-  subcommittee: string[];
-  responses: AgentValidatorResponseStructOutput[];
-  responseCount: bigint;
-  failureCount: bigint;
-  threshold: bigint;
-  createdAt: bigint;
-  deadline: bigint;
-  status: bigint;
-  consensusType: bigint;
-  remainingBudget: bigint;
-};
-
 export declare namespace VaultManager {
   export type VaultLimitsStruct = {
     slippageBps: BigNumberish;
@@ -158,23 +84,18 @@ export declare namespace VaultManager {
 export interface VaultManagerInterface extends Interface {
   getFunction(
     nameOrSignature:
-      | "AGENT_PLATFORM"
-      | "API_BASE"
       | "AUSD"
-      | "JSON_API_AGENT_ID"
-      | "LLM_AGENT_ID"
       | "MAX_SLIPPAGE_BPS"
       | "MAX_TRADE_AGE"
       | "MIN_COPY_SCORE"
       | "MIN_SLIPPAGE_BPS"
       | "MIN_TRADE_AUSD"
-      | "PIPELINE_TIMEOUT"
-      | "PRICE_API_BASE"
       | "addToAllowlist"
-      | "checkLeaderActivity"
       | "closePosition"
       | "createVault"
       | "deposit"
+      | "dex"
+      | "executeCopyTrade"
       | "followerVaults"
       | "getAllowlist"
       | "getFollowerVaults"
@@ -184,22 +105,18 @@ export interface VaultManagerInterface extends Interface {
       | "getVault"
       | "keeperOf"
       | "latestPrice"
-      | "onPriceUpdate"
-      | "onStrategistResponse"
-      | "onWatcherResponse"
+      | "oracle"
       | "owner"
       | "pauseVault"
-      | "pipelineActiveAt"
       | "positions"
       | "removeFromAllowlist"
       | "reopenVault"
-      | "requestToVault"
       | "resumeVault"
-      | "setApiBase"
+      | "setDex"
       | "setKeeper"
-      | "setPriceApiBase"
+      | "setOracle"
+      | "setPrice"
       | "transferOwnership"
-      | "updatePrice"
       | "vaultId"
       | "vaultPositions"
       | "vaults"
@@ -210,11 +127,12 @@ export interface VaultManagerInterface extends Interface {
     nameOrSignatureOrTopic:
       | "AllowlistAdded"
       | "AllowlistRemoved"
+      | "DexSet"
       | "KeeperSet"
+      | "OracleSet"
       | "PositionClosed"
       | "PositionOpened"
       | "PriceUpdated"
-      | "StrategistRequested"
       | "StrategistResponse"
       | "TradeCopied"
       | "TradeSkipped"
@@ -229,20 +147,7 @@ export interface VaultManagerInterface extends Interface {
       | "WatcherResponse"
   ): EventFragment;
 
-  encodeFunctionData(
-    functionFragment: "AGENT_PLATFORM",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "API_BASE", values?: undefined): string;
   encodeFunctionData(functionFragment: "AUSD", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "JSON_API_AGENT_ID",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "LLM_AGENT_ID",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "MAX_SLIPPAGE_BPS",
     values?: undefined
@@ -264,20 +169,8 @@ export interface VaultManagerInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "PIPELINE_TIMEOUT",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "PRICE_API_BASE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "addToAllowlist",
     values: [AddressLike, AddressLike[]]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "checkLeaderActivity",
-    values: [AddressLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "closePosition",
@@ -297,6 +190,19 @@ export interface VaultManagerInterface extends Interface {
   encodeFunctionData(
     functionFragment: "deposit",
     values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "dex", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "executeCopyTrade",
+    values: [
+      AddressLike,
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "followerVaults",
@@ -334,41 +240,11 @@ export interface VaultManagerInterface extends Interface {
     functionFragment: "latestPrice",
     values: [AddressLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "onPriceUpdate",
-    values: [
-      BigNumberish,
-      AgentValidatorResponseStruct[],
-      BigNumberish,
-      AgentRequestInfoStruct
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "onStrategistResponse",
-    values: [
-      BigNumberish,
-      AgentValidatorResponseStruct[],
-      BigNumberish,
-      AgentRequestInfoStruct
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "onWatcherResponse",
-    values: [
-      BigNumberish,
-      AgentValidatorResponseStruct[],
-      BigNumberish,
-      AgentRequestInfoStruct
-    ]
-  ): string;
+  encodeFunctionData(functionFragment: "oracle", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "pauseVault",
     values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "pipelineActiveAt",
-    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "positions",
@@ -390,28 +266,24 @@ export interface VaultManagerInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "requestToVault",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "resumeVault",
     values: [AddressLike]
   ): string;
-  encodeFunctionData(functionFragment: "setApiBase", values: [string]): string;
+  encodeFunctionData(functionFragment: "setDex", values: [AddressLike]): string;
   encodeFunctionData(
     functionFragment: "setKeeper",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "setPriceApiBase",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferOwnership",
+    functionFragment: "setOracle",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "updatePrice",
+    functionFragment: "setPrice",
+    values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
@@ -428,20 +300,7 @@ export interface VaultManagerInterface extends Interface {
     values: [AddressLike]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "AGENT_PLATFORM",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "API_BASE", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "AUSD", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "JSON_API_AGENT_ID",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "LLM_AGENT_ID",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "MAX_SLIPPAGE_BPS",
     data: BytesLike
@@ -463,19 +322,7 @@ export interface VaultManagerInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "PIPELINE_TIMEOUT",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "PRICE_API_BASE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "addToAllowlist",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "checkLeaderActivity",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -487,6 +334,11 @@ export interface VaultManagerInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "dex", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "executeCopyTrade",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "followerVaults",
     data: BytesLike
@@ -517,24 +369,9 @@ export interface VaultManagerInterface extends Interface {
     functionFragment: "latestPrice",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "onPriceUpdate",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "onStrategistResponse",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "onWatcherResponse",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "oracle", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pauseVault", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "pipelineActiveAt",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "positions", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "removeFromAllowlist",
@@ -545,25 +382,15 @@ export interface VaultManagerInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "requestToVault",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "resumeVault",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "setApiBase", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setDex", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setKeeper", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setPriceApiBase",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "setOracle", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setPrice", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "updatePrice",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "vaultId", data: BytesLike): Result;
@@ -601,12 +428,36 @@ export namespace AllowlistRemovedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
+export namespace DexSetEvent {
+  export type InputTuple = [dex: AddressLike];
+  export type OutputTuple = [dex: string];
+  export interface OutputObject {
+    dex: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
 export namespace KeeperSetEvent {
   export type InputTuple = [follower: AddressLike, keeper: AddressLike];
   export type OutputTuple = [follower: string, keeper: string];
   export interface OutputObject {
     follower: string;
     keeper: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace OracleSetEvent {
+  export type InputTuple = [oracle: AddressLike];
+  export type OutputTuple = [oracle: string];
+  export interface OutputObject {
+    oracle: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -673,19 +524,6 @@ export namespace PriceUpdatedEvent {
   export interface OutputObject {
     token: string;
     price: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace StrategistRequestedEvent {
-  export type InputTuple = [requestId: BigNumberish, vaultId: BytesLike];
-  export type OutputTuple = [requestId: bigint, vaultId: string];
-  export interface OutputObject {
-    requestId: bigint;
-    vaultId: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -952,15 +790,7 @@ export interface VaultManager extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  AGENT_PLATFORM: TypedContractMethod<[], [string], "view">;
-
-  API_BASE: TypedContractMethod<[], [string], "view">;
-
   AUSD: TypedContractMethod<[], [string], "view">;
-
-  JSON_API_AGENT_ID: TypedContractMethod<[], [bigint], "view">;
-
-  LLM_AGENT_ID: TypedContractMethod<[], [bigint], "view">;
 
   MAX_SLIPPAGE_BPS: TypedContractMethod<[], [bigint], "view">;
 
@@ -972,20 +802,10 @@ export interface VaultManager extends BaseContract {
 
   MIN_TRADE_AUSD: TypedContractMethod<[], [bigint], "view">;
 
-  PIPELINE_TIMEOUT: TypedContractMethod<[], [bigint], "view">;
-
-  PRICE_API_BASE: TypedContractMethod<[], [string], "view">;
-
   addToAllowlist: TypedContractMethod<
     [leader: AddressLike, tokens: AddressLike[]],
     [void],
     "nonpayable"
-  >;
-
-  checkLeaderActivity: TypedContractMethod<
-    [follower: AddressLike, leader: AddressLike],
-    [void],
-    "payable"
   >;
 
   closePosition: TypedContractMethod<
@@ -1009,6 +829,22 @@ export interface VaultManager extends BaseContract {
 
   deposit: TypedContractMethod<
     [leader: AddressLike, amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
+  dex: TypedContractMethod<[], [string], "view">;
+
+  executeCopyTrade: TypedContractMethod<
+    [
+      follower: AddressLike,
+      leader: AddressLike,
+      tokenOut: AddressLike,
+      usdValue: BigNumberish,
+      tradePrice: BigNumberish,
+      tradeTimestamp: BigNumberish,
+      score: BigNumberish
+    ],
     [void],
     "nonpayable"
   >;
@@ -1059,44 +895,11 @@ export interface VaultManager extends BaseContract {
 
   latestPrice: TypedContractMethod<[arg0: AddressLike], [bigint], "view">;
 
-  onPriceUpdate: TypedContractMethod<
-    [
-      requestId: BigNumberish,
-      responses: AgentValidatorResponseStruct[],
-      status: BigNumberish,
-      arg3: AgentRequestInfoStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-
-  onStrategistResponse: TypedContractMethod<
-    [
-      requestId: BigNumberish,
-      responses: AgentValidatorResponseStruct[],
-      status: BigNumberish,
-      arg3: AgentRequestInfoStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-
-  onWatcherResponse: TypedContractMethod<
-    [
-      requestId: BigNumberish,
-      responses: AgentValidatorResponseStruct[],
-      status: BigNumberish,
-      arg3: AgentRequestInfoStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
+  oracle: TypedContractMethod<[], [string], "view">;
 
   owner: TypedContractMethod<[], [string], "view">;
 
   pauseVault: TypedContractMethod<[leader: AddressLike], [void], "nonpayable">;
-
-  pipelineActiveAt: TypedContractMethod<[arg0: BytesLike], [bigint], "view">;
 
   positions: TypedContractMethod<
     [arg0: BytesLike],
@@ -1112,6 +915,7 @@ export interface VaultManager extends BaseContract {
         bigint,
         bigint,
         bigint,
+        bigint,
         bigint
       ] & {
         follower: string;
@@ -1119,6 +923,7 @@ export interface VaultManager extends BaseContract {
         vaultId: string;
         token: string;
         ausdAllocated: bigint;
+        tokenAmount: bigint;
         entryPrice: bigint;
         exitPrice: bigint;
         pnl: bigint;
@@ -1149,23 +954,25 @@ export interface VaultManager extends BaseContract {
     "nonpayable"
   >;
 
-  requestToVault: TypedContractMethod<[arg0: BigNumberish], [string], "view">;
-
   resumeVault: TypedContractMethod<[leader: AddressLike], [void], "nonpayable">;
 
-  setApiBase: TypedContractMethod<[base: string], [void], "nonpayable">;
+  setDex: TypedContractMethod<[_dex: AddressLike], [void], "nonpayable">;
 
   setKeeper: TypedContractMethod<[keeper: AddressLike], [void], "nonpayable">;
 
-  setPriceApiBase: TypedContractMethod<[base: string], [void], "nonpayable">;
+  setOracle: TypedContractMethod<[_oracle: AddressLike], [void], "nonpayable">;
+
+  setPrice: TypedContractMethod<
+    [token: AddressLike, price: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
 
   transferOwnership: TypedContractMethod<
     [newOwner: AddressLike],
     [void],
     "nonpayable"
   >;
-
-  updatePrice: TypedContractMethod<[token: AddressLike], [void], "payable">;
 
   vaultId: TypedContractMethod<
     [follower: AddressLike, leader: AddressLike],
@@ -1212,20 +1019,8 @@ export interface VaultManager extends BaseContract {
   ): T;
 
   getFunction(
-    nameOrSignature: "AGENT_PLATFORM"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "API_BASE"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "AUSD"
   ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "JSON_API_AGENT_ID"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "LLM_AGENT_ID"
-  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "MAX_SLIPPAGE_BPS"
   ): TypedContractMethod<[], [bigint], "view">;
@@ -1242,24 +1037,11 @@ export interface VaultManager extends BaseContract {
     nameOrSignature: "MIN_TRADE_AUSD"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
-    nameOrSignature: "PIPELINE_TIMEOUT"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "PRICE_API_BASE"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "addToAllowlist"
   ): TypedContractMethod<
     [leader: AddressLike, tokens: AddressLike[]],
     [void],
     "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "checkLeaderActivity"
-  ): TypedContractMethod<
-    [follower: AddressLike, leader: AddressLike],
-    [void],
-    "payable"
   >;
   getFunction(
     nameOrSignature: "closePosition"
@@ -1282,6 +1064,24 @@ export interface VaultManager extends BaseContract {
     nameOrSignature: "deposit"
   ): TypedContractMethod<
     [leader: AddressLike, amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "dex"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "executeCopyTrade"
+  ): TypedContractMethod<
+    [
+      follower: AddressLike,
+      leader: AddressLike,
+      tokenOut: AddressLike,
+      usdValue: BigNumberish,
+      tradePrice: BigNumberish,
+      tradeTimestamp: BigNumberish,
+      score: BigNumberish
+    ],
     [void],
     "nonpayable"
   >;
@@ -1337,50 +1137,14 @@ export interface VaultManager extends BaseContract {
     nameOrSignature: "latestPrice"
   ): TypedContractMethod<[arg0: AddressLike], [bigint], "view">;
   getFunction(
-    nameOrSignature: "onPriceUpdate"
-  ): TypedContractMethod<
-    [
-      requestId: BigNumberish,
-      responses: AgentValidatorResponseStruct[],
-      status: BigNumberish,
-      arg3: AgentRequestInfoStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "onStrategistResponse"
-  ): TypedContractMethod<
-    [
-      requestId: BigNumberish,
-      responses: AgentValidatorResponseStruct[],
-      status: BigNumberish,
-      arg3: AgentRequestInfoStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "onWatcherResponse"
-  ): TypedContractMethod<
-    [
-      requestId: BigNumberish,
-      responses: AgentValidatorResponseStruct[],
-      status: BigNumberish,
-      arg3: AgentRequestInfoStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
+    nameOrSignature: "oracle"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "owner"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "pauseVault"
   ): TypedContractMethod<[leader: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "pipelineActiveAt"
-  ): TypedContractMethod<[arg0: BytesLike], [bigint], "view">;
   getFunction(
     nameOrSignature: "positions"
   ): TypedContractMethod<
@@ -1397,6 +1161,7 @@ export interface VaultManager extends BaseContract {
         bigint,
         bigint,
         bigint,
+        bigint,
         bigint
       ] & {
         follower: string;
@@ -1404,6 +1169,7 @@ export interface VaultManager extends BaseContract {
         vaultId: string;
         token: string;
         ausdAllocated: bigint;
+        tokenAmount: bigint;
         entryPrice: bigint;
         exitPrice: bigint;
         pnl: bigint;
@@ -1436,26 +1202,27 @@ export interface VaultManager extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "requestToVault"
-  ): TypedContractMethod<[arg0: BigNumberish], [string], "view">;
-  getFunction(
     nameOrSignature: "resumeVault"
   ): TypedContractMethod<[leader: AddressLike], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "setApiBase"
-  ): TypedContractMethod<[base: string], [void], "nonpayable">;
+    nameOrSignature: "setDex"
+  ): TypedContractMethod<[_dex: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "setKeeper"
   ): TypedContractMethod<[keeper: AddressLike], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "setPriceApiBase"
-  ): TypedContractMethod<[base: string], [void], "nonpayable">;
+    nameOrSignature: "setOracle"
+  ): TypedContractMethod<[_oracle: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setPrice"
+  ): TypedContractMethod<
+    [token: AddressLike, price: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "transferOwnership"
   ): TypedContractMethod<[newOwner: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "updatePrice"
-  ): TypedContractMethod<[token: AddressLike], [void], "payable">;
   getFunction(
     nameOrSignature: "vaultId"
   ): TypedContractMethod<
@@ -1516,11 +1283,25 @@ export interface VaultManager extends BaseContract {
     AllowlistRemovedEvent.OutputObject
   >;
   getEvent(
+    key: "DexSet"
+  ): TypedContractEvent<
+    DexSetEvent.InputTuple,
+    DexSetEvent.OutputTuple,
+    DexSetEvent.OutputObject
+  >;
+  getEvent(
     key: "KeeperSet"
   ): TypedContractEvent<
     KeeperSetEvent.InputTuple,
     KeeperSetEvent.OutputTuple,
     KeeperSetEvent.OutputObject
+  >;
+  getEvent(
+    key: "OracleSet"
+  ): TypedContractEvent<
+    OracleSetEvent.InputTuple,
+    OracleSetEvent.OutputTuple,
+    OracleSetEvent.OutputObject
   >;
   getEvent(
     key: "PositionClosed"
@@ -1542,13 +1323,6 @@ export interface VaultManager extends BaseContract {
     PriceUpdatedEvent.InputTuple,
     PriceUpdatedEvent.OutputTuple,
     PriceUpdatedEvent.OutputObject
-  >;
-  getEvent(
-    key: "StrategistRequested"
-  ): TypedContractEvent<
-    StrategistRequestedEvent.InputTuple,
-    StrategistRequestedEvent.OutputTuple,
-    StrategistRequestedEvent.OutputObject
   >;
   getEvent(
     key: "StrategistResponse"
@@ -1658,6 +1432,17 @@ export interface VaultManager extends BaseContract {
       AllowlistRemovedEvent.OutputObject
     >;
 
+    "DexSet(address)": TypedContractEvent<
+      DexSetEvent.InputTuple,
+      DexSetEvent.OutputTuple,
+      DexSetEvent.OutputObject
+    >;
+    DexSet: TypedContractEvent<
+      DexSetEvent.InputTuple,
+      DexSetEvent.OutputTuple,
+      DexSetEvent.OutputObject
+    >;
+
     "KeeperSet(address,address)": TypedContractEvent<
       KeeperSetEvent.InputTuple,
       KeeperSetEvent.OutputTuple,
@@ -1667,6 +1452,17 @@ export interface VaultManager extends BaseContract {
       KeeperSetEvent.InputTuple,
       KeeperSetEvent.OutputTuple,
       KeeperSetEvent.OutputObject
+    >;
+
+    "OracleSet(address)": TypedContractEvent<
+      OracleSetEvent.InputTuple,
+      OracleSetEvent.OutputTuple,
+      OracleSetEvent.OutputObject
+    >;
+    OracleSet: TypedContractEvent<
+      OracleSetEvent.InputTuple,
+      OracleSetEvent.OutputTuple,
+      OracleSetEvent.OutputObject
     >;
 
     "PositionClosed(bytes32,bytes32,int256,uint256)": TypedContractEvent<
@@ -1700,17 +1496,6 @@ export interface VaultManager extends BaseContract {
       PriceUpdatedEvent.InputTuple,
       PriceUpdatedEvent.OutputTuple,
       PriceUpdatedEvent.OutputObject
-    >;
-
-    "StrategistRequested(uint256,bytes32)": TypedContractEvent<
-      StrategistRequestedEvent.InputTuple,
-      StrategistRequestedEvent.OutputTuple,
-      StrategistRequestedEvent.OutputObject
-    >;
-    StrategistRequested: TypedContractEvent<
-      StrategistRequestedEvent.InputTuple,
-      StrategistRequestedEvent.OutputTuple,
-      StrategistRequestedEvent.OutputObject
     >;
 
     "StrategistResponse(uint256,bytes32,uint8,bool)": TypedContractEvent<

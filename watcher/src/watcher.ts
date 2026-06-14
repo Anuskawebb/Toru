@@ -3,12 +3,13 @@ import { ALGEBRA_SWAP_ABI }           from './price.js';
 import { parseSwapLog }               from './parser.js';
 import { processTrade }               from './copy-engine.js';
 import {
-  callCheckLeaderActivity,
   getOpenPositionIdsForToken,
   callClosePosition,
-  callUpdatePrice,
-  waitForPrice,
+  callSetPrice,
+  callExecuteCopyTrade,
+  getVaultForScore,
 } from './keeper.js';
+import { scoreTrade }                  from './scorer.js';
 import { claimSwap }                  from './dedup.js';
 import { incrStat, STAT_EVALUATED }   from './stats.js';
 import { mantleMainnet, POOLS, type PoolDef } from './config.js';
@@ -126,17 +127,22 @@ export async function startWatcher(db: Db): Promise<() => void> {
       const tokenOut = intent.tokenOut.toLowerCase();
       const tokenIn  = intent.tokenIn.toLowerCase();
 
-      // BUY-side: latestPrice[tokenOut] is otherwise only refreshed during
-      // SELL-side closes, so it drifts away from the leader's actual trade
-      // price over time and trips the on-chain slippage guard for every BUY.
-      // Refresh it once up front so _openPosition compares against a fresh price.
-      if (intent.side === 'BUY') {
-        try {
-          await callUpdatePrice(tokenOut);
-          await waitForPrice(tokenOut);
-        } catch (e) {
-          error('watcher', `price refresh failed for tokenOut=${tokenOut.slice(0, 10)}… leader=${recipient.slice(0, 10)}…`, e);
-        }
+      // ── Unit conversions for the on-chain contract ──────────────────────────
+      //   usdValue  → aUSD 6-decimal units (×1e6)
+      //   price     → ×1e10 (entry/slippage/P&L scale)
+      //   timestamp → unix seconds
+      const usdValue1e6    = BigInt(Math.round(intent.usdValue  * 1e6));
+      const tradePrice1e10 = BigInt(Math.round(intent.wmntPrice * 1e10));
+      const tradeTsSec     = BigInt(Math.floor(intent.timestamp / 1000));
+
+      // Push the fresh price once up front (synchronous, no validator wait) so
+      // _openPosition / closePosition read a current latestPrice. On BUY we price
+      // the acquired token, on SELL the exited token.
+      const priceToken = intent.side === 'BUY' ? intent.tokenOut : intent.tokenIn;
+      try {
+        await callSetPrice(priceToken, tradePrice1e10);
+      } catch (e) {
+        error('watcher', `setPrice failed for token=${priceToken.slice(0, 10)}… leader=${recipient.slice(0, 10)}…`, e);
       }
 
       for (const { follower, allowlist } of vaults) {
@@ -145,9 +151,33 @@ export async function startWatcher(db: Db): Promise<() => void> {
             log('watcher', `keeper skip follower=${follower.slice(0, 10)}… — tokenOut=${tokenOut.slice(0, 10)}… not in allowlist [${allowlist.map((a) => a.slice(0, 8)).join(', ')}]`);
             continue;
           }
-          log('watcher', `keeper dispatch checkLeaderActivity — follower=${follower.slice(0, 10)}… leader=${recipient.slice(0, 10)}…`);
-          callCheckLeaderActivity(follower, recipient).catch((e) =>
-            error('watcher', `checkLeaderActivity failed — follower=${follower.slice(0, 10)}… leader=${recipient.slice(0, 10)}…`, e)
+
+          // Off-chain AI score (per-vault, replaces the Somnia on-chain LLM agent).
+          let score = 0;
+          try {
+            const vc = await getVaultForScore(follower, recipient);
+            if (!vc.exists || !vc.active) {
+              log('watcher', `keeper skip follower=${follower.slice(0, 10)}… — vault not active`);
+              continue;
+            }
+            score = scoreTrade({
+              usdValue:    intent.usdValue,
+              tradeAgeSec: Math.floor((Date.now() - intent.timestamp) / 1000),
+              riskLevel:   vc.riskLevel,
+              ausdLocked:  vc.ausdLocked,
+              freeBalance: vc.freeBalance,
+            });
+          } catch (e) {
+            error('watcher', `scoring failed — follower=${follower.slice(0, 10)}… leader=${recipient.slice(0, 10)}…`, e);
+            continue;
+          }
+
+          log('watcher', `keeper dispatch executeCopyTrade — follower=${follower.slice(0, 10)}… leader=${recipient.slice(0, 10)}… score=${score}`);
+          callExecuteCopyTrade(
+            follower, recipient, intent.tokenOut,
+            usdValue1e6, tradePrice1e10, tradeTsSec, score,
+          ).catch((e) =>
+            error('watcher', `executeCopyTrade failed — follower=${follower.slice(0, 10)}… leader=${recipient.slice(0, 10)}…`, e)
           );
         } else {
           log('watcher', `keeper SELL: checking open positions for follower=${follower.slice(0, 10)}… tokenIn=${tokenIn.slice(0, 10)}…`);
@@ -159,24 +189,12 @@ export async function startWatcher(db: Db): Promise<() => void> {
             log('watcher', `keeper skip follower=${follower.slice(0, 10)}… — no open ${tokenIn.slice(0, 10)}… position to close`);
             continue;
           }
-          log('watcher', `keeper closing ${openIds.length} position(s) for follower=${follower.slice(0, 10)}… — refreshing on-chain price first`);
-
-          // closePosition requires a fresh on-chain price — refresh and wait for callback.
-          (async () => {
-            try {
-              await callUpdatePrice(tokenIn);
-              await waitForPrice(tokenIn);
-            } catch (e) {
-              error('watcher', `price refresh failed for tokenIn=${tokenIn.slice(0, 10)}… follower=${follower.slice(0, 10)}…`, e);
-              return;
-            }
-            log('watcher', `price refresh done — closing ${openIds.length} position(s) for follower=${follower.slice(0, 10)}…`);
-            for (const positionId of openIds) {
-              callClosePosition(positionId).catch((e) =>
-                error('watcher', `closePosition failed — positionId=${positionId.slice(0, 18)}… follower=${follower.slice(0, 10)}…`, e)
-              );
-            }
-          })();
+          log('watcher', `keeper closing ${openIds.length} position(s) for follower=${follower.slice(0, 10)}…`);
+          for (const positionId of openIds) {
+            callClosePosition(positionId).catch((e) =>
+              error('watcher', `closePosition failed — positionId=${positionId.slice(0, 18)}… follower=${follower.slice(0, 10)}…`, e)
+            );
+          }
         }
       }
     }).catch((e) => error('watcher', `getOnChainFollowers failed — leader=${recipient.slice(0, 10)}…`, e));

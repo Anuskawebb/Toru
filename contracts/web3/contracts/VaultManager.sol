@@ -8,138 +8,71 @@ pragma solidity ^0.8.20;
 //  ╚██╗ ██╔╝██╔══██║██║   ██║██║     ██║
 //   ╚████╔╝ ██║  ██║╚██████╔╝███████╗██║
 //
-//  VaultManager — Aionis copy-trading core contract
+//  VaultManager — Aether copy-trading core contract
 //  Chain: Mantle Sepolia Testnet (5003)
 //
-//  ── KNOWN GAP: agent pipeline is non-functional on Mantle ──────────────────
-//  checkLeaderActivity / onWatcherResponse / onStrategistResponse and
-//  updatePrice / onPriceUpdate all call out to IAgentPlatform at
-//  0x037Bb9C718F3f7fe5eCBDB0b600D607b52706776 — a bespoke on-chain AI-agent
-//  dispatch system (JSON API agent + LLM agent). No equivalent has
-//  been verified on Mantle Sepolia. These functions will revert until a
-//  Mantle-compatible agent/oracle network is confirmed and wired in (see
-//  frontend/docs/mantle-dex-integration.md). Vault management functions
-//  (createVault, deposit, withdraw, pause/resume/reopen, allowlist mgmt,
-//  closePosition, getters) are unaffected and work normally.
+//  ── MANTLE-NATIVE PIPELINE (no Somnia Agent Platform) ──────────────────────
+//  The leader-trade fetch + AI scoring that previously ran on Somnia's on-chain
+//  Agent Platform (JSON API agent + LLM agent, paid in STT) now run OFF-CHAIN in
+//  the watcher/keeper service, which then pushes the result on-chain in a single
+//  trusted call:
+//
+//      executeCopyTrade(...)  — keeper passes the leader's swap (tokenOut,
+//                               usdValue, tradePrice, timestamp) + the AI copy
+//                               score (0-100). All risk guards + position logic
+//                               run on-chain, exactly as before.
+//      setPrice(token, price) — keeper/oracle pushes the latest token price used
+//                               for entry, slippage and P&L.
+//
+//  Authorization: executeCopyTrade is callable by the follower, their delegated
+//  keeper (keeperOf), or the global `oracle` (the platform keeper). setPrice is
+//  callable by `oracle`/owner. The full event sequence (WatcherResponse →
+//  StrategistResponse → TradeCopied/TradeSkipped) is preserved so the existing
+//  frontend activity feed keeps working unchanged.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── External interfaces ───────────────────────────────────────────────────────
 
-// Confirmed against a live failed callback trace + a vendored
-// `IAgents.sol` reference (sdk-snippets.md §1). Two things our original
-// guess got wrong:
-//
-//   1. `createRequest`'s `data` is NOT `abi.encode(url, jsonPath)` — it must be
-//      a real encoded call to one of the agent's typed fetch functions
-//      (`abi.encodeWithSelector(IJsonApiAgent.fetchString.selector, url, path)`).
-//      A plain `abi.encode(string,string)` starts with a zero offset word, whose
-//      first 4 bytes are `0x00000000` — the validators dispatch on that as a
-//      selector and fail with "unknown function selector: no method with id:
-//      0x00000000" (verified twice in the on-chain trace, failureCount=2).
-//
-//   2. The platform's callback ABI is NOT `(uint256, bytes)` — it is always
-//      `(uint256 requestId, AgentValidatorResponse[] responses,
-//        AgentResponseStatus status, AgentRequestInfo request)`. Decoding the
-//      live failed-callback calldata against this shape produced clean,
-//      sensible values (requestId, validator addresses, executionCost, etc.);
-//      our `(uint256, bytes)` assumption decoded garbage and reverted.
-
-enum AgentResponseStatus { None, Pending, Success, Failed, TimedOut }
-enum AgentConsensusType  { Majority, Threshold }
-
-struct AgentValidatorResponse {
-    address              validator;
-    bytes                result;
-    AgentResponseStatus  status;
-    uint256              receipt;
-    uint256              timestamp;
-    uint256              executionCost;
-}
-
-struct AgentRequestInfo {
-    uint256                   id;
-    address                   requester;
-    address                   callbackAddress;
-    bytes4                    callbackSelector;
-    address[]                 subcommittee;
-    AgentValidatorResponse[]  responses;
-    uint256                   responseCount;
-    uint256                   failureCount;
-    uint256                   threshold;
-    uint256                   createdAt;
-    uint256                   deadline;
-    AgentResponseStatus       status;
-    AgentConsensusType        consensusType;
-    uint256                   remainingBudget;
-}
-
 /**
- * @notice Agent Platform — dispatches work to the off-chain agent fleet.
- * @dev Deployed at 0x037Bb9C718F3f7fe5eCBDB0b600D607b52706776.
- */
-interface IAgentPlatform {
-    function createRequest(
-        uint256      agentId,
-        address      cbContract,
-        bytes4       cbSelector,
-        bytes        calldata data
-    ) external payable returns (uint256 requestId);
-
-    function getRequestDeposit() external view returns (uint256);
-}
-
-/// @dev The JSON API agent dispatches on the 4-byte selector of `data` — it
-///      must be encoded as a genuine call to one of these typed fetchers, and
-///      its `selector` argument is a plain dot-notation field path (no `$.`).
-interface IJsonApiAgent {
-    function fetchString(string calldata url, string calldata selector) external returns (string memory);
-    function fetchUint(string calldata url, string calldata selector, uint8 decimals) external returns (uint256);
-}
-
-interface ILLMAgent {
-    function inferNumber(
-        string calldata prompt,
-        string calldata system,
-        int256 minValue,
-        int256 maxValue,
-        bool   chainOfThought
-    ) external returns (int256);
-}
-
-/**
- * @notice Minimal aUSD interface — ERC-20 + mint for P&L settlement.
+ * @notice Minimal ERC-20 interface (+ mint, used only on aUSD) — covers aUSD and
+ *         the swapped token. `approve` lets the vault authorise the DEX router.
  */
 interface IaUSD {
     function mint(address to, uint256 amount)                              external;
     function transfer(address to, uint256 amount)                         external returns (bool);
     function transferFrom(address from, address to, uint256 amount)       external returns (bool);
+    function approve(address spender, uint256 amount)                     external returns (bool);
     function balanceOf(address account)                                   external view returns (uint256);
+}
+
+/**
+ * @notice DEX router interface — FusionX V2 (Uniswap-V2 style) on Mantle Sepolia.
+ *         `dex` holds the FusionXRouter address; swappable for any V2-style router.
+ */
+interface IFusionXRouter {
+    function swapExactTokensForTokens(
+        uint256 amountIn,
+        uint256 amountOutMin,
+        address[] calldata path,
+        address to,
+        uint256 deadline
+    ) external returns (uint256[] memory amounts);
+
+    function getAmountsOut(uint256 amountIn, address[] calldata path)
+        external view returns (uint256[] memory amounts);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * @title  VaultManager
- * @author Aionis Team
- * @notice Core contract for Aionis copy-trading.
+ * @author Aether Team
+ * @notice Core contract for Aether copy-trading.
  *
  * @dev    Each user creates one vault per leader they want to follow.
- *         aUSD is locked inside the vault and never sent to a DEX.
- *         When the leader trades, a three-stage agent pipeline fires:
- *
- *         ┌─────────────────────────────────────────────────────────────────┐
- *         │  1. WATCHER  (JSON API Agent, id=1)                             │
- *         │     Fetches latest swap by the leader from the Aionis API.      │
- *         │                                                                 │
- *         │  2. STRATEGIST  (LLM Agent, id=2)                              │
- *         │     Evaluates trade + vault risk profile → copy score 0-100.   │
- *         │                                                                 │
- *         │  3. EXECUTOR  (on-chain, this contract)                        │
- *         │     Opens a virtual Position. No DEX swap. aUSD stays here.    │
- *         └─────────────────────────────────────────────────────────────────┘
- *
- *         A separate price-update pipeline keeps latestPrice[token] fresh
- *         so getUnrealizedPnL() is always meaningful.
+ *         aUSD is locked inside the vault. When the leader trades, the off-chain
+ *         keeper evaluates the trade (AI score) and calls executeCopyTrade, which
+ *         opens a virtual Position. P&L settles on close against latestPrice.
  *
  *         P&L settlement on close:
  *           profit → aUSD minted into vault (VaultManager must be a minter)
@@ -149,26 +82,21 @@ contract VaultManager {
 
     // ── Constants ─────────────────────────────────────────────────────────────
 
-    address public constant AGENT_PLATFORM =
-        0x037Bb9C718F3f7fe5eCBDB0b600D607b52706776;
-
-    uint256 public constant JSON_API_AGENT_ID = 13174292974160097713;
-    uint256 public constant LLM_AGENT_ID      = 12847293847561029384;
-
-    uint256 public constant MAX_TRADE_AGE      = 5 minutes;
-    uint256 public constant PIPELINE_TIMEOUT   = 10 minutes;
+    uint256 public constant MAX_TRADE_AGE   = 5 minutes;
     uint8   public constant MIN_COPY_SCORE  = 10;
     uint256 public constant MIN_TRADE_AUSD  = 1e6;      // 1 aUSD minimum per trade
 
     uint16  public constant MIN_SLIPPAGE_BPS = 10;      // 0.10%
     uint16  public constant MAX_SLIPPAGE_BPS = 2000;    // 20.00%
 
-    // ── Immutables ────────────────────────────────────────────────────────────
+    // ── Immutables / roles ──────────────────────────────────────────────────────
 
     address public immutable AUSD;
     address public           owner;
-    string  public           API_BASE;
-    string  public           PRICE_API_BASE;
+    /// @notice Trusted price/score pusher — the off-chain platform keeper service.
+    address public           oracle;
+    /// @notice DEX router that copy trades swap through (real on-chain execution).
+    address public           dex;
 
     // ── Enums ─────────────────────────────────────────────────────────────────
 
@@ -204,20 +132,15 @@ contract VaultManager {
         address         follower;
         address         leader;
         bytes32         vaultId;
-        address         token;           // token being held virtually
-        uint256         ausdAllocated;   // aUSD locked for this position
-        uint256         entryPrice;      // price × 1e10 at open
-        uint256         exitPrice;       // price × 1e10 at close (0 if open)
-        int256          pnl;             // in aUSD base units (+ profit, − loss)
+        address         token;           // token actually held (swapped into)
+        uint256         ausdAllocated;   // aUSD spent on the opening swap
+        uint256         tokenAmount;     // real token amount received from the DEX
+        uint256         entryPrice;      // price × 1e10 snapshot at open (informational)
+        uint256         exitPrice;       // price × 1e10 snapshot at close (informational)
+        int256          pnl;             // realised P&L in aUSD base units (+/−)
         PositionStatus  status;
         uint256         openedAt;
         uint256         closedAt;
-    }
-
-    /// @dev Minimal trade context carried from the watcher callback to the executor.
-    struct PendingTrade {
-        address tokenOut;
-        uint256 tradePrice;
     }
 
     // ── State ─────────────────────────────────────────────────────────────────
@@ -234,30 +157,20 @@ contract VaultManager {
     /// @notice vaultId → all position IDs (open + closed)
     mapping(bytes32  => bytes32[])    public vaultPositions;
 
-    /// @notice follower → address allowed to trigger the agent pipeline on their behalf
+    /// @notice follower → address allowed to trigger copy trades on their behalf
     mapping(address  => address)      public keeperOf;
-
-    // ── Agent pipeline ────────────────────────────────────────────────────────
-
-    /// @dev requestId → vaultId  (watcher and strategist callbacks share this)
-    mapping(uint256  => bytes32)      public requestToVault;
-
-    /// @dev vaultId → traded token + trade-time price, carried from watcher → executor
-    mapping(bytes32  => PendingTrade) private pendingTrade;
-
-    /// @dev Timestamp when pipeline started; 0 = idle. Auto-expires after PIPELINE_TIMEOUT.
-    mapping(bytes32  => uint256)      public pipelineActiveAt;
 
     // ── Price state ───────────────────────────────────────────────────────────
 
     /// @notice token address → latest price × 1e10
     mapping(address  => uint256)      public latestPrice;
 
-    /// @dev requestId → token address  (price callback lookup)
-    mapping(uint256  => address)      private priceRequestToToken;
-
     /// @dev position counter for unique IDs
     uint256 private _positionNonce;
+
+    /// @dev synthetic request counter — pairs the WatcherResponse/StrategistResponse
+    ///      events of a single executeCopyTrade run for the activity feed.
+    uint256 private _requestNonce;
 
     // ── Events ────────────────────────────────────────────────────────────────
 
@@ -279,10 +192,13 @@ contract VaultManager {
         uint256 amount
     );
     event KeeperSet(address indexed follower, address indexed keeper);
+    event OracleSet(address indexed oracle);
+    event DexSet(address indexed dex);
 
     event AllowlistAdded(bytes32 indexed vaultId, address[] tokens);
     event AllowlistRemoved(bytes32 indexed vaultId, address[] tokens);
 
+    // Kept (with a synthetic requestId) for frontend activity-feed compatibility.
     event WatcherRequested(uint256 indexed requestId, bytes32 indexed vaultId);
     event WatcherResponse(
         uint256 indexed requestId,
@@ -291,7 +207,6 @@ contract VaultManager {
         uint256 usdValue,
         uint256 tradeTimestamp
     );
-    event StrategistRequested(uint256 indexed requestId, bytes32 indexed vaultId);
     event StrategistResponse(
         uint256 indexed requestId,
         bytes32 indexed vaultId,
@@ -329,35 +244,41 @@ contract VaultManager {
         _;
     }
 
-    modifier onlyAgentPlatform() {
-        require(msg.sender == AGENT_PLATFORM, "VM: caller is not agent platform");
-        _;
-    }
-
-    modifier onlyFollowerOrKeeper(address follower) {
+    /// @dev Follower self-service, their delegated keeper, or the global oracle/keeper.
+    modifier onlyAuthorizedFor(address follower) {
         require(
-            msg.sender == follower || msg.sender == keeperOf[follower],
+            msg.sender == follower ||
+            msg.sender == keeperOf[follower] ||
+            msg.sender == oracle,
             "VM: not authorized"
         );
         _;
     }
 
+    /// @dev Trusted price pusher: the platform keeper (oracle) or owner.
+    modifier onlyOracle() {
+        require(msg.sender == oracle || msg.sender == owner, "VM: not oracle");
+        _;
+    }
+
     // ── Constructor ───────────────────────────────────────────────────────────
 
-    constructor(address _ausd, string memory _apiBase, string memory _priceApiBase) {
+    constructor(address _ausd) {
         require(_ausd != address(0), "VM: zero aUSD address");
-        AUSD           = _ausd;
-        owner          = msg.sender;
-        API_BASE       = _apiBase;
-        PRICE_API_BASE = _priceApiBase;
+        AUSD  = _ausd;
+        owner = msg.sender;
     }
 
-    function setApiBase(string calldata base) external onlyOwner {
-        API_BASE = base;
+    /// @notice Set the trusted oracle/keeper allowed to push prices and drive copy trades.
+    function setOracle(address _oracle) external onlyOwner {
+        oracle = _oracle;
+        emit OracleSet(_oracle);
     }
 
-    function setPriceApiBase(string calldata base) external onlyOwner {
-        PRICE_API_BASE = base;
+    /// @notice Set the DEX router that copy trades swap through.
+    function setDex(address _dex) external onlyOwner {
+        dex = _dex;
+        emit DexSet(_dex);
     }
 
     function transferOwnership(address newOwner) external onlyOwner {
@@ -402,7 +323,7 @@ contract VaultManager {
      * @notice Create a new vault for a specific leader.
      * @param leader           Wallet to copy-trade.
      * @param amount           aUSD to lock (must be pre-approved).
-     * @param riskLevel        1 (conservative) – 10 (aggressive). Passed to LLM.
+     * @param riskLevel        1 (conservative) – 10 (aggressive). Passed to the scorer.
      * @param maxPerTradePct   Max % of vault per single trade (1-100).
      * @param allowlist        Token addresses this vault is allowed to copy.
      *                         Must contain at least one token — empty = no trades.
@@ -539,7 +460,6 @@ contract VaultManager {
 
     /**
      * @notice Pause copy-trading for a vault (follower only).
-     *         In-flight pipeline completes but no new ones start.
      */
     function pauseVault(address leader) external {
         bytes32 id = vaultId(msg.sender, leader);
@@ -603,249 +523,90 @@ contract VaultManager {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    //  AGENT PIPELINE — STEP 1: KICK OFF (WATCHER)
+    //  COPY-TRADE EXECUTION (keeper-driven, Mantle-native)
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * @notice Trigger the copy-trade pipeline for a follower.
-     * @dev    Called by the follower themselves or their delegated keeper.
-     *         The watcher service calls this automatically when the leader trades.
+     * @notice Evaluate and (if it passes) copy a leader's trade into a follower vault.
+     * @dev    Replaces the old Somnia agent pipeline. The off-chain keeper supplies
+     *         the leader's swap details (fetched from the DEX) and the AI copy score
+     *         (computed off-chain). All risk guards + position logic run on-chain,
+     *         identical to the previous on-chain flow.
      *
-     * @param follower  The follower whose vault to check.
-     * @param leader    The leader whose latest trade to fetch.
+     * @param follower        Vault owner.
+     * @param leader          Leader being copied.
+     * @param tokenOut        Token the leader acquired (the asset to copy into).
+     * @param usdValue        Leader's trade size in USD, aUSD 6-decimal units (×1e6).
+     * @param tradePrice      Leader's execution price × 1e10.
+     * @param tradeTimestamp  Unix seconds of the leader's trade.
+     * @param score           AI copy score 0-100 (off-chain strategist).
      */
-    function checkLeaderActivity(
+    function executeCopyTrade(
         address follower,
-        address leader
-    ) external payable onlyFollowerOrKeeper(follower) {
+        address leader,
+        address tokenOut,
+        uint256 usdValue,
+        uint256 tradePrice,
+        uint256 tradeTimestamp,
+        uint8   score
+    ) external onlyAuthorizedFor(follower) {
         bytes32 id = vaultId(follower, leader);
         VaultConfig storage v = vaults[id];
 
-        require(v.status == VaultStatus.ACTIVE,    "VM: vault not active");
-        require(
-            pipelineActiveAt[id] == 0 ||
-            block.timestamp > pipelineActiveAt[id] + PIPELINE_TIMEOUT,
-            "VM: pipeline already running"
-        );
-        require(_freeBalance(v) > MIN_TRADE_AUSD,  "VM: insufficient free balance");
+        require(v.status == VaultStatus.ACTIVE,   "VM: vault not active");
 
-        pipelineActiveAt[id] = block.timestamp;
-
-        // Reserve enough for JSON API call + LLM call.
-        // JSON API: opDeposit + 0.09 STT (0.03/validator × 3), LLM: opDeposit + 0.21 STT (0.07/validator × 3).
-        uint256 opDeposit = IAgentPlatform(AGENT_PLATFORM).getRequestDeposit();
-        uint256 jsonFee   = opDeposit + 0.09 ether;
-        uint256 llmFee    = opDeposit + 0.21 ether;
-        require(msg.value >= jsonFee + llmFee, "VM: insufficient deposit (need >= jsonFee+llmFee)");
-
-        string memory url = string.concat(API_BASE, _toHexString(leader), "/latest-swap");
-
-        // The API exposes the trade pre-packed as a single ABI-encoded hex blob
-        // at `swap.encoded` (see route comment) — one `fetchString` round-trip
-        // gets us the whole `(tokenIn, tokenOut, usdValue, tradePrice, timestamp)`
-        // tuple instead of chaining five single-field fetches.
-        bytes memory payload = abi.encodeWithSelector(
-            IJsonApiAgent.fetchString.selector,
-            url,
-            "swap.encoded"
-        );
-
-        uint256 requestId = IAgentPlatform(AGENT_PLATFORM).createRequest{value: jsonFee}(
-            JSON_API_AGENT_ID,
-            address(this),
-            this.onWatcherResponse.selector,
-            payload
-        );
-
-        requestToVault[requestId] = id;
-
-        emit WatcherRequested(requestId, id);
-    }
-
-    // ─────────────────────────────────────────────────────────────────────────
-    //  AGENT PIPELINE — STEP 2: WATCHER CALLBACK → DISPATCH STRATEGIST
-    // ─────────────────────────────────────────────────────────────────────────
-
-    /**
-     * @notice Called by the Agent Platform after the JSON API Agent
-     *         fetches the leader's latest swap from the Aionis API.
-     *
-     * @dev    The platform's real callback ABI is always
-     *         `(uint256 requestId, AgentValidatorResponse[] responses,
-     *           AgentResponseStatus status, AgentRequestInfo request)` —
-     *         NOT `(uint256, bytes)`. `responses[0].result` holds the return
-     *         value of the `fetchString` call we dispatched: a hex string
-     *         of `abi.encode(tokenIn, tokenOut, usdValue, tradePrice, timestamp)`.
-     */
-    function onWatcherResponse(
-        uint256                          requestId,
-        AgentValidatorResponse[] memory  responses,
-        AgentResponseStatus              status,
-        AgentRequestInfo memory          /* request */
-    ) external onlyAgentPlatform {
-        bytes32 id = requestToVault[requestId];
-        require(id != bytes32(0), "VM: unknown watcher request");
-        delete requestToVault[requestId];
-
-        VaultConfig storage v = vaults[id];
-
-        if (status != AgentResponseStatus.Success || responses.length == 0) {
-            emit TradeSkipped(id, "watcher request failed");
-            pipelineActiveAt[id] = 0;
-            return;
-        }
-
-        string memory encodedHex = abi.decode(responses[0].result, (string));
-        (
-            ,
-            address tokenOut,
-            uint256 usdValue,
-            uint256 tradePrice,
-            uint256 tradeTimestamp
-        ) = abi.decode(
-            _hexStringToBytes(encodedHex),
-            (address, address, uint256, uint256, uint256)
-        );
-
-        emit WatcherResponse(requestId, id, tokenOut, usdValue, tradeTimestamp);
+        uint256 reqId = ++_requestNonce;
+        emit WatcherRequested(reqId, id);
+        emit WatcherResponse(reqId, id, tokenOut, usdValue, tradeTimestamp);
 
         // ── Stale trade guard ─────────────────────────────────────────────────
         if (block.timestamp - tradeTimestamp > MAX_TRADE_AGE) {
             emit TradeSkipped(id, "stale trade");
-            pipelineActiveAt[id] = 0;
             return;
         }
 
-        // ── Only copy BUY trades (tokenOut = asset being acquired) ────────────
-        address tradedToken = tokenOut;
-
         // ── Allowlist check ───────────────────────────────────────────────────
-        if (!_inAllowlist(v.allowlist, tradedToken)) {
+        if (!_inAllowlist(v.allowlist, tokenOut)) {
             emit TradeSkipped(id, "token not in allowlist");
-            pipelineActiveAt[id] = 0;
             return;
         }
 
         // ── Leader trade-size filter (0 = no bound) ──────────────────────────
         if (v.limits.minLeaderTradeUsd > 0 && usdValue < v.limits.minLeaderTradeUsd) {
             emit TradeSkipped(id, "leader trade below minimum");
-            pipelineActiveAt[id] = 0;
             return;
         }
         if (v.limits.maxLeaderTradeUsd > 0 && usdValue > v.limits.maxLeaderTradeUsd) {
             emit TradeSkipped(id, "leader trade above maximum");
-            pipelineActiveAt[id] = 0;
             return;
         }
 
         // ── Free balance check ────────────────────────────────────────────────
-        uint256 freeBalance = _freeBalance(v);
-        if (freeBalance <= MIN_TRADE_AUSD) {
+        if (_freeBalance(v) <= MIN_TRADE_AUSD) {
             emit TradeSkipped(id, "insufficient free balance");
-            pipelineActiveAt[id] = 0;
             return;
         }
 
-        // ── Store trade context for the executor ─────────────────────────────
-        pendingTrade[id] = PendingTrade({ tokenOut: tradedToken, tradePrice: tradePrice });
-
-        // ── Build LLM prompt and dispatch ────────────────────────────────────
-        uint256 maxTrade = (v.ausdLocked * v.maxPerTradePct) / 100;
-        if (maxTrade > freeBalance) maxTrade = freeBalance;
-
-        string memory prompt = _buildPrompt(
-            v.leader, tradedToken, usdValue, tradeTimestamp,
-            v.riskLevel, v.ausdLocked, freeBalance, maxTrade,
-            latestPrice[tradedToken]
-        );
-
-        // Use contract balance (pre-funded by checkLeaderActivity msg.value) for LLM fee
-        uint256 llmOpDeposit = IAgentPlatform(AGENT_PLATFORM).getRequestDeposit();
-        uint256 llmFee       = llmOpDeposit + 0.21 ether;
-
-        bytes memory llmPayload = abi.encodeWithSelector(
-            ILLMAgent.inferNumber.selector,
-            prompt,
-            "You are a precise risk-scoring engine for a copy-trading vault. Respond with only an integer copy-score from 0 to 100.",
-            int256(0),
-            int256(100),
-            false
-        );
-
-        uint256 llmRequestId = IAgentPlatform(AGENT_PLATFORM).createRequest{value: llmFee}(
-            LLM_AGENT_ID,
-            address(this),
-            this.onStrategistResponse.selector,
-            llmPayload
-        );
-
-        requestToVault[llmRequestId] = id;
-
-        emit StrategistRequested(llmRequestId, id);
-    }
-
-    // ─────────────────────────────────────────────────────────────────────────
-    //  AGENT PIPELINE — STEP 3: STRATEGIST CALLBACK → OPEN POSITION
-    // ─────────────────────────────────────────────────────────────────────────
-
-    /**
-     * @notice Called by the Agent Platform after the LLM Strategist
-     *         evaluates the trade.
-     *
-     * @dev    Real callback ABI: `(uint256, AgentValidatorResponse[],
-     *         AgentResponseStatus, AgentRequestInfo)`. We dispatched via
-     *         `ILLMAgent.inferNumber`, so `responses[0].result` decodes to
-     *         an `int256` copy-score (clamped to 0-100 below).
-     */
-    function onStrategistResponse(
-        uint256                          requestId,
-        AgentValidatorResponse[] memory  responses,
-        AgentResponseStatus              status,
-        AgentRequestInfo memory          /* request */
-    ) external onlyAgentPlatform {
-        bytes32 id = requestToVault[requestId];
-        require(id != bytes32(0), "VM: unknown strategist request");
-        delete requestToVault[requestId];
-
-        if (status != AgentResponseStatus.Success || responses.length == 0) {
-            emit TradeSkipped(id, "strategist request failed");
-            delete pendingTrade[id];
-            pipelineActiveAt[id] = 0;
-            return;
-        }
-
-        int256 rawScore = abi.decode(responses[0].result, (int256));
-        uint8  score;
-        if (rawScore <= 0)        score = 0;
-        else if (rawScore >= 100) score = 100;
-        else                      score = uint8(uint256(rawScore));
-
+        // ── Strategist score → execute decision ──────────────────────────────
+        if (score > 100) score = 100;
         bool willExecute = score >= MIN_COPY_SCORE;
-        emit StrategistResponse(requestId, id, score, willExecute);
+        emit StrategistResponse(reqId, id, score, willExecute);
 
         if (!willExecute) {
             emit TradeSkipped(id, "score below threshold");
-            delete pendingTrade[id];
-            pipelineActiveAt[id] = 0;
             return;
         }
 
-        _openPosition(id, score);
-
-        delete pendingTrade[id];
-        pipelineActiveAt[id] = 0;
+        _openPosition(id, tokenOut, tradePrice, score);
     }
 
     // ─────────────────────────────────────────────────────────────────────────
     //  POSITION — OPEN (INTERNAL)
     // ─────────────────────────────────────────────────────────────────────────
 
-    function _openPosition(bytes32 id, uint8 score) internal {
+    function _openPosition(bytes32 id, address tokenOut, uint256 tradePrice, uint8 score) internal {
         VaultConfig storage v = vaults[id];
-
-        PendingTrade memory pt = pendingTrade[id];
-        address tokenOut   = pt.tokenOut;
-        uint256 tradePrice = pt.tradePrice;
+        require(dex != address(0), "VM: dex not set");
 
         uint256 freeBalance = _freeBalance(v);
         uint256 maxTrade    = (v.ausdLocked * v.maxPerTradePct) / 100;
@@ -867,20 +628,20 @@ contract VaultManager {
             ausdAmount = v.limits.maxAllocUsd;
         }
 
-        // Use on-chain latestPrice if available, fall back to trade-time price
-        uint256 entryPrice = latestPrice[tokenOut] > 0
-            ? latestPrice[tokenOut]
-            : tradePrice;
+        // ── REAL SWAP: aUSD → tokenOut through FusionX ──────────────────────────
+        // minOut enforces the vault's slippage tolerance against the live pool quote.
+        address[] memory path = new address[](2);
+        path[0] = AUSD;
+        path[1] = tokenOut;
+        uint256 expectedOut = IFusionXRouter(dex).getAmountsOut(ausdAmount, path)[1];
+        uint256 minOut      = (expectedOut * (10000 - v.limits.slippageBps)) / 10000;
+        IaUSD(AUSD).approve(dex, ausdAmount);
+        uint256 tokenAmount = IFusionXRouter(dex).swapExactTokensForTokens(
+            ausdAmount, minOut, path, address(this), block.timestamp + 300
+        )[1];
 
-        // ── Slippage guard: drift between leader's execution price and ours ──────
-        if (tradePrice > 0) {
-            uint256 priceDiff = entryPrice > tradePrice ? entryPrice - tradePrice : tradePrice - entryPrice;
-            uint256 slippageBpsActual = (priceDiff * 10000) / tradePrice;
-            if (slippageBpsActual > v.limits.slippageBps) {
-                emit TradeSkipped(id, "slippage exceeded");
-                return;
-            }
-        }
+        // Informational price snapshot (real economics come from the swap amounts).
+        uint256 entryPrice = latestPrice[tokenOut] > 0 ? latestPrice[tokenOut] : tradePrice;
 
         bytes32 posId = keccak256(
             abi.encodePacked(id, block.timestamp, tokenOut, ++_positionNonce)
@@ -892,6 +653,7 @@ contract VaultManager {
             vaultId:       id,
             token:         tokenOut,
             ausdAllocated: ausdAmount,
+            tokenAmount:   tokenAmount,
             entryPrice:    entryPrice,
             exitPrice:     0,
             pnl:           0,
@@ -912,13 +674,11 @@ contract VaultManager {
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * @notice Close an open position and settle P&L.
-     * @dev    Called by:
-     *           - The follower manually (stop-loss / take-profit)
-     *           - The keeper wallet when the leader sells
-     *
-     *         Profit → VaultManager mints aUSD into vault (must be a minter).
-     *         Loss   → aUSD deducted from vault accounting.
+     * @notice Close an open position by swapping the held token back to aUSD.
+     * @dev    Called by the follower (stop-loss / take-profit), their keeper, or
+     *         the oracle when the leader sells. P&L is REAL — the difference
+     *         between the aUSD received from the closing swap and the aUSD spent
+     *         opening it. No minting: profit comes from actual swap proceeds.
      *
      * @param positionId  The position to close.
      */
@@ -928,101 +688,55 @@ contract VaultManager {
 
         address follower = pos.follower;
         require(
-            msg.sender == follower || msg.sender == keeperOf[follower],
+            msg.sender == follower ||
+            msg.sender == keeperOf[follower] ||
+            msg.sender == oracle,
             "VM: not authorized"
         );
+        require(dex != address(0), "VM: dex not set");
 
         bytes32 id = pos.vaultId;
         VaultConfig storage v = vaults[id];
 
-        uint256 exitPrice = latestPrice[pos.token];
-        require(exitPrice > 0, "VM: no price available, call updatePrice first");
+        // ── REAL SWAP: token → aUSD through FusionX ──────────────────────────
+        address[] memory path = new address[](2);
+        path[0] = pos.token;
+        path[1] = AUSD;
+        uint256 expectedOut  = IFusionXRouter(dex).getAmountsOut(pos.tokenAmount, path)[1];
+        uint256 minOut       = (expectedOut * (10000 - v.limits.slippageBps)) / 10000;
+        IaUSD(pos.token).approve(dex, pos.tokenAmount);
+        uint256 ausdReceived = IFusionXRouter(dex).swapExactTokensForTokens(
+            pos.tokenAmount, minOut, path, address(this), block.timestamp + 300
+        )[1];
 
-        // Virtual P&L: proportional to price change
-        uint256 exitValue = (pos.ausdAllocated * exitPrice) / pos.entryPrice;
-        int256  pnl       = int256(exitValue) - int256(pos.ausdAllocated);
+        int256 pnl = int256(ausdReceived) - int256(pos.ausdAllocated);
 
-        if (exitValue > pos.ausdAllocated) {
-            // Profit: mint extra aUSD into the vault
-            uint256 profit = exitValue - pos.ausdAllocated;
-            IaUSD(AUSD).mint(address(this), profit);
-            v.ausdLocked += profit;
-        } else if (exitValue < pos.ausdAllocated) {
-            // Loss: reduce vault balance
-            uint256 loss = pos.ausdAllocated - exitValue;
-            v.ausdLocked -= loss;
-        }
-
+        // Replace the committed aUSD with the actual swap proceeds (no minting).
+        v.ausdLocked     = v.ausdLocked - pos.ausdAllocated + ausdReceived;
         v.ausdAllocated -= pos.ausdAllocated;
 
-        pos.exitPrice = exitPrice;
+        pos.exitPrice = latestPrice[pos.token];
         pos.pnl       = pnl;
         pos.status    = PositionStatus.CLOSED;
         pos.closedAt  = block.timestamp;
 
-        emit PositionClosed(positionId, id, pnl, exitPrice);
+        emit PositionClosed(positionId, id, pnl, pos.exitPrice);
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    //  PRICE UPDATE PIPELINE
+    //  PRICE
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * @notice Dispatch a JSON API Agent request to update the on-chain price
-     *         for a given token. Called by the keeper after every leader swap.
-     *
-     * @param token  Token contract address (e.g. WSOMI).
+     * @notice Push the latest price for a token (× 1e10). Called by the keeper/oracle
+     *         after every leader swap. Replaces the old on-chain agent price fetch.
+     * @param token  Token contract address.
+     * @param price  Price × 1e10.
      */
-    function updatePrice(address token) external payable {
+    function setPrice(address token, uint256 price) external onlyOracle {
         require(token != address(0), "VM: zero token");
-
-        uint256 opDeposit = IAgentPlatform(AGENT_PLATFORM).getRequestDeposit();
-        require(msg.value >= opDeposit + 0.09 ether, "VM: insufficient deposit for price update");
-
-        string memory url = string.concat(PRICE_API_BASE, _toHexString(token));
-        bytes memory payload = abi.encodeWithSelector(
-            IJsonApiAgent.fetchUint.selector,
-            url,
-            "price",
-            uint8(10)
-        );
-
-        uint256 requestId = IAgentPlatform(AGENT_PLATFORM).createRequest{value: msg.value}(
-            JSON_API_AGENT_ID,
-            address(this),
-            this.onPriceUpdate.selector,
-            payload
-        );
-
-        priceRequestToToken[requestId] = token;
-    }
-
-    /**
-     * @notice Called by the Agent Platform with the latest price.
-     * @dev    Real callback ABI: `(uint256, AgentValidatorResponse[],
-     *         AgentResponseStatus, AgentRequestInfo)`. We dispatched via
-     *         `IJsonApiAgent.fetchUint(..., decimals=10)`, so
-     *         `responses[0].result` decodes to a `uint256` price × 1e10.
-     */
-    function onPriceUpdate(
-        uint256                          requestId,
-        AgentValidatorResponse[] memory  responses,
-        AgentResponseStatus              status,
-        AgentRequestInfo memory          /* request */
-    ) external onlyAgentPlatform {
-        address token = priceRequestToToken[requestId];
-        require(token != address(0), "VM: unknown price request");
-        delete priceRequestToToken[requestId];
-
-        if (status != AgentResponseStatus.Success || responses.length == 0) {
-            return;
-        }
-
-        uint256 price = abi.decode(responses[0].result, (uint256));
-        require(price > 0, "VM: invalid price");
-
+        require(price > 0,           "VM: invalid price");
         latestPrice[token] = price;
-
         emit PriceUpdated(token, price);
     }
 
@@ -1085,126 +799,33 @@ contract VaultManager {
     }
 
     /**
-     * @notice Aggregate unrealized P&L across all open positions in a vault.
-     *         Requires latestPrice to be populated for each token via updatePrice().
+     * @notice Aggregate unrealized P&L across all open positions in a vault,
+     *         valued at the live DEX quote (what the held tokens would fetch in
+     *         aUSD right now) minus what was spent opening them.
      */
     function getUnrealizedPnL(address follower, address leader)
         external view
         returns (int256 totalPnl)
     {
+        if (dex == address(0)) return 0;
         bytes32 id = vaultId(follower, leader);
         bytes32[] storage posIds = vaultPositions[id];
 
         for (uint256 i = 0; i < posIds.length; i++) {
             Position storage pos = positions[posIds[i]];
-            if (pos.status != PositionStatus.OPEN) continue;
+            if (pos.status != PositionStatus.OPEN || pos.tokenAmount == 0) continue;
 
-            uint256 currentPrice = latestPrice[pos.token];
-            if (currentPrice == 0 || pos.entryPrice == 0) continue;
-
-            int256 unrealized = int256((pos.ausdAllocated * currentPrice) / pos.entryPrice)
-                              - int256(pos.ausdAllocated);
-            totalPnl += unrealized;
+            address[] memory path = new address[](2);
+            path[0] = pos.token;
+            path[1] = AUSD;
+            uint256 currentValue = IFusionXRouter(dex).getAmountsOut(pos.tokenAmount, path)[1];
+            totalPnl += int256(currentValue) - int256(pos.ausdAllocated);
         }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
     //  INTERNAL HELPERS
     // ─────────────────────────────────────────────────────────────────────────
-
-    function _buildPrompt(
-        address leader,
-        address tradedToken,
-        uint256 usdValue,
-        uint256 tradeTimestamp,
-        uint8   riskLevel,
-        uint256 ausdLocked,
-        uint256 freeBalance,
-        uint256 maxTrade,
-        uint256 currentPrice
-    ) internal view returns (string memory) {
-        uint256 tradeAgeSec      = block.timestamp - tradeTimestamp;
-        uint256 freePct          = ausdLocked  > 0 ? (freeBalance * 100) / ausdLocked  : 0;
-        uint256 tradeVsVaultPct  = ausdLocked  > 0 ? (usdValue    * 100) / ausdLocked  : 0;
-        uint256 tradeVsFreePct   = freeBalance > 0 ? (usdValue    * 100) / freeBalance : 0;
-        uint256 allocAtFullScore = maxTrade / 1e6;
-        uint256 allocAt50        = maxTrade / 2e6;
-        uint256 usdValueWhole    = usdValue    / 1e6;
-        uint256 freeWhole        = freeBalance / 1e6;
-        uint256 lockedWhole      = ausdLocked  / 1e6;
-        uint256 maxWhole         = maxTrade    / 1e6;
-        uint256 priceWhole       = currentPrice / 1e10;
-
-        string memory header = string.concat(
-            "You are a risk management engine for Aionis, a copy-trading platform on Mantle.\n",
-            "Evaluate the trade below and decide what percentage of the follower vault to allocate.\n\n",
-            "OUTPUT: Respond with ONLY a single integer 0-100. No explanation. No text. Just the number.\n\n",
-            "SCORING SCALE:\n",
-            "  0        = skip this trade entirely\n",
-            "  1-33     = low confidence  (small allocation)\n",
-            "  34-66    = medium confidence  (moderate allocation)\n",
-            "  67-99    = high confidence  (significant allocation)\n",
-            "  100      = maximum confidence  (full max-per-trade allocation)\n\n",
-            "ALLOCATION FORMULA:\n",
-            "  allocation = (score / 100) x max_per_trade\n",
-            "  At score=100 -> $", _uint2str(allocAtFullScore), " allocated\n",
-            "  At score=50  -> $", _uint2str(allocAt50),        " allocated\n\n"
-        );
-
-        string memory tradeSection = string.concat(
-            "--- TRADE ---\n",
-            "Leader wallet:             ", _toHexString(leader),             "\n",
-            "Token bought:              ", _toHexString(tradedToken),        "\n",
-            "Trade USD value:           $", _uint2str(usdValueWhole),        "\n",
-            "Trade age:                 ",  _uint2str(tradeAgeSec),          "s ago\n",
-            "Current token price:       $", _uint2str(priceWhole),           " (x1e10 units)\n",
-            "Trade size vs follower vault: ", _uint2str(tradeVsVaultPct),    "% of vault\n",
-            "Trade size vs free balance:   ", _uint2str(tradeVsFreePct),     "% of free capital\n\n"
-        );
-
-        string memory vaultSection = string.concat(
-            "--- FOLLOWER VAULT ---\n",
-            "Vault total:      $", _uint2str(lockedWhole),                   "\n",
-            "Free balance:     $", _uint2str(freeWhole),
-                                   " (", _uint2str(freePct),                 "% of vault)\n",
-            "Max per trade:    $", _uint2str(maxWhole),                      "\n",
-            "Risk tolerance:   ",  _uint2str(riskLevel),                     "/10\n\n"
-        );
-
-        string memory rules = string.concat(
-            "--- RULES (apply strictly in order) ---\n",
-            "1. If free balance < $1 -> return 0.\n",
-            "2. If trade age > 120s -> return 0 (stale signal).\n",
-            "3. If trade USD value < $5 -> return 0 (noise trade, ignore).\n",
-            "4. If free balance < $10 -> return 0 (vault nearly empty).\n\n",
-            "RISK SCORE CEILING:\n",
-            "  Risk 1-2  -> max score 20\n",
-            "  Risk 3-4  -> max score 40\n",
-            "  Risk 5-6  -> max score 65\n",
-            "  Risk 7-8  -> max score 85\n",
-            "  Risk 9-10 -> max score 100\n\n",
-            "FREE BALANCE PENALTIES:\n",
-            "  Free balance < 10% of vault         -> reduce score by 30%\n",
-            "  Trade size > 50% of free balance    -> reduce score by 20% (large relative exposure)\n",
-            "  Trade size > 100% of free balance   -> return 0 (cannot afford)\n\n",
-            "SIGNAL STRENGTH (use trade size vs follower vault, NOT raw dollars):\n",
-            "  Trade < 5% of follower vault        -> weak signal, lean conservative\n",
-            "  Trade 5-20% of follower vault       -> moderate signal\n",
-            "  Trade > 20% of follower vault       -> strong signal, leader is making a big move\n",
-            "  Trade > 50% of follower vault       -> very strong signal\n\n",
-            "FRESHNESS BONUS:\n",
-            "  Trade age < 10s                     -> add up to 10 to final score\n",
-            "  Trade age 10-30s                    -> no adjustment\n",
-            "  Trade age 30-120s                   -> reduce score by 10\n\n",
-            "IMPORTANT: Do NOT treat $1000 as inherently significant.\n",
-            "  A $1000 trade is strong if the follower vault is $2000 (50%).\n",
-            "  A $1000 trade is weak if the follower vault is $100000 (1%).\n",
-            "  Always reason in percentages, not absolute dollar amounts.\n\n",
-            "Respond with a single integer 0-100."
-        );
-
-        return string.concat(header, tradeSection, vaultSection, rules);
-    }
 
     function _freeBalance(VaultConfig storage v) internal view returns (uint256) {
         if (v.ausdAllocated >= v.ausdLocked) return 0;
@@ -1227,53 +848,4 @@ contract VaultManager {
             }
         }
     }
-
-    function _toHexString(address addr) internal pure returns (string memory) {
-        bytes memory b    = abi.encodePacked(addr);
-        bytes memory hex_ = "0123456789abcdef";
-        bytes memory str  = new bytes(42);
-        str[0] = "0"; str[1] = "x";
-        for (uint256 i = 0; i < 20; i++) {
-            str[2 + i * 2]     = hex_[uint8(b[i]) >> 4];
-            str[3 + i * 2]     = hex_[uint8(b[i]) & 0x0f];
-        }
-        return string(str);
-    }
-
-    function _uint2str(uint256 v) internal pure returns (string memory) {
-        if (v == 0) return "0";
-        uint256 j = v; uint256 len;
-        while (j != 0) { len++; j /= 10; }
-        bytes memory bstr = new bytes(len);
-        uint256 k = len;
-        while (v != 0) { k--; bstr[k] = bytes1(uint8(48 + v % 10)); v /= 10; }
-        return string(bstr);
-    }
-
-    /// @dev Decodes a `0x`-prefixed hex string (as returned by `fetchString`)
-    ///      into raw bytes, e.g. for re-decoding an ABI-encoded payload that
-    ///      the API exposed as a JSON string field.
-    function _hexStringToBytes(string memory s) internal pure returns (bytes memory r) {
-        bytes memory b = bytes(s);
-        uint256 start = (b.length >= 2 && b[0] == "0" && (b[1] == "x" || b[1] == "X")) ? 2 : 0;
-        require((b.length - start) % 2 == 0, "VM: bad hex length");
-
-        uint256 n = (b.length - start) / 2;
-        r = new bytes(n);
-        for (uint256 i = 0; i < n; i++) {
-            r[i] = bytes1(
-                _hexNibble(b[start + 2 * i]) * 16 + _hexNibble(b[start + 2 * i + 1])
-            );
-        }
-    }
-
-    function _hexNibble(bytes1 c) internal pure returns (uint8) {
-        uint8 ch = uint8(c);
-        if (ch >= 48 && ch <= 57)  return ch - 48;        // '0'-'9'
-        if (ch >= 97 && ch <= 102) return ch - 87;        // 'a'-'f'
-        if (ch >= 65 && ch <= 70)  return ch - 55;        // 'A'-'F'
-        revert("VM: bad hex char");
-    }
-
-    receive() external payable {}
 }

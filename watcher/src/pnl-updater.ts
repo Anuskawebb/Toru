@@ -1,5 +1,5 @@
 import { getCurrentWmntPrice } from './price.js';
-import { callUpdatePrice, waitForPrice, callClosePosition } from './keeper.js';
+import { callSetPrice, callClosePosition } from './keeper.js';
 import { log, warn, error } from './logger.js';
 import { markStopLoss } from './stop-loss-registry.js';
 import type { Db } from './db.js';
@@ -20,7 +20,8 @@ async function triggerStopLoss(
   positionId: string,
   token:      string,
   follower:   string,
-  pct:        number
+  pct:        number,
+  priceUsd:   number
 ): Promise<void> {
   const tokenAddr = TOKEN_ADDRESS[token];
   if (!tokenAddr) {
@@ -31,10 +32,9 @@ async function triggerStopLoss(
   warn('pnl', `STOP-LOSS triggered — follower=${follower.slice(0, 10)}…  token=${token}  drawdown=${(pct * 100).toFixed(1)}%  posId=${positionId.slice(0, 10)}…`);
 
   try {
-    log('pnl', `stop-loss: refreshing on-chain price for ${token}…`);
-    await callUpdatePrice(tokenAddr);
-    await waitForPrice(tokenAddr);
-    log('pnl', `stop-loss: price confirmed — closing posId=${positionId.slice(0, 10)}…`);
+    log('pnl', `stop-loss: pushing on-chain price for ${token}…`);
+    await callSetPrice(tokenAddr, BigInt(Math.round(priceUsd * 1e10)));
+    log('pnl', `stop-loss: price set — closing posId=${positionId.slice(0, 10)}…`);
     // Register before the tx so vault-listener stamps STOP_LOSS when it sees PositionClosed
     markStopLoss(positionId);
     await callClosePosition(positionId as `0x${string}`);
@@ -110,7 +110,7 @@ export function startPnlUpdater(db: Db): () => void {
           }
           closingSet.add(pos.onChainPositionId);
           // Run async — don't block the poll cycle
-          triggerStopLoss(pos.onChainPositionId, pos.token, pos.follower, pct).catch((e) => {
+          triggerStopLoss(pos.onChainPositionId, pos.token, pos.follower, pct, currentPrice).catch((e) => {
             error('pnl', `stop-loss execution failed for posId=${pos.onChainPositionId.slice(0, 10)}…`, e);
             closingSet.delete(pos.onChainPositionId);
           });

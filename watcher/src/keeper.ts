@@ -7,12 +7,65 @@ import { incrStat, STAT_EXECUTIONS }                                            
 const VAULT_MANAGER_ABI = [
   {
     inputs: [
+      { internalType: 'address', name: 'follower',       type: 'address' },
+      { internalType: 'address', name: 'leader',         type: 'address' },
+      { internalType: 'address', name: 'tokenOut',       type: 'address' },
+      { internalType: 'uint256', name: 'usdValue',       type: 'uint256' },
+      { internalType: 'uint256', name: 'tradePrice',     type: 'uint256' },
+      { internalType: 'uint256', name: 'tradeTimestamp', type: 'uint256' },
+      { internalType: 'uint8',   name: 'score',          type: 'uint8'   },
+    ],
+    name:            'executeCopyTrade',
+    outputs:         [],
+    stateMutability: 'nonpayable',
+    type:            'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'token', type: 'address' },
+      { internalType: 'uint256', name: 'price', type: 'uint256' },
+    ],
+    name:            'setPrice',
+    outputs:         [],
+    stateMutability: 'nonpayable',
+    type:            'function',
+  },
+  {
+    inputs: [
       { internalType: 'address', name: 'follower', type: 'address' },
       { internalType: 'address', name: 'leader',   type: 'address' },
     ],
-    name:            'checkLeaderActivity',
-    outputs:         [],
-    stateMutability: 'payable',
+    name:    'getVault',
+    outputs: [
+      {
+        internalType: 'tuple',
+        name:         '',
+        type:         'tuple',
+        components: [
+          { internalType: 'address',  name: 'follower',       type: 'address'   },
+          { internalType: 'address',  name: 'leader',         type: 'address'   },
+          { internalType: 'uint256',  name: 'ausdLocked',     type: 'uint256'   },
+          { internalType: 'uint256',  name: 'ausdAllocated',  type: 'uint256'   },
+          { internalType: 'uint8',    name: 'riskLevel',      type: 'uint8'     },
+          { internalType: 'uint8',    name: 'maxPerTradePct', type: 'uint8'     },
+          { internalType: 'address[]',name: 'allowlist',      type: 'address[]' },
+          { internalType: 'uint8',    name: 'status',         type: 'uint8'     },
+          {
+            internalType: 'tuple',
+            name:         'limits',
+            type:         'tuple',
+            components: [
+              { internalType: 'uint16',  name: 'slippageBps',       type: 'uint16'  },
+              { internalType: 'uint256', name: 'minLeaderTradeUsd', type: 'uint256' },
+              { internalType: 'uint256', name: 'maxLeaderTradeUsd', type: 'uint256' },
+              { internalType: 'uint256', name: 'minAllocUsd',       type: 'uint256' },
+              { internalType: 'uint256', name: 'maxAllocUsd',       type: 'uint256' },
+            ],
+          },
+        ],
+      },
+    ],
+    stateMutability: 'view',
     type:            'function',
   },
   {
@@ -34,6 +87,7 @@ const VAULT_MANAGER_ABI = [
       { internalType: 'bytes32',        name: 'vaultId',       type: 'bytes32' },
       { internalType: 'address',        name: 'token',         type: 'address' },
       { internalType: 'uint256',        name: 'ausdAllocated', type: 'uint256' },
+      { internalType: 'uint256',        name: 'tokenAmount',   type: 'uint256' },
       { internalType: 'uint256',        name: 'entryPrice',    type: 'uint256' },
       { internalType: 'uint256',        name: 'exitPrice',     type: 'uint256' },
       { internalType: 'int256',         name: 'pnl',           type: 'int256'  },
@@ -52,13 +106,6 @@ const VAULT_MANAGER_ABI = [
     type:            'function',
   },
   {
-    inputs:          [{ internalType: 'address', name: 'token', type: 'address' }],
-    name:            'updatePrice',
-    outputs:         [],
-    stateMutability: 'payable',
-    type:            'function',
-  },
-  {
     inputs:  [{ internalType: 'address', name: '', type: 'address' }],
     name:    'latestPrice',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
@@ -67,11 +114,9 @@ const VAULT_MANAGER_ABI = [
   },
 ] as const;
 
-// MNT sent with each call: JSON API (deposit + 0.09) + LLM (deposit + 0.21) ≈ 0.35+ MNT
-const AGENT_FEE = parseEther('0.4');
-
-// updatePrice needs >= opDeposit (0.03) + 0.09 ≈ 0.12 MNT for its single JSON API call
-const PRICE_FEE = parseEther('0.15');
+// Mantle-native: no STT/agent fees anymore — the keeper only pays L2 gas, which
+// is tiny. Warn if the wallet is running low so trades don't start failing.
+const LOW_BALANCE_WARN = parseEther('0.05');
 
 type Account = ReturnType<typeof privateKeyToAccount>;
 
@@ -110,48 +155,119 @@ export async function getKeeperInfo(): Promise<{ address: string; balanceEth: st
   return { address: account.address, balanceEth: formatEther(balance) };
 }
 
-export async function callCheckLeaderActivity(
-  follower: string,
-  leader:   string,
-): Promise<void> {
+async function checkGas(): Promise<void> {
+  const { account, public: pub } = getClients();
+  const balance = await pub.getBalance({ address: account.address });
+  if (balance < LOW_BALANCE_WARN) {
+    warn('keeper', `Low keeper balance (${formatEther(balance)} MNT) — top up to avoid gas failures`);
+  }
+}
+
+/** Vault fields needed for off-chain scoring (USD figures in dollars). */
+export interface VaultForScore {
+  exists:      boolean;
+  active:      boolean;
+  riskLevel:   number;
+  ausdLocked:  number; // dollars
+  freeBalance: number; // dollars
+}
+
+/** Reads a vault's config from the contract for off-chain scoring. */
+export async function getVaultForScore(follower: string, leader: string): Promise<VaultForScore> {
+  const { public: pub } = getClients();
+  const v = await pub.readContract({
+    address:      VAULT_MANAGER_ADDRESS,
+    abi:          VAULT_MANAGER_ABI,
+    functionName: 'getVault',
+    args:         [follower as `0x${string}`, leader as `0x${string}`],
+  });
+
+  const exists      = v.follower.toLowerCase() !== '0x0000000000000000000000000000000000000000';
+  const ausdLocked  = Number(v.ausdLocked)    / 1e6;
+  const allocated   = Number(v.ausdAllocated) / 1e6;
+  return {
+    exists,
+    active:      Number(v.status) === 0, // 0 = ACTIVE
+    riskLevel:   Number(v.riskLevel),
+    ausdLocked,
+    freeBalance: Math.max(0, ausdLocked - allocated),
+  };
+}
+
+/** Push the latest token price (× 1e10) on-chain. Synchronous — no validator wait. */
+export async function callSetPrice(token: string, price1e10: bigint): Promise<void> {
   const { wallet, account, public: pub } = getClients();
+  await checkGas();
 
-  // Pre-flight: check balance before submitting — catch underfunding before it reverts on-chain.
-  const balance  = await pub.getBalance({ address: account.address });
-  const minNeeded = AGENT_FEE + parseEther('0.02'); // 0.02 MNT gas buffer
-  log('keeper', `checkLeaderActivity follower=${follower.slice(0, 10)}… leader=${leader.slice(0, 10)}…  wallet balance=${formatEther(balance)} MNT  fee=${formatEther(AGENT_FEE)} MNT`);
-  if (balance < minNeeded) {
-    warn('keeper', `UNDERFUNDED — balance ${formatEther(balance)} MNT < required ~${formatEther(minNeeded)} MNT. Aborting call to avoid on-chain revert.`);
-    throw new Error(`Keeper wallet underfunded: ${formatEther(balance)} MNT available, ~${formatEther(minNeeded)} MNT needed`);
-  }
-  if (balance < parseEther('1')) {
-    warn('keeper', `Low keeper balance (${formatEther(balance)} MNT) — top up soon to avoid future failures`);
-  }
-
+  log('keeper', `setPrice token=${token.slice(0, 10)}… price=${price1e10}`);
   let hash: `0x${string}`;
   try {
     hash = await wallet.writeContract({
       account,
       address:      VAULT_MANAGER_ADDRESS,
       abi:          VAULT_MANAGER_ABI,
-      functionName: 'checkLeaderActivity',
-      args:         [follower as `0x${string}`, leader as `0x${string}`],
-      value:        AGENT_FEE,
+      functionName: 'setPrice',
+      args:         [token as `0x${string}`, price1e10],
       chain:        mantleSepolia,
     });
   } catch (e) {
-    logError('keeper', `checkLeaderActivity tx submission failed — follower=${follower.slice(0, 10)}… leader=${leader.slice(0, 10)}…`, e);
+    logError('keeper', `setPrice tx submission failed — token=${token.slice(0, 10)}…`, e);
     throw e;
   }
 
-  log('keeper', `checkLeaderActivity tx submitted → ${hash}  (awaiting receipt…)`);
+  const receipt = await pub.waitForTransactionReceipt({ hash, timeout: 60_000 });
+  if (receipt.status === 'reverted') {
+    logError('keeper', `setPrice REVERTED — token=${token.slice(0, 10)}…  tx=${hash}`);
+    throw new Error(`setPrice reverted (tx: ${hash})`);
+  }
+  log('keeper', `setPrice confirmed ✓  token=${token.slice(0, 10)}…  block=${receipt.blockNumber}  tx=${hash}`);
+}
+
+/** Evaluate + (maybe) copy a leader trade into a follower's vault, in one tx. */
+export async function callExecuteCopyTrade(
+  follower:       string,
+  leader:         string,
+  tokenOut:       string,
+  usdValue1e6:    bigint,
+  tradePrice1e10: bigint,
+  tradeTsSec:     bigint,
+  score:          number,
+): Promise<void> {
+  const { wallet, account, public: pub } = getClients();
+  await checkGas();
+
+  log('keeper', `executeCopyTrade follower=${follower.slice(0, 10)}… leader=${leader.slice(0, 10)}… token=${tokenOut.slice(0, 10)}… score=${score}`);
+  let hash: `0x${string}`;
+  try {
+    hash = await wallet.writeContract({
+      account,
+      address:      VAULT_MANAGER_ADDRESS,
+      abi:          VAULT_MANAGER_ABI,
+      functionName: 'executeCopyTrade',
+      args:         [
+        follower as `0x${string}`,
+        leader   as `0x${string}`,
+        tokenOut as `0x${string}`,
+        usdValue1e6,
+        tradePrice1e10,
+        tradeTsSec,
+        score,
+      ],
+      chain:        mantleSepolia,
+    });
+  } catch (e) {
+    logError('keeper', `executeCopyTrade tx submission failed — follower=${follower.slice(0, 10)}… leader=${leader.slice(0, 10)}…`, e);
+    throw e;
+  }
+
+  log('keeper', `executeCopyTrade tx submitted → ${hash}  (awaiting receipt…)`);
 
   const receipt = await pub.waitForTransactionReceipt({ hash, timeout: 60_000 });
   if (receipt.status === 'reverted') {
-    logError('keeper', `checkLeaderActivity REVERTED — tx=${hash}  block=${receipt.blockNumber}  gas_used=${receipt.gasUsed}`);
-    throw new Error(`checkLeaderActivity reverted (tx: ${hash})`);
+    logError('keeper', `executeCopyTrade REVERTED — tx=${hash}  block=${receipt.blockNumber}  gas_used=${receipt.gasUsed}`);
+    throw new Error(`executeCopyTrade reverted (tx: ${hash})`);
   }
-  log('keeper', `checkLeaderActivity confirmed ✓  block=${receipt.blockNumber}  gas_used=${receipt.gasUsed}  tx=${hash}`);
+  log('keeper', `executeCopyTrade confirmed ✓  block=${receipt.blockNumber}  gas_used=${receipt.gasUsed}  tx=${hash}`);
   incrStat(STAT_EXECUTIONS);
 }
 
@@ -185,77 +301,6 @@ export async function getOpenPositionIdsForToken(
     if (pos[3].toLowerCase() === token.toLowerCase()) matches.push(id);
   }
   return matches;
-}
-
-export async function callUpdatePrice(token: string): Promise<void> {
-  const { wallet, account, public: pub } = getClients();
-
-  const balance = await pub.getBalance({ address: account.address });
-  log('keeper', `updatePrice token=${token.slice(0, 10)}…  wallet balance=${formatEther(balance)} MNT  fee=${formatEther(PRICE_FEE)} MNT`);
-  if (balance < PRICE_FEE + parseEther('0.01')) {
-    warn('keeper', `UNDERFUNDED for updatePrice — balance ${formatEther(balance)} MNT < required ~${formatEther(PRICE_FEE + parseEther('0.01'))} MNT`);
-    throw new Error(`Keeper wallet underfunded for updatePrice: ${formatEther(balance)} MNT available`);
-  }
-
-  let hash: `0x${string}`;
-  try {
-    hash = await wallet.writeContract({
-      account,
-      address:      VAULT_MANAGER_ADDRESS,
-      abi:          VAULT_MANAGER_ABI,
-      functionName: 'updatePrice',
-      args:         [token as `0x${string}`],
-      value:        PRICE_FEE,
-      chain:        mantleSepolia,
-    });
-  } catch (e) {
-    logError('keeper', `updatePrice tx submission failed — token=${token.slice(0, 10)}…`, e);
-    throw e;
-  }
-
-  log('keeper', `updatePrice tx submitted → ${hash}  (awaiting receipt…)`);
-
-  const receipt = await pub.waitForTransactionReceipt({ hash, timeout: 60_000 });
-  if (receipt.status === 'reverted') {
-    logError('keeper', `updatePrice REVERTED — tx=${hash}  block=${receipt.blockNumber}`);
-    throw new Error(`updatePrice reverted (tx: ${hash})`);
-  }
-  log('keeper', `updatePrice confirmed ✓  block=${receipt.blockNumber}  gas_used=${receipt.gasUsed}  tx=${hash}`);
-}
-
-/**
- * Polls latestPrice[token] until the JSON API agent's onPriceUpdate callback
- * lands it on-chain (validator consensus typically takes well under a minute,
- * but can run longer). Throws if it hasn't landed within `timeoutMs`.
- */
-export async function waitForPrice(
-  token:     string,
-  timeoutMs = 180_000,
-  pollMs    = 5_000,
-): Promise<bigint> {
-  const { public: pub } = getClients();
-  const deadline  = Date.now() + timeoutMs;
-  let   attempts  = 0;
-
-  log('keeper', `waitForPrice token=${token.slice(0, 10)}…  timeout=${timeoutMs / 1000}s  poll=${pollMs / 1000}s`);
-
-  while (Date.now() < deadline) {
-    attempts++;
-    const price = await pub.readContract({
-      address:      VAULT_MANAGER_ADDRESS,
-      abi:          VAULT_MANAGER_ABI,
-      functionName: 'latestPrice',
-      args:         [token as `0x${string}`],
-    });
-    if (price > 0n) {
-      log('keeper', `waitForPrice resolved after ${attempts} poll(s) — latestPrice=${price}  token=${token.slice(0, 10)}…`);
-      return price;
-    }
-    log('keeper', `waitForPrice attempt ${attempts} — price not yet on-chain, retrying in ${pollMs / 1000}s…`);
-    await new Promise((r) => setTimeout(r, pollMs));
-  }
-  logError('keeper', `waitForPrice TIMED OUT after ${attempts} poll(s) (${timeoutMs / 1000}s) — token=${token.slice(0, 10)}…`);
-  throw new Error(`waitForPrice(${token.slice(0, 10)}…) timed out after ${timeoutMs}ms`);
 }
 
 export async function callClosePosition(positionId: `0x${string}`): Promise<void> {

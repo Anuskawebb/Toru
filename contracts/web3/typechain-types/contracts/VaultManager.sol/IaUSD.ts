@@ -23,9 +23,18 @@ import type {
 
 export interface IaUSDInterface extends Interface {
   getFunction(
-    nameOrSignature: "balanceOf" | "mint" | "transfer" | "transferFrom"
+    nameOrSignature:
+      | "approve"
+      | "balanceOf"
+      | "mint"
+      | "transfer"
+      | "transferFrom"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "approve",
+    values: [AddressLike, BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "balanceOf",
     values: [AddressLike]
@@ -43,6 +52,7 @@ export interface IaUSDInterface extends Interface {
     values: [AddressLike, AddressLike, BigNumberish]
   ): string;
 
+  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
@@ -95,6 +105,12 @@ export interface IaUSD extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  approve: TypedContractMethod<
+    [spender: AddressLike, amount: BigNumberish],
+    [boolean],
+    "nonpayable"
+  >;
+
   balanceOf: TypedContractMethod<[account: AddressLike], [bigint], "view">;
 
   mint: TypedContractMethod<
@@ -119,6 +135,13 @@ export interface IaUSD extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "approve"
+  ): TypedContractMethod<
+    [spender: AddressLike, amount: BigNumberish],
+    [boolean],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "balanceOf"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
