@@ -247,7 +247,7 @@ export default function OnboardingModal() {
           {/* Step 2: Testnet vs Mainnet */}
           {step === 2 && (
             <div className="space-y-4">
-              <h3 className="text-xl font-light text-foreground tracking-tight">Shannon Testnet & aUSD</h3>
+              <h3 className="text-xl font-light text-foreground tracking-tight">Mantle Sepolia Testnet & aUSD</h3>
               <p className="text-sm text-muted font-light leading-relaxed">
                 The platform is designed to provide automated, on-chain execution with zero financial risk.
               </p>

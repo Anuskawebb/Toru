@@ -197,7 +197,7 @@ export default function Home() {
 
           {/* Primary CTA (Top-Right) */}
           <a
-            href="https://aionis-agent.vercel.app/"
+            href="https://aether-agent.vercel.app/"
             className="cta-button interactive-element"
             id="contact-button"
             style={{ display: "inline-block", textDecoration: "none" }}
@@ -409,7 +409,7 @@ export default function Home() {
         <span className="m-eyebrow">( Get started )</span>
         <h2 className="m-cta-title">Ready to put your aUSD to work?</h2>
         <a
-          href="https://aionis-agent.vercel.app/"
+          href="https://aether-agent.vercel.app/"
           className="cta-button interactive-element"
           style={{ display: "inline-block", textDecoration: "none" }}
         >
@@ -443,9 +443,9 @@ export default function Home() {
           <div className="m-footer-cols">
             <div className="m-footer-col">
               <span className="m-footer-col-title">Product</span>
-              <a href="https://aionis-agent.vercel.app/">Launch App</a>
-              <a href="https://aionis-agent.vercel.app/traders">Leaderboard</a>
-              <a href="https://aionis-agent.vercel.app/watcher">Live Activity</a>
+              <a href="https://aether-agent.vercel.app/">Launch App</a>
+              <a href="https://aether-agent.vercel.app/traders">Leaderboard</a>
+              <a href="https://aether-agent.vercel.app/watcher">Live Activity</a>
             </div>
             <div className="m-footer-col">
               <span className="m-footer-col-title">Built on</span>
@@ -455,7 +455,7 @@ export default function Home() {
             </div>
             <div className="m-footer-col">
               <span className="m-footer-col-title">Get started</span>
-              <a href="https://aionis-agent.vercel.app/">Try Demo</a>
+              <a href="https://aether-agent.vercel.app/">Try Demo</a>
             </div>
           </div>
         </div>
