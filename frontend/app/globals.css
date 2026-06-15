@@ -24,10 +24,10 @@
 }
 
 :root {
-  --accent: #e8b848;
-  --accent-hover: #edc564;
-  --accent-active: #d1a23a;
-  --accent-foreground: #18181b;
+  --accent: #8B5CF6;
+  --accent-hover: #A78BFA;
+  --accent-active: #7C3AED;
+  --accent-foreground: #FFFFFF;
 }
 
 @theme inline {

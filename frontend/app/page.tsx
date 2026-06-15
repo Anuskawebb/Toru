@@ -147,12 +147,12 @@ function PortfolioChart({ points }: { points: [number, number][] }) {
     <svg width="100%" height={h} viewBox={`0 0 ${w} ${h}`} fill="none" preserveAspectRatio="none">
       <defs>
         <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#e8b848" stopOpacity="0.22" />
-          <stop offset="100%" stopColor="#e8b848" stopOpacity="0.00" />
+          <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.00" />
         </linearGradient>
       </defs>
       <path d={fd} fill="url(#pg)" />
-      <path d={d} stroke="#e8b848" strokeWidth="2" fill="none" strokeLinejoin="round" pathLength="1" className="animate-draw-path" />
+      <path d={d} stroke="#8B5CF6" strokeWidth="2" fill="none" strokeLinejoin="round" pathLength="1" className="animate-draw-path" />
     </svg>
   );
 }
@@ -411,7 +411,7 @@ export default function Home() {
               <div className="grid grid-cols-4 gap-2.5">
                 {topByWinRate.map((trader) => {
                   const winRate = trader.winRate ?? 0;
-                  const winRateColor = winRate >= 50 ? 'text-emerald-400' : winRate >= 30 ? 'text-amber-400' : 'text-red-400';
+                  const winRateColor = winRate >= 50 ? 'text-emerald-400' : winRate >= 30 ? 'text-violet-400' : 'text-red-400';
                   const pnl = trader.totalPnlGenerated ?? 0;
                   return (
                     <div
@@ -476,7 +476,7 @@ export default function Home() {
                       ev.type === 'OPENED'
                         ? 'bg-emerald-400 animate-pulse'
                         : ev.type === 'SKIPPED'
-                        ? 'bg-amber-400'
+                        ? 'bg-violet-400'
                         : 'bg-blue-400'
                     }`} />
 

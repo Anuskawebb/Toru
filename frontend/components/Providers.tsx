@@ -50,7 +50,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <PrivyProvider
       appId={PRIVY_APP_ID}
       config={{
-        appearance: { theme, accentColor: '#e8b848' },
+        appearance: { theme, accentColor: '#8B5CF6' },
         loginMethods: ['email', 'google', 'wallet'],
         embeddedWallets: { ethereum: { createOnLogin: 'users-without-wallets' } },
         supportedChains: [mantleSepolia],

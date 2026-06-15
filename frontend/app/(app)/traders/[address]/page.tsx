@@ -162,7 +162,7 @@ export default function TraderDetailsPage({ params }: PageProps) {
         : <div className="h-6 w-12 bg-surface/40 rounded animate-shimmer mt-0.5" />,
       color: !stats || stats.winRate === null ? 'text-subtle'
         : stats.winRate >= 50 ? 'text-emerald-400'
-        : stats.winRate >= 30 ? 'text-amber-400'
+        : stats.winRate >= 30 ? 'text-violet-400'
         : 'text-red-400',
     },
     {
@@ -374,7 +374,7 @@ export default function TraderDetailsPage({ params }: PageProps) {
                     <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${
                       t.status === 'OPEN'   ? 'bg-emerald-500/10 text-emerald-400' :
                       t.status === 'CLOSED' ? 'bg-blue-500/10 text-blue-400' :
-                                              'bg-amber-500/10 text-amber-400'
+                                              'bg-violet-500/10 text-violet-400'
                     }`}>{t.status.toLowerCase()}</span>
                     <span className="text-[12px] text-muted font-semibold">{t.token}</span>
                     <span className="text-[11px] text-subtle">{t.ausdcAllocated.toFixed(1)} aUSD</span>

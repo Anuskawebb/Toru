@@ -15,7 +15,7 @@ export async function sendWelcomeEmail(
   
   const html = `
     <div style="font-family: sans-serif; background-color: #0d0d0d; color: #ffffff; padding: 40px 20px; border-radius: 12px; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #f59e0b; font-weight: 300; border-bottom: 1px solid #27272a; padding-bottom: 12px; margin-bottom: 20px;">Welcome to Aether</h2>
+      <h2 style="color: #8B5CF6; font-weight: 300; border-bottom: 1px solid #27272a; padding-bottom: 12px; margin-bottom: 20px;">Welcome to Aether</h2>
       <p style="font-size: 14px; line-height: 1.6; color: #a1a1aa;">
         Your wallet address <strong>${followerAddress}</strong> has successfully configured notification settings.
       </p>
@@ -24,7 +24,7 @@ export async function sendWelcomeEmail(
       </p>
       <div style="margin: 30px 0; background-color: #141414; border: 1px solid #27272a; padding: 15px; border-radius: 8px;">
         <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #71717a; display: block; margin-bottom: 4px;">Registered Wallet</span>
-        <code style="font-family: monospace; font-size: 13.5px; color: #f59e0b;">${followerAddress}</code>
+        <code style="font-family: monospace; font-size: 13.5px; color: #8B5CF6;">${followerAddress}</code>
       </div>
       <p style="font-size: 12px; color: #52525b; border-top: 1px solid #27272a; padding-top: 15px; margin-top: 30px;">
         Aether is built on Mantle Sepolia Testnet. All assets, including aUSD and MNT, are simulated.
@@ -87,20 +87,20 @@ export async function sendTradeOpenedEmail(
   const subject = `Your agent opened a ${token} position`;
 
   const explorerLink = details.txHash
-    ? `<p style="font-size: 13px;"><a href="https://mantlescan.xyz/tx/${details.txHash}" style="color: #f59e0b;">View transaction on explorer →</a></p>`
+    ? `<p style="font-size: 13px;"><a href="https://mantlescan.xyz/tx/${details.txHash}" style="color: #8B5CF6;">View transaction on explorer →</a></p>`
     : '';
 
   const html = `
     <div style="font-family: sans-serif; background-color: #0d0d0d; color: #ffffff; padding: 40px 20px; border-radius: 12px; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #f59e0b; font-weight: 300; border-bottom: 1px solid #27272a; padding-bottom: 12px; margin-bottom: 20px;">Position opened</h2>
+      <h2 style="color: #8B5CF6; font-weight: 300; border-bottom: 1px solid #27272a; padding-bottom: 12px; margin-bottom: 20px;">Position opened</h2>
       <p style="font-size: 14px; line-height: 1.6; color: #a1a1aa;">
         Your agent just copied a trade from <strong>${leader}</strong> and opened a new <strong>${token}</strong> position.
       </p>
       <div style="margin: 30px 0; background-color: #141414; border: 1px solid #27272a; padding: 15px; border-radius: 8px;">
         <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #71717a; display: block; margin-bottom: 4px;">Allocated</span>
-        <code style="font-family: monospace; font-size: 13.5px; color: #f59e0b;">${details.ausdAllocated != null ? `${details.ausdAllocated.toFixed(2)} aUSD` : '—'}</code>
+        <code style="font-family: monospace; font-size: 13.5px; color: #8B5CF6;">${details.ausdAllocated != null ? `${details.ausdAllocated.toFixed(2)} aUSD` : '—'}</code>
         <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #71717a; display: block; margin: 12px 0 4px;">Entry price</span>
-        <code style="font-family: monospace; font-size: 13.5px; color: #f59e0b;">${details.entryPrice != null ? `$${details.entryPrice.toFixed(4)}` : '—'}</code>
+        <code style="font-family: monospace; font-size: 13.5px; color: #8B5CF6;">${details.entryPrice != null ? `$${details.entryPrice.toFixed(4)}` : '—'}</code>
       </div>
       ${explorerLink}
       <p style="font-size: 12px; color: #52525b; border-top: 1px solid #27272a; padding-top: 15px; margin-top: 30px;">
@@ -149,12 +149,12 @@ export async function sendVerificationCode(
 
   const html = `
     <div style="font-family: sans-serif; background-color: #0d0d0d; color: #ffffff; padding: 40px 20px; border-radius: 12px; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #f59e0b; font-weight: 300; border-bottom: 1px solid #27272a; padding-bottom: 12px; margin-bottom: 20px;">Verify your email</h2>
+      <h2 style="color: #8B5CF6; font-weight: 300; border-bottom: 1px solid #27272a; padding-bottom: 12px; margin-bottom: 20px;">Verify your email</h2>
       <p style="font-size: 14px; line-height: 1.6; color: #a1a1aa;">
         Enter the code below in Aether to confirm this email address. It expires in 10 minutes.
       </p>
       <div style="margin: 30px 0; background-color: #141414; border: 1px solid #27272a; padding: 18px; border-radius: 8px; text-align: center;">
-        <span style="font-family: monospace; font-size: 28px; letter-spacing: 0.3em; color: #f59e0b;">${code}</span>
+        <span style="font-family: monospace; font-size: 28px; letter-spacing: 0.3em; color: #8B5CF6;">${code}</span>
       </div>
       <p style="font-size: 12px; color: #52525b; border-top: 1px solid #27272a; padding-top: 15px; margin-top: 30px;">
         If you didn't request this, you can safely ignore this email.
