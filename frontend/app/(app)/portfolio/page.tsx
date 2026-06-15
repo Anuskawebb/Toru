@@ -397,7 +397,7 @@ export default function PortfolioPage() {
               <p className="text-subtle text-[14px] mb-1">No open positions yet.</p>
               <p className="text-subtle text-[13px] mb-8">Deploy an agent and wait for the leader&apos;s next move — your holdings will show up here.</p>
               <button
-                onClick={() => router.push('/traders')}
+                onClick={() => router.push('/discover')}
                 className="rounded-full border border-foreground/[0.18] bg-foreground/[0.03] text-foreground/90 text-[13px] px-5 py-2 hover:bg-foreground/[0.08] hover:border-foreground/40 transition-spring hover:scale-105 active:scale-95 cursor-pointer"
               >
                 Discover Leaders

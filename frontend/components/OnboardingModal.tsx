@@ -176,7 +176,7 @@ export default function OnboardingModal() {
   const handleComplete = () => {
     localStorage.setItem(`aionis_onboarding_seen_${address.toLowerCase()}`, 'true');
     setIsOpen(false);
-    router.push('/traders');
+    router.push('/discover');
   };
 
   const handleSkip = () => {

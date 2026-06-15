@@ -3,7 +3,7 @@
 // latestPrice mapping and allowlist — keep them in sync with the watcher config.
 
 export const MAINNET_TOKENS: Record<string, `0x${string}`> = {
-  'WMNT': '0x78c1b0C915c4FAA5FffA6CABf0219DA63d7f4cb8',
+  'WMNT': '0x78c1b0C915c4FAA5FffA6CAbf0219DA63d7f4cb8',
   'USDe': '0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34',
   'USDC': '0x09Bc4E0D864854c6aFB6eB9A9cdF58aC190D0dF9',
   'USDT': '0x201EBa5CC46D216Ce6DC03F6a759e8E766e956aE',

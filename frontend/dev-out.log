@@ -1,0 +1,236 @@
+
+> frontend@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.7 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.29.99:3000
+- Environments: .env.local
+✓ Ready in 13.6s
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\ANUSKA\Projects\Aether\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\ANUSKA\Projects\Aether\frontend\package-lock.json
+
+
+○ Compiling / ...
+ GET / 200 in 36.4s (next.js: 34.1s, application-code: 2.3s)
+ GET /api/traders 200 in 5.1s (next.js: 2.7s, application-code: 2.5s)
+ GET /api/traders/leaderboard?window=6h 200 in 2.0s (next.js: 458ms, application-code: 1561ms)
+ GET /api/traders/leaderboard?window=6h 200 in 1726ms (next.js: 5ms, application-code: 1721ms)
+ GET / 200 in 237ms (next.js: 19ms, application-code: 217ms)
+[browser] Image with src "http://localhost:3000/logo.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+○ Compiling /_not-found/page ...
+ GET /api/watcher/status 200 in 1511ms (next.js: 1293ms, application-code: 219ms)
+ GET /api/traders/leaderboard?window=6h 200 in 2.0s (next.js: 46ms, application-code: 1970ms)
+ HEAD / 200 in 686ms (next.js: 174ms, application-code: 512ms)
+ GET /api/traders/leaderboard?window=24h 200 in 2.3s (next.js: 20ms, application-code: 2.3s)
+ GET /api/stats 200 in 2.5s (next.js: 1113ms, application-code: 1376ms)
+ HEAD / 200 in 580ms (next.js: 43ms, application-code: 537ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1408ms (next.js: 900ms, application-code: 508ms)
+ GET /api/watcher/activity 200 in 4.4s (next.js: 2.2s, application-code: 2.2s)
+ GET /api/profile/avatar?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 3.9s (next.js: 3.5s, application-code: 445ms)
+ GET /token-logos/WMNT.png 404 in 10.0s (next.js: 9.7s, application-code: 212ms)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1986ms (next.js: 1213ms, application-code: 773ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 5.2s (next.js: 4.6s, application-code: 653ms)
+○ Compiling /trades ...
+ GET /trades 200 in 6.7s (next.js: 6.5s, application-code: 150ms)
+ GET /portfolio 200 in 6.3s (next.js: 6.2s, application-code: 158ms)
+ GET /agents 200 in 5.9s (next.js: 5.7s, application-code: 204ms)
+ GET /discover 200 in 4.8s (next.js: 4.5s, application-code: 234ms)
+ GET /api/watcher/status 200 in 309ms (next.js: 91ms, application-code: 218ms)
+ GET /api/stats 200 in 191ms (next.js: 10ms, application-code: 181ms)
+ GET /api/watcher/status 200 in 88ms (next.js: 7ms, application-code: 81ms)
+ GET /api/stats 200 in 91ms (next.js: 18ms, application-code: 73ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 619ms (next.js: 18ms, application-code: 600ms)
+ GET /api/profile/avatar?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 728ms (next.js: 64ms, application-code: 664ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 446ms (next.js: 5ms, application-code: 441ms)
+ GET /api/traders/leaderboard?window=30d 200 in 1657ms (next.js: 109ms, application-code: 1549ms)
+ GET /api/profile/avatar?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1166ms (next.js: 4ms, application-code: 1162ms)
+ GET /api/traders/leaderboard?window=30d 200 in 1261ms (next.js: 4ms, application-code: 1257ms)
+○ Compiling /traders/[address] ...
+ GET /traders/0x5940b1a8ecfd46c78dcfadf367cfdc0bc4a7b2cb 200 in 5.6s (next.js: 5.5s, application-code: 106ms)
+ GET /api/traders/0x5940b1a8ecfd46c78dcfadf367cfdc0bc4a7b2cb 200 in 3.0s (next.js: 2.4s, application-code: 571ms)
+ GET /api/traders/0x5940b1a8ecfd46c78dcfadf367cfdc0bc4a7b2cb/inference 200 in 3.3s (next.js: 2.2s, application-code: 1075ms)
+ GET /api/traders/0x5940b1a8ecfd46c78dcfadf367cfdc0bc4a7b2cb/inference 200 in 167ms (next.js: 84ms, application-code: 83ms)
+ GET /api/traders/0x5940b1a8ecfd46c78dcfadf367cfdc0bc4a7b2cb 200 in 676ms (next.js: 83ms, application-code: 592ms)
+○ Compiling /traders/[address]/deploy ...
+ GET /traders/0x5940b1a8ecfd46c78dcfadf367cfdc0bc4a7b2cb/deploy 200 in 7.0s (next.js: 6.9s, application-code: 102ms)
+ GET /token-logos/WMNT.png 404 in 203ms (next.js: 27ms, application-code: 176ms)
+ GET /api/traders/0x5940b1a8ecfd46c78dcfadf367cfdc0bc4a7b2cb 200 in 705ms (next.js: 33ms, application-code: 672ms)
+ GET /api/traders/0x5940b1a8ecfd46c78dcfadf367cfdc0bc4a7b2cb 200 in 590ms (next.js: 7ms, application-code: 583ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 456ms (next.js: 11ms, application-code: 445ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 515ms (next.js: 5ms, application-code: 510ms)
+ GET /portfolio 200 in 99ms (next.js: 13ms, application-code: 85ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1620ms (next.js: 117ms, application-code: 1503ms)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1715ms (next.js: 54ms, application-code: 1661ms)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 47ms (next.js: 5ms, application-code: 42ms)
+ POST /api/vaults 201 in 2.8s (next.js: 678ms, application-code: 2.2s)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 3.1s (next.js: 2.1s, application-code: 945ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1921ms (next.js: 5ms, application-code: 1916ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 568ms (next.js: 33ms, application-code: 535ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1089ms (next.js: 4ms, application-code: 1085ms)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 465ms (next.js: 6ms, application-code: 459ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 455ms (next.js: 23ms, application-code: 432ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 767ms (next.js: 50ms, application-code: 717ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1107ms (next.js: 5ms, application-code: 1102ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 716ms (next.js: 21ms, application-code: 696ms)
+[trades-sync] Loaded from Redis: 0 logs, lastBlock=0
+[trades-sync] Syncing blocks 0→39986874…
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 2.8s (next.js: 21ms, application-code: 2.8s)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1091ms (next.js: 10ms, application-code: 1081ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 270ms (next.js: 28ms, application-code: 242ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 655ms (next.js: 28ms, application-code: 627ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1112ms (next.js: 5ms, application-code: 1107ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 988ms (next.js: 73ms, application-code: 915ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 2.3s (next.js: 40ms, application-code: 2.3s)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 288ms (next.js: 26ms, application-code: 262ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1269ms (next.js: 25ms, application-code: 1244ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1614ms (next.js: 7ms, application-code: 1608ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 725ms (next.js: 50ms, application-code: 675ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 3.0s (next.js: 23ms, application-code: 3.0s)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1184ms (next.js: 5ms, application-code: 1179ms)
+ GET /traders 404 in 83ms (next.js: 21ms, application-code: 63ms)
+ GET /traders 404 in 239ms (next.js: 16ms, application-code: 224ms)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 55s (next.js: 3ms, application-code: 55s)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 2.2min (next.js: 7ms, application-code: 2.2min)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 24.7s (next.js: 5ms, application-code: 24.7s)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 85s (next.js: 6ms, application-code: 85s)
+ HEAD /traders 404 in 247ms (next.js: 39ms, application-code: 208ms)
+[browser] Error checking Cross-Origin-Opener-Policy: HTTP error! status: 404 
+ HEAD /traders 404 in 160ms (next.js: 29ms, application-code: 131ms)
+[browser] Error checking Cross-Origin-Opener-Policy: HTTP error! status: 404 
+ HEAD /portfolio 200 in 401ms (next.js: 15ms, application-code: 386ms)
+ HEAD /portfolio 200 in 228ms (next.js: 11ms, application-code: 217ms)
+ GET /traders/0x5940b1a8ecfd46c78dcfadf367cfdc0bc4a7b2cb/deploy 200 in 329ms (next.js: 126ms, application-code: 204ms)
+ GET /token-logos/WMNT.png 404 in 238ms (next.js: 21ms, application-code: 217ms)
+[browser] Image with src "http://localhost:3000/logo.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+ GET /api/watcher/status 200 in 453ms (next.js: 48ms, application-code: 405ms)
+ GET /api/watcher/status 200 in 120ms (next.js: 6ms, application-code: 115ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 795ms (next.js: 11ms, application-code: 784ms)
+ GET /api/profile/avatar?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1052ms (next.js: 110ms, application-code: 942ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 765ms (next.js: 7ms, application-code: 759ms)
+ GET /api/profile/avatar?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 922ms (next.js: 5ms, application-code: 917ms)
+ GET /api/traders/0x5940b1a8ecfd46c78dcfadf367cfdc0bc4a7b2cb 200 in 2.2s (next.js: 36ms, application-code: 2.1s)
+ GET /api/traders/0x5940b1a8ecfd46c78dcfadf367cfdc0bc4a7b2cb 200 in 585ms (next.js: 31ms, application-code: 553ms)
+ GET /portfolio 200 in 90ms (next.js: 8ms, application-code: 81ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1041ms (next.js: 36ms, application-code: 1005ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 495ms (next.js: 5ms, application-code: 490ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 2.0s (next.js: 37ms, application-code: 2.0s)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 214ms (next.js: 32ms, application-code: 182ms)
+ GET /traders 404 in 80ms (next.js: 18ms, application-code: 62ms)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 18.1s (next.js: 7ms, application-code: 18.1s)
+ GET /traders 404 in 180ms (next.js: 17ms, application-code: 163ms)
+ HEAD /traders 404 in 143ms (next.js: 29ms, application-code: 114ms)
+[browser] Error checking Cross-Origin-Opener-Policy: HTTP error! status: 404 
+ HEAD /traders 404 in 151ms (next.js: 21ms, application-code: 130ms)
+[browser] Error checking Cross-Origin-Opener-Policy: HTTP error! status: 404 
+ GET /portfolio 200 in 226ms (next.js: 9ms, application-code: 217ms)
+[browser] Image with src "http://localhost:3000/logo.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+[trades-sync] Sync error: Error [RpcRequestError]: RPC Request failed.
+
+URL: https://rpc.sepolia.mantle.xyz
+Request body: {"method":"eth_getLogs","params":[{"address":"0xEA364cB5D11F5e05cb654fC2a87BA90bb1592efc","topics":[["0x7d0d4a45b610c689953ac3d1df4e7739f7ba0e76107b191b9170d4eb27b90b4e","0xc242abebbe8a335db4bf285fc9a63ef4e3cbb891d4664707d44ae79a4ac505b9","0x161609ed0659583c4124f93794aade207fa9fe3124c4ee08cb05a724f0e760ca"]],"fromBlock":"0xccd58","toBlock":"0xcd13f"}]}
+
+Details: rate limit exceeded, please try it later.
+Version: viem@2.52.2
+    at ignore-listed frames {
+  details: 'rate limit exceeded, please try it later.',
+  docsPath: undefined,
+  metaMessages: [
+    'URL: https://rpc.sepolia.mantle.xyz',
+    'Request body: {"method":"eth_getLogs","params":[{"address":"0xEA364cB5D11F5e05cb654fC2a87BA90bb1592efc","topics":[["0x7d0d4a45b610c689953ac3d1df4e7739f7ba0e76107b191b9170d4eb27b90b4e","0xc242abebbe8a335db4bf285fc9a63ef4e3cbb891d4664707d44ae79a4ac505b9","0x161609ed0659583c4124f93794aade207fa9fe3124c4ee08cb05a724f0e760ca"]],"fromBlock":"0xccd58","toBlock":"0xcd13f"}]}'
+  ],
+  shortMessage: 'RPC Request failed.',
+  version: '2.52.2',
+  code: -32016,
+  data: undefined,
+  url: 'https://rpc.sepolia.mantle.xyz',
+  [cause]: {
+    code: -32016,
+    message: 'rate limit exceeded, please try it later.'
+  }
+}
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 20.4s (next.js: 5ms, application-code: 20.4s)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 679ms (next.js: 5ms, application-code: 674ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 930ms (next.js: 67ms, application-code: 862ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1374ms (next.js: 5ms, application-code: 1368ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 2.3s (next.js: 30ms, application-code: 2.2s)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 385ms (next.js: 23ms, application-code: 362ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 792ms (next.js: 3ms, application-code: 788ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 820ms (next.js: 53ms, application-code: 767ms)
+[trades-sync] Loaded from Redis: 0 logs, lastBlock=0
+[trades-sync] Syncing blocks 0→39987002…
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1250ms (next.js: 4ms, application-code: 1245ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1233ms (next.js: 53ms, application-code: 1180ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 2.0s (next.js: 24ms, application-code: 1990ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 553ms (next.js: 26ms, application-code: 527ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 802ms (next.js: 53ms, application-code: 749ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 912ms (next.js: 4ms, application-code: 908ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 935ms (next.js: 4ms, application-code: 930ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1557ms (next.js: 46ms, application-code: 1512ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 3.0s (next.js: 20ms, application-code: 3.0s)
+[trades-sync] Sync error: Error [RpcRequestError]: RPC Request failed.
+
+URL: https://rpc.sepolia.mantle.xyz
+Request body: {"method":"eth_getLogs","params":[{"address":"0xEA364cB5D11F5e05cb654fC2a87BA90bb1592efc","topics":[["0x7d0d4a45b610c689953ac3d1df4e7739f7ba0e76107b191b9170d4eb27b90b4e","0xc242abebbe8a335db4bf285fc9a63ef4e3cbb891d4664707d44ae79a4ac505b9","0x161609ed0659583c4124f93794aade207fa9fe3124c4ee08cb05a724f0e760ca"]],"fromBlock":"0x612b0","toBlock":"0x61697"}]}
+
+Details: rate limit exceeded, please try it later.
+Version: viem@2.52.2
+    at ignore-listed frames {
+  details: 'rate limit exceeded, please try it later.',
+  docsPath: undefined,
+  metaMessages: [
+    'URL: https://rpc.sepolia.mantle.xyz',
+    'Request body: {"method":"eth_getLogs","params":[{"address":"0xEA364cB5D11F5e05cb654fC2a87BA90bb1592efc","topics":[["0x7d0d4a45b610c689953ac3d1df4e7739f7ba0e76107b191b9170d4eb27b90b4e","0xc242abebbe8a335db4bf285fc9a63ef4e3cbb891d4664707d44ae79a4ac505b9","0x161609ed0659583c4124f93794aade207fa9fe3124c4ee08cb05a724f0e760ca"]],"fromBlock":"0x612b0","toBlock":"0x61697"}]}'
+  ],
+  shortMessage: 'RPC Request failed.',
+  version: '2.52.2',
+  code: -32016,
+  data: undefined,
+  url: 'https://rpc.sepolia.mantle.xyz',
+  [cause]: {
+    code: -32016,
+    message: 'rate limit exceeded, please try it later.'
+  }
+}
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 95s (next.js: 3ms, application-code: 95s)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 45s (next.js: 4ms, application-code: 45s)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 14.7s (next.js: 3ms, application-code: 14.7s)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 140ms (next.js: 4ms, application-code: 136ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 400ms (next.js: 35ms, application-code: 365ms)
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 432ms (next.js: 8ms, application-code: 424ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 832ms (next.js: 7ms, application-code: 825ms)
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 844ms (next.js: 32ms, application-code: 812ms)
+ GET /api/notifications?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 916ms (next.js: 5ms, application-code: 911ms)
+[trades-sync] Loaded from Redis: 0 logs, lastBlock=0
+[trades-sync] Syncing blocks 0→39987078…
+ GET /api/activity/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 1487ms (next.js: 52ms, application-code: 1435ms)
+ GET /api/vaults/0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 2.5s (next.js: 22ms, application-code: 2.5s)
+[trades-sync] Sync error: Error [RpcRequestError]: RPC Request failed.
+
+URL: https://rpc.sepolia.mantle.xyz
+Request body: {"method":"eth_getLogs","params":[{"address":"0xEA364cB5D11F5e05cb654fC2a87BA90bb1592efc","topics":[["0x7d0d4a45b610c689953ac3d1df4e7739f7ba0e76107b191b9170d4eb27b90b4e","0xc242abebbe8a335db4bf285fc9a63ef4e3cbb891d4664707d44ae79a4ac505b9","0x161609ed0659583c4124f93794aade207fa9fe3124c4ee08cb05a724f0e760ca"]],"fromBlock":"0x7148","toBlock":"0x752f"}]}
+
+Details: rate limit exceeded, please try it later.
+Version: viem@2.52.2
+    at ignore-listed frames {
+  details: 'rate limit exceeded, please try it later.',
+  docsPath: undefined,
+  metaMessages: [
+    'URL: https://rpc.sepolia.mantle.xyz',
+    'Request body: {"method":"eth_getLogs","params":[{"address":"0xEA364cB5D11F5e05cb654fC2a87BA90bb1592efc","topics":[["0x7d0d4a45b610c689953ac3d1df4e7739f7ba0e76107b191b9170d4eb27b90b4e","0xc242abebbe8a335db4bf285fc9a63ef4e3cbb891d4664707d44ae79a4ac505b9","0x161609ed0659583c4124f93794aade207fa9fe3124c4ee08cb05a724f0e760ca"]],"fromBlock":"0x7148","toBlock":"0x752f"}]}'
+  ],
+  shortMessage: 'RPC Request failed.',
+  version: '2.52.2',
+  code: -32016,
+  data: undefined,
+  url: 'https://rpc.sepolia.mantle.xyz',
+  [cause]: {
+    code: -32016,
+    message: 'rate limit exceeded, please try it later.'
+  }
+}
+ GET /api/trades?address=0x96BEc3e591107bD30a1eDe4fDdf02951bb3dfbCD 200 in 8.1s (next.js: 3ms, application-code: 8.1s)

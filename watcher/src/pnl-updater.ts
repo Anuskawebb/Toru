@@ -10,7 +10,7 @@ const DEFAULT_STOP_LOSS_PCT = Number(process.env.STOP_LOSS_PCT ?? '20');
 // On-chain token addresses (VaultManager uses these as price-oracle keys,
 // see frontend/config/tokens.ts MAINNET_TOKENS)
 const TOKEN_ADDRESS: Record<string, `0x${string}`> = {
-  WMNT: '0x78c1b0C915c4FAA5FffA6CABf0219DA63d7f4cb8',
+  WMNT: '0x78c1b0C915c4FAA5FffA6CAbf0219DA63d7f4cb8',
 };
 
 // Prevent duplicate concurrent closes for the same position

@@ -181,7 +181,7 @@ export default function TraderDetailsPage({ params }: PageProps) {
 
       {/* Back link */}
       <Link
-        href="/traders"
+        href="/discover"
         className="text-foreground/40 hover:text-foreground text-sm transition-spring hover:scale-105 active:scale-95 flex items-center gap-2 w-fit"
       >
         <span>←</span> Discover

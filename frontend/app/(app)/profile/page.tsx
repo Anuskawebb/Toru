@@ -381,7 +381,7 @@ export default function ProfilePage() {
             ) : openTrades.length === 0 ? (
               <div className="bg-card border border-border/80 rounded-2xl py-10 text-center">
                 <p className="text-subtle text-[13px] mb-3">No open positions right now.</p>
-                <Link href="/traders" className="text-accent hover:text-accent-hover text-[13px] transition-colors">
+                <Link href="/discover" className="text-accent hover:text-accent-hover text-[13px] transition-colors">
                   Follow a leader to start copy trading →
                 </Link>
               </div>
@@ -444,7 +444,7 @@ export default function ProfilePage() {
             {profile.following.length === 0 ? (
               <div className="bg-card border border-border/80 rounded-2xl py-12 text-center">
                 <p className="text-subtle text-[13px] mb-3">You aren&apos;t following any leaders yet.</p>
-                <Link href="/traders" className="text-accent hover:text-accent-hover text-[13px] transition-colors">
+                <Link href="/discover" className="text-accent hover:text-accent-hover text-[13px] transition-colors">
                   Discover traders to copy →
                 </Link>
               </div>

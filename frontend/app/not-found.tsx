@@ -353,7 +353,7 @@ export default function NotFound() {
             </svg>
             Back to Dashboard
           </Link>
-          <Link href="/traders" className="nf-btn-ghost">
+          <Link href="/discover" className="nf-btn-ghost">
             Browse Traders
           </Link>
         </div>

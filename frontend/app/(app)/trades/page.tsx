@@ -235,7 +235,7 @@ export default function TradesPage() {
               <p className="text-subtle text-[14px] mb-1">No trades found matching this filter.</p>
               <p className="text-subtle text-[13px] mb-8">Follow a leader to execute trades on-chain.</p>
               <button
-                onClick={() => router.push('/traders')}
+                onClick={() => router.push('/discover')}
                 className="rounded-full border border-foreground/[0.18] bg-foreground/[0.03] text-foreground/90 text-[13px] px-5 py-2 hover:bg-foreground/[0.08] hover:border-foreground/40 transition-spring hover:scale-105 active:scale-95 cursor-pointer"
               >
                 Discover Leaders

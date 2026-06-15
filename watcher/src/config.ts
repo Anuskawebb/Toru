@@ -29,7 +29,7 @@ export const mantleSepolia = defineChain({
 
 export const TOKENS = {
   USDe: { address: '0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34' as `0x${string}`, symbol: 'USDe', decimals: 18, isStable: true  },
-  WMNT: { address: '0x78c1b0C915c4FAA5FffA6CABf0219DA63d7f4cb8' as `0x${string}`, symbol: 'WMNT', decimals: 18, isStable: false },
+  WMNT: { address: '0x78c1b0C915c4FAA5FffA6CAbf0219DA63d7f4cb8' as `0x${string}`, symbol: 'WMNT', decimals: 18, isStable: false },
   USDC: { address: '0x09Bc4E0D864854c6aFB6eB9A9cdF58aC190D0dF9' as `0x${string}`, symbol: 'USDC', decimals: 6,  isStable: true  },
   USDT: { address: '0x201EBa5CC46D216Ce6DC03F6a759e8E766e956aE' as `0x${string}`, symbol: 'USDT', decimals: 6,  isStable: true  },
   WETH: { address: '0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111' as `0x${string}`, symbol: 'WETH', decimals: 18, isStable: false },

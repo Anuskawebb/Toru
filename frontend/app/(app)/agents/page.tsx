@@ -101,7 +101,7 @@ export default function AgentsPage() {
           <p className="text-[14px] text-muted font-normal">Your deployed copy-trading agents — monitor and control them from here.</p>
         </div>
         <button
-          onClick={() => router.push('/traders')}
+          onClick={() => router.push('/discover')}
           className="rounded-full border border-foreground/[0.18] bg-foreground/[0.03] text-foreground/90 text-[13px] px-5 py-2 hover:bg-foreground/[0.08] hover:border-foreground/40 transition-spring hover:scale-105 active:scale-95 cursor-pointer self-start md:self-auto"
         >
           Deploy New Agent
@@ -166,7 +166,7 @@ export default function AgentsPage() {
           <p className="text-subtle text-[14px] mb-1">No agents deployed yet.</p>
           <p className="text-subtle text-[13px] mb-8">Pick a leader to deploy your first copy-trading agent.</p>
           <button
-            onClick={() => router.push('/traders')}
+            onClick={() => router.push('/discover')}
             className="rounded-full border border-foreground/[0.18] bg-foreground/[0.03] text-foreground/90 text-[13px] px-5 py-2 hover:bg-foreground/[0.08] hover:border-foreground/40 transition-all duration-300 cursor-pointer"
           >
             Discover Leaders
