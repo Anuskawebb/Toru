@@ -361,7 +361,7 @@ export default function NotFound() {
         <div className="nf-divider" />
 
         <p className="nf-hint">
-          error&nbsp;<span>404</span>&nbsp;·&nbsp;aionis&nbsp;·&nbsp;mantle
+          error&nbsp;<span>404</span>&nbsp;·&nbsp;aether&nbsp;·&nbsp;mantle
         </p>
       </main>
     </>

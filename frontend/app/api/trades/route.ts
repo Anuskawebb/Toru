@@ -47,8 +47,8 @@ if (!globalForLogs.skippedLogs) {
 }
 
 // ── Redis keys ────────────────────────────────────────────────────────────────
-const REDIS_LOGS_KEY  = 'aionis:trades:skippedLogs';
-const REDIS_BLOCK_KEY = 'aionis:trades:lastBlock';
+const REDIS_LOGS_KEY  = 'aether:trades:skippedLogs';
+const REDIS_BLOCK_KEY = 'aether:trades:lastBlock';
 const LOGS_TTL        = 86_400; // 24h
 
 // ── Block timestamp cache (only used for SKIPPED trades without tradeTimestamp) ──
@@ -140,7 +140,7 @@ export async function GET(req: Request) {
   if (!address) return NextResponse.json({ error: 'address query param required' }, { status: 400 });
 
   // 30-second Redis response cache per address
-  const responseCacheKey = `aionis:trades:result:${address}`;
+  const responseCacheKey = `aether:trades:result:${address}`;
   try {
     const cached = await redis.get<object>(responseCacheKey);
     if (cached) return NextResponse.json(cached, { headers: { 'X-Cache': 'HIT' } });

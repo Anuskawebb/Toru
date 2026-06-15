@@ -206,7 +206,7 @@ export default function WatcherActivityPage() {
         <div>
           <h1 className="text-[28px] font-light tracking-[-0.04em] text-foreground mb-1">Watcher Activity</h1>
           <p className="text-[14px] text-muted font-normal">
-            A live feed of every decision Aionis agents have made on Mantle — opened, closed, and skipped trades.
+            A live feed of every decision Aether agents have made on Mantle — opened, closed, and skipped trades.
           </p>
         </div>
 

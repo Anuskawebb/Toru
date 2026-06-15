@@ -5,7 +5,7 @@ const redis = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN!,
 });
 
-export const LOG_STREAM_KEY = 'aionis:watcher:logs';
+export const LOG_STREAM_KEY = 'aether:watcher:logs';
 const MAX_LOGS = 200;
 const TTL      = 3600; // 1h — feed is only useful while live
 

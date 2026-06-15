@@ -11,8 +11,8 @@ function getSigningInfo(walletClientType?: string) {
   if (!walletClientType) return null;
   if (EMBEDDED_CLIENT_TYPES.has(walletClientType)) {
     return {
-      short: 'Signs in Aionis',
-      detail: 'Embedded wallet (created when you signed in with email/Google). Transaction prompts open in a secure Aionis/Privy popup — no browser extension required.',
+      short: 'Signs in Aether',
+      detail: 'Embedded wallet (created when you signed in with email/Google). Transaction prompts open in a secure Aether/Privy popup — no browser extension required.',
     };
   }
   const name = walletClientType.charAt(0).toUpperCase() + walletClientType.slice(1).replace(/_/g, ' ');
@@ -73,7 +73,7 @@ export default function OnboardingModal() {
 
   useEffect(() => {
     if (ready && authenticated && address) {
-      const seen = localStorage.getItem(`aionis_onboarding_seen_${address.toLowerCase()}`);
+      const seen = localStorage.getItem(`aether_onboarding_seen_${address.toLowerCase()}`);
       if (!seen) {
         setIsOpen(true);
       }
@@ -174,13 +174,13 @@ export default function OnboardingModal() {
   };
 
   const handleComplete = () => {
-    localStorage.setItem(`aionis_onboarding_seen_${address.toLowerCase()}`, 'true');
+    localStorage.setItem(`aether_onboarding_seen_${address.toLowerCase()}`, 'true');
     setIsOpen(false);
     router.push('/traders');
   };
 
   const handleSkip = () => {
-    localStorage.setItem(`aionis_onboarding_seen_${address.toLowerCase()}`, 'true');
+    localStorage.setItem(`aether_onboarding_seen_${address.toLowerCase()}`, 'true');
     setIsOpen(false);
   };
 
@@ -194,7 +194,7 @@ export default function OnboardingModal() {
         
         {/* Step Indicator */}
         <div className="flex justify-between items-center text-xs text-subtle font-mono">
-          <span>AIONIS ONBOARDING</span>
+          <span>AETHER ONBOARDING</span>
           <span>STEP {step} OF 4</span>
         </div>
 
@@ -216,9 +216,9 @@ export default function OnboardingModal() {
           {/* Step 1: Welcome & Privy info */}
           {step === 1 && (
             <div className="space-y-4">
-              <h3 className="text-xl font-light text-foreground tracking-tight">Welcome to Aionis</h3>
+              <h3 className="text-xl font-light text-foreground tracking-tight">Welcome to Aether</h3>
               <p className="text-sm text-muted font-light leading-relaxed">
-                Aionis automates copy trading on the blockchain. Your account identity has been initialized using Privy.
+                Aether automates copy trading on the blockchain. Your account identity has been initialized using Privy.
               </p>
               
               <div className="bg-surface border border-border rounded-xl p-4 space-y-2">
@@ -258,7 +258,7 @@ export default function OnboardingModal() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-accent mt-0.5">•</span>
-                  <span><strong>aUSD (Aionis USD)</strong> is a simulated stablecoin. No real USDC is committed or at risk.</span>
+                  <span><strong>aUSD (Aether USD)</strong> is a simulated stablecoin. No real USDC is committed or at risk.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-accent mt-0.5">•</span>

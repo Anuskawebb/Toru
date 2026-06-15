@@ -11,7 +11,7 @@ const redis = new Redis({
 const OTP_TTL_SECONDS = 600; // 10 minutes
 
 function otpKey(follower: string, email: string) {
-  return `aionis:onboarding:otp:${follower}:${email}`;
+  return `aether:onboarding:otp:${follower}:${email}`;
 }
 
 export async function POST(req: Request) {

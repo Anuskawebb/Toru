@@ -321,7 +321,7 @@ export default function Home() {
           <div className="bg-card border border-border/80 rounded-2xl p-6 animate-fade-in-up stagger-1 transition-spring">
             <div className="flex items-center justify-between mb-5">
               <div>
-                <h1 className="text-[24px] font-semibold tracking-tight">Aionis</h1>
+                <h1 className="text-[24px] font-semibold tracking-tight">Aether</h1>
                 <p className="text-[13px] text-muted mt-1 max-w-md">
                   Deploy AI agents that copy top traders on Mantle — on-chain, in real time, fully autonomous.
                 </p>

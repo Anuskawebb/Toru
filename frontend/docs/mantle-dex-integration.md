@@ -1,6 +1,6 @@
 # Mantle DEX Integration — Top Traders / Leader Activity
 
-This document explains how Aionis observes "leader" trading activity on Mantle
+This document explains how Aether observes "leader" trading activity on Mantle
 by reading swap events directly from an Agni Finance (Algebra V3 fork) pool on
 **Mantle Mainnet** (chain id `5000`), and how that feeds the `/api/traders`
 endpoint, the traders/discover page, and the watcher's copy-trading pipeline.

@@ -10,13 +10,13 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 //  ██╔══██║██║   ██║╚════██║██║  ██║
 //  ██║  ██║╚██████╔╝███████║██████╔╝
 //
-//  aUSD — Aionis test stablecoin
+//  aUSD — Aether test stablecoin
 //  Chain: Mantle Sepolia Testnet (5003)
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * @title  aUSD
- * @notice Test stablecoin for the Aionis copy-trading platform.
+ * @notice Test stablecoin for the Aether copy-trading platform.
  *         Pegged 1:1 to USD for accounting purposes.
  *         6 decimals — matches real USDC denomination.
  *
@@ -62,7 +62,7 @@ contract aUSD is ERC20 {
 
     // ── Constructor ───────────────────────────────────────────────────────────
 
-    constructor() ERC20("Aionis USD", "aUSD") {
+    constructor() ERC20("Aether USD", "aUSD") {
         owner = msg.sender;
     }
 

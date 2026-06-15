@@ -7,7 +7,7 @@ const redis = new Redis({
 });
 
 function otpKey(follower: string, email: string) {
-  return `aionis:onboarding:otp:${follower}:${email}`;
+  return `aether:onboarding:otp:${follower}:${email}`;
 }
 
 export async function POST(req: Request) {

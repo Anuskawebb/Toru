@@ -26,7 +26,7 @@ export async function GET(
   const { address: rawAddress } = await params;
   const address = rawAddress.toLowerCase();
 
-  const cacheKey = `aionis:inference:${address}`;
+  const cacheKey = `aether:inference:${address}`;
   try {
     const cached = await redis.get(cacheKey);
     if (cached) return NextResponse.json(cached);

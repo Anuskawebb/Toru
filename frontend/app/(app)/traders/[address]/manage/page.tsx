@@ -297,7 +297,7 @@ function ManageAgent({ leaderAddress }: { leaderAddress: `0x${string}` }) {
         <div className="bg-accent/5 border border-accent/20 rounded-2xl px-5 py-4 animate-scale-in">
           <p className="text-accent text-[13px] mb-1 font-medium">Agent Keeper Unauthorized</p>
           <p className="text-accent/60 text-[11px] mb-3">
-            Authorize the Aionis copy-trading execution keeper to manage your agent. Without this, your agent cannot execute copy trades automatically.
+            Authorize the Aether copy-trading execution keeper to manage your agent. Without this, your agent cannot execute copy trades automatically.
           </p>
           {keeperErr && <p className="text-red-400 text-[11px] mb-2">{keeperErr}</p>}
           <button onClick={handleSetKeeper}

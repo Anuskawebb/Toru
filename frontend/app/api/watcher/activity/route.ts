@@ -11,7 +11,7 @@ import { mantleSepolia } from '@/config/chains';
 
 const VAULT_MANAGER = (process.env.NEXT_PUBLIC_VAULT_MANAGER_ADDRESS ?? '') as `0x${string}`;
 const SKIP_EVENT     = parseAbiItem('event TradeSkipped(bytes32 indexed vaultId, string reason)');
-const CACHE_KEY      = 'aionis:watcher:activity';
+const CACHE_KEY      = 'aether:watcher:activity';
 const SCAN_BLOCKS    = 5_000n;
 
 const client = createPublicClient({ chain: mantleSepolia, transport: http() });

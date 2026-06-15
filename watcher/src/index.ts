@@ -10,7 +10,7 @@ import { log, warn }                        from './logger.js';
 
 // ── Startup diagnostics ───────────────────────────────────────────────────────
 
-log('startup', '=== Aionis Watcher starting on Mantle ===');
+log('startup', '=== Aether Watcher starting on Mantle ===');
 
 const REQUIRED_VARS = [
   'DATABASE_URL',
