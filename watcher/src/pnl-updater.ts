@@ -110,10 +110,11 @@ export function startPnlUpdater(db: Db): () => void {
       }
 
       log('pnl', `on-chain positions: ${onChainPositions.length}`);
+      const unknownPriceTokens = new Set<string>();
       for (const pos of onChainPositions) {
         const currentPrice = priceOf(pos.token);
         if (currentPrice === null) {
-          log('pnl', `[on-chain] ${pos.token}  follower=${pos.follower.slice(0, 10)}…  price unknown — skipping`);
+          unknownPriceTokens.add(pos.token);
           continue;
         }
 
@@ -171,6 +172,10 @@ export function startPnlUpdater(db: Db): () => void {
             }
           }
         }
+      }
+
+      if (unknownPriceTokens.size > 0) {
+        log('pnl', `[on-chain] skipping positions with unknown price for: ${[...unknownPriceTokens].join(', ')}`);
       }
     } catch (e) {
       error('pnl', 'P&L update cycle failed', e);
