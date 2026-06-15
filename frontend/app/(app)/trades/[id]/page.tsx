@@ -192,14 +192,14 @@ export default function TradeDetailPage() {
                 trade.status === 'OPEN'
                   ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
                   : trade.status === 'SKIPPED'
-                  ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                  ? 'bg-violet-500/10 text-violet-400 border-violet-500/20'
                   : 'bg-blue-500/10 text-blue-400 border-blue-500/20'
               }`}>
                 <span className={`w-1.5 h-1.5 rounded-full ${
                   trade.status === 'OPEN'
                     ? 'bg-emerald-400 animate-pulse'
                     : trade.status === 'SKIPPED'
-                    ? 'bg-amber-400'
+                    ? 'bg-violet-400'
                     : 'bg-blue-400'
                 }`} />
                 {trade.status.toLowerCase()}
@@ -215,18 +215,18 @@ export default function TradeDetailPage() {
 
           {/* Skip reason banner */}
           {trade.status === 'SKIPPED' && trade.reason && (
-            <div className="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-4 flex flex-col gap-2">
-              <div className="text-[10px] uppercase tracking-wider text-amber-400/80">Skipped by agent</div>
-              <div className="text-[14px] text-amber-200">{trade.reason.charAt(0).toUpperCase() + trade.reason.slice(1)}</div>
+            <div className="bg-violet-500/5 border border-violet-500/20 rounded-2xl p-4 flex flex-col gap-2">
+              <div className="text-[10px] uppercase tracking-wider text-violet-400/80">Skipped by agent</div>
+              <div className="text-[14px] text-violet-200">{trade.reason.charAt(0).toUpperCase() + trade.reason.slice(1)}</div>
               {explanationLoading && (
-                <div className="text-[13px] text-amber-200/50 flex items-center gap-2 pt-1">
-                  <span className="w-3 h-3 rounded-full border-2 border-amber-400/40 border-t-amber-400 animate-spin" />
+                <div className="text-[13px] text-violet-200/50 flex items-center gap-2 pt-1">
+                  <span className="w-3 h-3 rounded-full border-2 border-violet-400/40 border-t-violet-400 animate-spin" />
                   Generating AI analysis…
                 </div>
               )}
               {!explanationLoading && explanation && (
-                <div className="text-[13px] text-amber-100/80 leading-relaxed pt-1 border-t border-amber-500/10">
-                  <span className="text-[10px] uppercase tracking-wider text-amber-400/60 block mb-1">AI analysis</span>
+                <div className="text-[13px] text-violet-100/80 leading-relaxed pt-1 border-t border-violet-500/10">
+                  <span className="text-[10px] uppercase tracking-wider text-violet-400/60 block mb-1">AI analysis</span>
                   {explanation}
                 </div>
               )}

@@ -4,7 +4,7 @@ import * as React from 'react';
 
 type Theme = 'light' | 'dark';
 
-const STORAGE_KEY = 'aionis-theme';
+const STORAGE_KEY = 'aether-theme';
 
 const ThemeContext = React.createContext<{
   theme: Theme;
@@ -19,7 +19,7 @@ function applyThemeClass(theme: Theme) {
 }
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // Dark is Aionis's brand default — only switch to light if the user explicitly chose it before.
+  // Dark is Aether's brand default — only switch to light if the user explicitly chose it before.
   const [theme, setThemeState] = React.useState<Theme>('dark');
 
   React.useEffect(() => {

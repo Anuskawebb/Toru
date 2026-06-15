@@ -9,8 +9,8 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   title: {
-    default: "Aionis — Copy Trading on Mantle",
-    template: "%s · Aionis",
+    default: "Aether — Copy Trading on Mantle",
+    template: "%s · Aether",
   },
   description: "Copy the best on-chain traders automatically. Powered by Mantle.",
 };
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 const themeInitScript = `
 (function () {
   try {
-    var stored = window.localStorage.getItem('aionis-theme');
+    var stored = window.localStorage.getItem('aether-theme');
     var theme = stored === 'light' ? 'light' : 'dark';
     document.documentElement.classList.add(theme);
   } catch (e) {

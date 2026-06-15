@@ -5,7 +5,7 @@ const redis = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN!,
 });
 
-export const HEARTBEAT_KEY = 'aionis:watcher:heartbeat';
+export const HEARTBEAT_KEY = 'aether:watcher:heartbeat';
 const TTL = 60; // seconds — expires if watcher goes silent
 
 export async function writeHeartbeat(): Promise<void> {

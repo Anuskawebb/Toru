@@ -262,14 +262,14 @@ function ManageAgent({ leaderAddress }: { leaderAddress: `0x${string}` }) {
               watcherOnline && watcherAgeMs !== null && watcherAgeMs < 30_000
                 ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
                 : watcherOnline
-                ? 'bg-amber-500/10 border-amber-500/20 text-amber-400'
+                ? 'bg-violet-500/10 border-violet-500/20 text-violet-400'
                 : 'bg-red-500/10 border-red-500/20 text-red-400'
             }`}>
               <div className={`w-1.5 h-1.5 rounded-full ${
                 watcherOnline && watcherAgeMs !== null && watcherAgeMs < 30_000
                   ? 'bg-emerald-400 animate-pulse'
                   : watcherOnline
-                  ? 'bg-amber-400'
+                  ? 'bg-violet-400'
                   : 'bg-red-400'
               }`} />
               <span>
@@ -297,7 +297,7 @@ function ManageAgent({ leaderAddress }: { leaderAddress: `0x${string}` }) {
         <div className="bg-accent/5 border border-accent/20 rounded-2xl px-5 py-4 animate-scale-in">
           <p className="text-accent text-[13px] mb-1 font-medium">Agent Keeper Unauthorized</p>
           <p className="text-accent/60 text-[11px] mb-3">
-            Authorize the Aionis copy-trading execution keeper to manage your agent. Without this, your agent cannot execute copy trades automatically.
+            Authorize the Aether copy-trading execution keeper to manage your agent. Without this, your agent cannot execute copy trades automatically.
           </p>
           {keeperErr && <p className="text-red-400 text-[11px] mb-2">{keeperErr}</p>}
           <button onClick={handleSetKeeper}
@@ -575,7 +575,7 @@ export default function ManageAgentPage({ params }: PageProps) {
                   value: stats.vaultStats.winRate !== null ? `${stats.vaultStats.winRate}%` : '—',
                   color: stats.vaultStats.winRate === null ? 'text-subtle'
                     : stats.vaultStats.winRate >= 50 ? 'text-emerald-400'
-                    : stats.vaultStats.winRate >= 30 ? 'text-amber-400'
+                    : stats.vaultStats.winRate >= 30 ? 'text-violet-400'
                     : 'text-red-400',
                 },
                 {

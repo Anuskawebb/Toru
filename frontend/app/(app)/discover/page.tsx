@@ -238,7 +238,7 @@ export default function DiscoverPage() {
             const buyRatio = total > 0 ? Math.round((trader.buys / total) * 100) : 0;
             const winRateColor = trader.winRate === null ? 'text-subtle'
               : trader.winRate >= 50 ? 'text-emerald-400'
-              : trader.winRate >= 30 ? 'text-amber-400'
+              : trader.winRate >= 30 ? 'text-violet-400'
               : 'text-red-400';
             return (
               <div

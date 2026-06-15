@@ -174,7 +174,7 @@ export default function TradesPage() {
                   ? opt === 'OPEN'
                     ? 'bg-emerald-500/20 text-emerald-300 shadow-md shadow-emerald-500/10'
                     : opt === 'SKIPPED'
-                    ? 'bg-amber-500/20 text-amber-300 shadow-md shadow-amber-500/10'
+                    ? 'bg-violet-500/20 text-violet-300 shadow-md shadow-violet-500/10'
                     : 'bg-accent text-accent-foreground shadow-md shadow-accent/10'
                   : 'text-muted hover:text-foreground'
               }`}
@@ -324,14 +324,14 @@ export default function TradesPage() {
                                 trade.status === 'OPEN'
                                   ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
                                   : trade.status === 'SKIPPED'
-                                  ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                                  ? 'bg-violet-500/10 text-violet-400 border-violet-500/20'
                                   : 'bg-blue-500/10 text-blue-400 border-blue-500/20'
                               }`}>
                                 <span className={`w-1.5 h-1.5 rounded-full ${
                                   trade.status === 'OPEN'
                                     ? 'bg-emerald-400 animate-pulse'
                                     : trade.status === 'SKIPPED'
-                                    ? 'bg-amber-400'
+                                    ? 'bg-violet-400'
                                     : 'bg-blue-400'
                                 }`} />
                                 {trade.status.toLowerCase()}
@@ -343,7 +343,7 @@ export default function TradesPage() {
                                 </span>
                               )}
                               {trade.status === 'SKIPPED' && trade.reason && (
-                                <span className="text-[10px] text-amber-400/60 max-w-[140px] text-center leading-tight" title={trade.reason}>
+                                <span className="text-[10px] text-violet-400/60 max-w-[140px] text-center leading-tight" title={trade.reason}>
                                   {trade.reason.charAt(0).toUpperCase() + trade.reason.slice(1)}
                                 </span>
                               )}

@@ -85,7 +85,7 @@ export async function explainTrade(
   }
 
   // 3. Construct the prompt
-  const prompt = `You are the AI trading agent for Aionis, an on-chain copy-trading platform.
+  const prompt = `You are the AI trading agent for Aether, an on-chain copy-trading platform.
 Write a short analysis (2-4 plain-English sentences) explaining why a trade was copied or skipped, based on these parameters:
 - Leader Trade: ${attempt.side ?? (attempt.status === 'opened' ? 'BUY' : 'Trade')} of token ${attempt.token ?? 'unknown'} (value: $${attempt.usdValue !== null ? attempt.usdValue.toFixed(2) : 'unknown'})
 - Action: ${attempt.status === 'opened' ? 'COPIED' : 'SKIPPED'}

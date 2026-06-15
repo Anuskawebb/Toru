@@ -123,7 +123,7 @@ export async function GET(
   const follower    = address.toLowerCase();
 
   // 30-second Redis cache — shared across serverless instances
-  const cacheKey = `aionis:vaults:${follower}`;
+  const cacheKey = `aether:vaults:${follower}`;
   try {
     const cached = await redis.get<object>(cacheKey);
     if (cached) {

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { redis }        from '@/lib/redis';
 
-const HEARTBEAT_KEY = 'aionis:watcher:heartbeat';
+const HEARTBEAT_KEY = 'aether:watcher:heartbeat';
 
 export async function GET() {
   try {

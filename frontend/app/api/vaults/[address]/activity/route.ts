@@ -79,7 +79,7 @@ export async function GET(
   const vaultId  = vaultIdFor(follower, leader);
 
   // ── Response cache (30s) — avoids re-scanning logs on every page load ────
-  const cacheKey = `aionis:activity:${follower}:${leader}`;
+  const cacheKey = `aether:activity:${follower}:${leader}`;
   const cached   = await redis.get(cacheKey);
   if (cached) return NextResponse.json(cached);
 

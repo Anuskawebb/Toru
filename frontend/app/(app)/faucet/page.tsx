@@ -43,7 +43,7 @@ export default function FaucetPage() {
               <img src="/token-logos/aUSD.svg" alt="aUSD" className="w-9 h-9 rounded-full flex-shrink-0" />
               <div>
                 <p className="text-foreground text-[16px] font-light">What is aUSD?</p>
-                <p className="text-subtle text-[11px]">Aionis test dollar · 6 decimals</p>
+                <p className="text-subtle text-[11px]">Aether test dollar · 6 decimals</p>
               </div>
             </div>
             <p className="text-[13px] text-muted leading-relaxed font-light">
@@ -51,7 +51,7 @@ export default function FaucetPage() {
               Sepolia Testnet (chain 5003). When you deploy an agent, your aUSD is locked into a personal,
               non-custodial agent vault contract — the agent uses it to mirror a leader&apos;s trades and
               tracks real, on-chain profit and loss. It carries no real value and exists purely so you can
-              test the full Aionis pipeline — discovery, deployment, autonomous execution, and stop-loss —
+              test the full Aether pipeline — discovery, deployment, autonomous execution, and stop-loss —
               before mainnet launch.
             </p>
           </div>
@@ -90,7 +90,7 @@ export default function FaucetPage() {
                 <img src="/token-logos/aUSD.svg" alt="aUSD" className="w-9 h-9 rounded-full flex-shrink-0" />
                 <div>
                   <p className="text-foreground text-[14px] font-light">aUSD</p>
-                  <p className="text-subtle text-[11px]">Aionis test dollar · 6 decimals</p>
+                  <p className="text-subtle text-[11px]">Aether test dollar · 6 decimals</p>
                 </div>
               </div>
               {authenticated && (

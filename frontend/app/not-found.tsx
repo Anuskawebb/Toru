@@ -154,7 +154,7 @@ export default function NotFound() {
           font-weight: 800;
           letter-spacing: -0.04em;
           line-height: 1;
-          background: linear-gradient(135deg, #e8b848 0%, #f5d07a 50%, #c9952e 100%);
+          background: linear-gradient(135deg, #8B5CF6 0%, #f5d07a 50%, #c9952e 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -207,7 +207,7 @@ export default function NotFound() {
           font-weight: 600;
           letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: var(--accent, #e8b848);
+          color: var(--accent, #8B5CF6);
           margin-top: 28px;
           opacity: 0;
           animation: nf-fadein 0.5s var(--fluid-easing, ease) 0.2s both;
@@ -253,7 +253,7 @@ export default function NotFound() {
           gap: 8px;
           padding: 13px 28px;
           border-radius: 10px;
-          background: var(--accent, #e8b848);
+          background: var(--accent, #8B5CF6);
           color: #18181b;
           font-size: 14px;
           font-weight: 700;
@@ -266,7 +266,7 @@ export default function NotFound() {
         }
 
         .nf-btn-primary:hover {
-          background: #edc564;
+          background: #A78BFA;
           transform: translateY(-2px);
           box-shadow: 0 8px 24px -4px rgba(232,184,72,0.35);
         }
@@ -292,7 +292,7 @@ export default function NotFound() {
         }
 
         .nf-btn-ghost:hover {
-          border-color: var(--accent, #e8b848);
+          border-color: var(--accent, #8B5CF6);
           color: var(--foreground);
           transform: translateY(-2px);
         }
@@ -302,7 +302,7 @@ export default function NotFound() {
           z-index: 2;
           width: 48px;
           height: 1px;
-          background: linear-gradient(90deg, transparent, var(--accent, #e8b848), transparent);
+          background: linear-gradient(90deg, transparent, var(--accent, #8B5CF6), transparent);
           margin: 36px auto 0;
           opacity: 0;
           animation: nf-fadein 0.5s ease 0.8s both;
@@ -321,7 +321,7 @@ export default function NotFound() {
         }
 
         .nf-hint span {
-          color: var(--accent, #e8b848);
+          color: var(--accent, #8B5CF6);
         }
 
         /* ── fade-in keyframe ── */
@@ -361,7 +361,7 @@ export default function NotFound() {
         <div className="nf-divider" />
 
         <p className="nf-hint">
-          error&nbsp;<span>404</span>&nbsp;·&nbsp;aionis&nbsp;·&nbsp;mantle
+          error&nbsp;<span>404</span>&nbsp;·&nbsp;aether&nbsp;·&nbsp;mantle
         </p>
       </main>
     </>

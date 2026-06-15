@@ -130,7 +130,7 @@ export default function AppNavbar() {
           <Link href="/" className="flex items-center flex-shrink-0 mr-4 transition-spring hover:scale-105 active:scale-95">
             <Image
               src="/logo.svg"
-              alt="Aionis Logo"
+              alt="Aether Logo"
               width={44}
               height={44}
               className="flex-shrink-0 dark:invert-0 invert transition-transform duration-300 hover:rotate-6"

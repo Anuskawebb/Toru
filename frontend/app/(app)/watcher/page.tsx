@@ -206,7 +206,7 @@ export default function WatcherActivityPage() {
         <div>
           <h1 className="text-[28px] font-light tracking-[-0.04em] text-foreground mb-1">Watcher Activity</h1>
           <p className="text-[14px] text-muted font-normal">
-            A live feed of every decision Aionis agents have made on Mantle — opened, closed, and skipped trades.
+            A live feed of every decision Aether agents have made on Mantle — opened, closed, and skipped trades.
           </p>
         </div>
 
@@ -215,14 +215,14 @@ export default function WatcherActivityPage() {
             watcherOnline && watcherAgeMs !== null && watcherAgeMs < 30_000
               ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
               : watcherOnline
-              ? 'bg-amber-500/10 border-amber-500/20 text-amber-400'
+              ? 'bg-violet-500/10 border-violet-500/20 text-violet-400'
               : 'bg-red-500/10 border-red-500/20 text-red-400'
           }`}>
             <span className={`w-1.5 h-1.5 rounded-full ${
               watcherOnline && watcherAgeMs !== null && watcherAgeMs < 30_000
                 ? 'bg-emerald-400 animate-pulse'
                 : watcherOnline
-                ? 'bg-amber-400'
+                ? 'bg-violet-400'
                 : 'bg-red-400'
             }`} />
             <span>
@@ -252,7 +252,7 @@ export default function WatcherActivityPage() {
                 key={`${l.ts}-${idx}`}
                 className={`whitespace-pre-wrap break-all ${
                   l.level === 'error' ? 'text-red-400'
-                    : l.level === 'warn' ? 'text-amber-400'
+                    : l.level === 'warn' ? 'text-violet-400'
                     : 'text-white/60'
                 } ${idx === 0 ? 'animate-fade-in-up' : ''}`}
               >
@@ -299,7 +299,7 @@ export default function WatcherActivityPage() {
                   ev.type === 'OPENED'
                     ? 'bg-emerald-400 animate-pulse'
                     : ev.type === 'SKIPPED'
-                    ? 'bg-amber-400'
+                    ? 'bg-violet-400'
                     : 'bg-blue-400'
                 }`} />
 
@@ -335,7 +335,7 @@ export default function WatcherActivityPage() {
                     </a>
                   </p>
                   {ev.type === 'SKIPPED' && ev.reason && (
-                    <p className="text-[11px] text-amber-400/70 mt-0.5">{ev.reason}</p>
+                    <p className="text-[11px] text-violet-400/70 mt-0.5">{ev.reason}</p>
                   )}
                   {ev.type === 'CLOSED' && ev.reason === 'STOP_LOSS' && (
                     <p className="text-[11px] text-red-400/70 mt-0.5">Closed automatically · stop-loss</p>

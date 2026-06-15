@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma }       from '@/lib/prisma';
 import { redis, STAT_AI_CALLS, STAT_EXECUTIONS, STAT_EVALUATED } from '@/lib/redis';
 
-const CACHE_KEY = 'aionis:platform:stats';
+const CACHE_KEY = 'aether:platform:stats';
 const CACHE_TTL = 60; // 60s
 
 // GET /api/stats — platform-wide aggregate metrics, no auth required

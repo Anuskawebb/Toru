@@ -5,7 +5,7 @@ import { redis }        from '@/lib/redis';
 // Returns the most recent watcher console log lines (newest first) for a
 // live "Watcher Console" feed. Public — no auth required.
 
-const LOG_STREAM_KEY = 'aionis:watcher:logs';
+const LOG_STREAM_KEY = 'aether:watcher:logs';
 
 export type WatcherLog = {
   ts:    number;

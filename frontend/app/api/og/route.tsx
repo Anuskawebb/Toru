@@ -58,7 +58,7 @@ export async function GET(req: Request) {
               display: 'flex',
             }}
           />
-          <span style={{ fontSize: 32, fontWeight: 600, letterSpacing: '-0.02em' }}>Aionis</span>
+          <span style={{ fontSize: 32, fontWeight: 600, letterSpacing: '-0.02em' }}>Aether</span>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
