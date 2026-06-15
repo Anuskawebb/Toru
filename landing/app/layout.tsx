@@ -11,16 +11,16 @@ const inter = Inter({
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
-  weight: ["800", "900"],
+  weight: ["400", "500", "600", "800", "900"],
 });
 
 export const metadata: Metadata = {
-  title: "Aionis — AI copy-trading agents on Mantle",
+  title: "Aether — AI copy-trading agents on Mantle",
   description: "Deploy AI agents that copy top traders on Mantle — on-chain, in real time, fully autonomous.",
-  keywords: ["copy trading", "AI agents", "Mantle", "DeFi", "on-chain trading", "aionis"],
-  authors: [{ name: "Aionis" }],
+  keywords: ["copy trading", "AI agents", "Mantle", "DeFi", "on-chain trading", "aether"],
+  authors: [{ name: "Aether" }],
   openGraph: {
-    title: "Aionis — AI copy-trading agents on Mantle",
+    title: "Aether — AI copy-trading agents on Mantle",
     description: "Deploy AI agents that copy top traders on Mantle — on-chain, in real time, fully autonomous.",
     type: "website",
   },

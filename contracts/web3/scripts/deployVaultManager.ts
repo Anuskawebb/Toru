@@ -1,9 +1,9 @@
 import { ethers } from 'hardhat';
 
-const AUSD_ADDRESS    = process.env.AUSD_ADDRESS    ?? '';
-// Deploy with empty strings to save gas — call setApiBase after deployment
-const API_BASE        = process.env.API_BASE        ?? '';
-const PRICE_API_BASE  = process.env.PRICE_API_BASE  ?? '';
+const AUSD_ADDRESS   = process.env.AUSD_ADDRESS   ?? '';
+// The off-chain keeper wallet that pushes prices + drives copy trades.
+// Set this to the address derived from watcher/.env KEEPER_PRIVATE_KEY.
+const ORACLE_ADDRESS = process.env.ORACLE_ADDRESS ?? '';
 
 async function main() {
   if (!AUSD_ADDRESS) {
@@ -14,24 +14,20 @@ async function main() {
   const [deployer] = await ethers.getSigners();
 
   console.log('Deploying VaultManager...');
-  console.log('Deployer:      ', deployer.address);
-  console.log('Balance:       ', ethers.formatEther(await ethers.provider.getBalance(deployer.address)), 'MNT');
-  console.log('aUSD address:  ', AUSD_ADDRESS);
-  console.log('API base:      ', API_BASE);
-  console.log('Price API base:', PRICE_API_BASE, '\n');
+  console.log('Deployer:    ', deployer.address);
+  console.log('Balance:     ', ethers.formatEther(await ethers.provider.getBalance(deployer.address)), 'MNT');
+  console.log('aUSD address:', AUSD_ADDRESS, '\n');
 
   const VaultManager = await ethers.getContractFactory('VaultManager');
-  const vm           = await VaultManager.deploy(AUSD_ADDRESS, API_BASE, PRICE_API_BASE);
+  const vm           = await VaultManager.deploy(AUSD_ADDRESS);
   await vm.waitForDeployment();
 
   const vmAddress = await vm.getAddress();
 
   console.log('VaultManager deployed to:', vmAddress);
   console.log('\nVerify:');
-  console.log('  AUSD:           ', await vm.AUSD());
-  console.log('  Agent Platform: ', await vm.AGENT_PLATFORM());
-  console.log('  API_BASE:       ', await vm.API_BASE());
-  console.log('  PRICE_API_BASE: ', await vm.PRICE_API_BASE());
+  console.log('  AUSD:  ', await vm.AUSD());
+  console.log('  owner: ', await vm.owner());
 
   // ── Whitelist VaultManager as aUSD minter ─────────────────────────────────
   console.log('\nWhitelisting VaultManager as aUSD minter...');
@@ -41,26 +37,22 @@ async function main() {
   console.log('  Done. VaultManager can now mint aUSD for P&L settlement.');
   console.log('  Minter confirmed:', await ausd.minters(vmAddress));
 
-  // ── Set API URLs via setApiBase ───────────────────────────────────────────
-  // The Agent Platform calls back over the public internet, so this must be
-  // the ngrok tunnel URL (or other public origin), not localhost.
-  const origin        = process.env.NGROK_URL ?? 'http://localhost:3001';
-  const apiBase       = `${origin}/api/agent/leader/`;
-  const priceApiBase  = `${origin}/api/price/`;
-  console.log('\nSetting API URLs...');
-  const tx2 = await vm.setApiBase(apiBase);
-  await tx2.wait();
-  const tx3 = await vm.setPriceApiBase(priceApiBase);
-  await tx3.wait();
-  console.log('  API_BASE:      ', await vm.API_BASE());
-  console.log('  PRICE_API_BASE:', await vm.PRICE_API_BASE());
+  // ── Set the keeper/oracle (price + copy-trade pusher) ─────────────────────
+  if (ORACLE_ADDRESS) {
+    console.log('\nSetting oracle (keeper) to', ORACLE_ADDRESS, '...');
+    const tx2 = await vm.setOracle(ORACLE_ADDRESS);
+    await tx2.wait();
+    console.log('  oracle:', await vm.oracle());
+  } else {
+    console.log('\nNOTE: ORACLE_ADDRESS not set — oracle is unset (address(0)).');
+    console.log('      Run vm.setOracle(<keeper address>) before the keeper can push prices/trades.');
+  }
 
   console.log('\nNext steps:');
-  console.log('  1. Copy to .env.local:  NEXT_PUBLIC_VAULT_MANAGER_ADDRESS=' + vmAddress);
-  console.log('  2. Copy to watcher/.env: VAULT_MANAGER_ADDRESS=' + vmAddress);
-  console.log('  3. NOTE: checkLeaderActivity/updatePrice depend on IAgentPlatform,');
-  console.log('     which has no Mantle equivalent yet — these calls will revert until');
-  console.log('     the on-chain agent pipeline is rebuilt for Mantle (see docs).');
+  console.log('  1. Copy to frontend/.env.local:  NEXT_PUBLIC_VAULT_MANAGER_ADDRESS=' + vmAddress);
+  console.log('  2. Copy to watcher/.env:         VAULT_MANAGER_ADDRESS=' + vmAddress);
+  console.log('  3. Ensure the keeper wallet (KEEPER_PRIVATE_KEY) == the oracle address set above,');
+  console.log('     and that each follower delegates it via setKeeper (frontend handles this).');
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

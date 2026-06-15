@@ -12,6 +12,9 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: { enabled: true, runs: 200 },
       viaIR: true,
+      // OZ v5 ERC-721 uses the `mcopy` opcode → needs the Cancun EVM target.
+      // Mantle Sepolia (OP-stack, post-Dencun) supports it.
+      evmVersion: "cancun",
     },
   },
   networks: {
@@ -22,7 +25,7 @@ const config: HardhatUserConfig = {
     },
   },
   paths: {
-    artifacts: "../../src/contracts/artifacts",
+    artifacts: "../../frontend/contracts/artifacts",
   },
 };
 

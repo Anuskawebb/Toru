@@ -178,22 +178,25 @@ html, body {
 .hero-wrapper {
   display: flex;
   justify-content: flex-end;
-  align-items: center;
+  /* Right-of-centre block, sitting ~20% down and inset from the right edge,
+     matching the reference (not flush to the edge, not vertically centred). */
+  align-items: flex-start;
   flex-grow: 1;
   width: 100%;
-  padding-right: 0;
+  padding-top: 9vh;
+  padding-right: 17%;
   z-index: 15;
 }
 
 .hero-text {
   font-family: var(--font-sans);
   color: #ffffff;
-  font-size: clamp(28px, 3.8vw, 54px);
+  font-size: clamp(24px, 2.9vw, 42px);
   font-weight: 500;
-  line-height: 1.08;
+  line-height: 1.1;
   letter-spacing: -0.03em;
   text-align: left;
-  max-width: 600px;
+  max-width: 400px;
 }
 
 /* Footer Elements */
@@ -205,7 +208,7 @@ html, body {
   z-index: 20;
 }
 
-/* Floats the footer bar just above the AIONIS stencil letterforms */
+/* Floats the footer bar just above the AETHER stencil letterforms */
 .footer-above-stencil {
   position: absolute;
   bottom: 55%;
@@ -254,7 +257,11 @@ html, body {
   width: 100vw;
   height: 100vh;
   z-index: 1;
-  background-color: #000000;
+  /* Transparent so the fixed aurora shows behind the letters. "color-dodge"
+     keeps the letters pure black wherever the backdrop is dark and blooms them
+     bright only where the aurora light reaches them — the MIDU reveal effect. */
+  background-color: transparent;
+  mix-blend-mode: color-dodge;
   overflow: hidden;
 }
 
@@ -266,9 +273,11 @@ html, body {
 
 .stencil-text {
   font-family: var(--font-display);
-  font-weight: 900;
-  fill: #ffffff;
-  letter-spacing: -0.065em;
+  /* Thinner letterforms, closer to the reference's lighter grotesque. */
+  font-weight: 500;
+  /* fill comes from the SVG gradient (#aether-fill); no CSS fill here so it
+     doesn't override the translucent wordmark. */
+  letter-spacing: -0.04em;
 }
 
 /* Subtle micro-animations and utility properties */
