@@ -1,0 +1,27 @@
+{
+  "name": "@aether/indexer",
+  "version": "0.1.0",
+  "description": "BSC blockchain indexer — block fetching, checkpoint management, and swap parsing foundation",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "debug": "tsx src/debug.ts",
+    "build": "tsc",
+    "build:run": "tsc && node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "tsx": "^4.15.0",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}
