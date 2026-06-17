@@ -194,6 +194,12 @@ export class BlockProcessor {
 
     // ── 6. Reconstruct RawSwap → NormalizedTrade ───────────────────────────
     const trades: NormalizedTrade[] = [];
+    // Dedup key: (txHash, tokenIn, tokenOut, amountIn, amountOut).
+    // Multi-hop V4 swaps can emit N Swap events that all reconstruct into the
+    // same (wallet, tokenIn, tokenOut, amounts) because fromTransfers always
+    // uses the tx-level wallet transfers — keep only the first occurrence.
+    const seen = new Set<string>();
+
     for (const result of parseResults) {
       if (result.status === 'rejected') {
         logger.warn('Parse failed', {
@@ -206,7 +212,13 @@ export class BlockProcessor {
       if (result.value === null) continue;
 
       const trade = reconstructTrade(result.value);
-      if (trade !== null) trades.push(trade);
+      if (trade === null) continue;
+
+      const key = `${trade.txHash}|${trade.tokenIn.toLowerCase()}|${trade.tokenOut.toLowerCase()}|${trade.amountIn}|${trade.amountOut}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+
+      trades.push(trade);
     }
 
     return trades;

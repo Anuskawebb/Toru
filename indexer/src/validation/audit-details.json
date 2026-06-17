@@ -1,0 +1,1382 @@
+[
+  {
+    "trade": {
+      "txHash": "0xe8c05f749e5edaea9824a577a8fc6b16be8677c36fea7700a861a3cb7f3cdd56",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x939fcd85625b59bc203ae2eda87ef5a339f8d486",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "495000000000000000",
+      "amountInHuman": "0.495",
+      "tokenOut": "0xFDeD404FdCCe4F112364FC6B2b176493d5434444",
+      "tokenOutSym": "螃蟹效应",
+      "amountOut": "3319392249665814647813365",
+      "amountOutHuman": "3319392.249665",
+      "bscscan": "https://bscscan.com/tx/0xe8c05f749e5edaea9824a577a8fc6b16be8677c36fea7700a861a3cb7f3cdd56",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x939fcd85625b59bc203ae2eda87ef5a339f8d486",
+      "to": "0x1de460f363af910f51726def188f9004276bf4bc",
+      "value": "500000000000000000"
+    },
+    "transfers": [
+      {
+        "token": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+        "from": "0x1de460f363af910f51726def188f9004276bf4bc",
+        "to": "0x258e4ba4884fcfcc25da08142b6b4c5829c9f982",
+        "value": "495000000000000000"
+      },
+      {
+        "token": "0xfded404fdcce4f112364fc6b2b176493d5434444",
+        "from": "0x258e4ba4884fcfcc25da08142b6b4c5829c9f982",
+        "to": "0x939fcd85625b59bc203ae2eda87ef5a339f8d486",
+        "value": "3319392249665814647813365"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x0d14e0007172627e5e566e8e85e6fcc5334d0c0cac05f6c70b739fc7cddfba47",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x64b23c2987aca16b3d3c55ad6f694058783c72ea",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "99000000000000000",
+      "amountInHuman": "0.099",
+      "tokenOut": "0xFDeD404FdCCe4F112364FC6B2b176493d5434444",
+      "tokenOutSym": "螃蟹效应",
+      "amountOut": "648580805232959440440175",
+      "amountOutHuman": "648580.805232",
+      "bscscan": "https://bscscan.com/tx/0x0d14e0007172627e5e566e8e85e6fcc5334d0c0cac05f6c70b739fc7cddfba47",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x64b23c2987aca16b3d3c55ad6f694058783c72ea",
+      "to": "0x1de460f363af910f51726def188f9004276bf4bc",
+      "value": "100000000000000000"
+    },
+    "transfers": [
+      {
+        "token": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+        "from": "0x1de460f363af910f51726def188f9004276bf4bc",
+        "to": "0x258e4ba4884fcfcc25da08142b6b4c5829c9f982",
+        "value": "99000000000000000"
+      },
+      {
+        "token": "0xfded404fdcce4f112364fc6b2b176493d5434444",
+        "from": "0x258e4ba4884fcfcc25da08142b6b4c5829c9f982",
+        "to": "0x64b23c2987aca16b3d3c55ad6f694058783c72ea",
+        "value": "648580805232959440440175"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x0aa86f76cb836881f433ffd02af6e1b21aecc866613525bb331fb66fd05b153c",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0xca3eccc976a199701c4f07e1dc4c87e440317d95",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "170987247975519425425",
+      "amountInHuman": "170.987247",
+      "tokenOut": "0xfF4Dc9d6d46E5C87b37E9Cf545B79e9F2623407D",
+      "tokenOutSym": "Ani",
+      "amountOut": "8252228380181549234532715",
+      "amountOutHuman": "8252228.380181",
+      "bscscan": "https://bscscan.com/tx/0x0aa86f76cb836881f433ffd02af6e1b21aecc866613525bb331fb66fd05b153c",
+      "flags": []
+    },
+    "tx": {
+      "from": "0xca3eccc976a199701c4f07e1dc4c87e440317d95",
+      "to": "0x10ed43c718714eb63d5aa57b78b54704e256024e",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0xca3eccc976a199701c4f07e1dc4c87e440317d95",
+        "to": "0x2092193ff89c676f10d1d047460db67e09a9af0a",
+        "value": "170987247975519425425"
+      },
+      {
+        "token": "0xff4dc9d6d46e5c87b37e9cf545b79e9f2623407d",
+        "from": "0x2092193ff89c676f10d1d047460db67e09a9af0a",
+        "to": "0xca3eccc976a199701c4f07e1dc4c87e440317d95",
+        "value": "8252228380181549234532715"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0xeedbdca6fc6b0ee9d432db643ab27397ffd3c1d5c1902fcb42d63f3ec588c4e6",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0xed1ecf236da95df9faed9d359334e302cbbed0b9",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "85516403604581920000",
+      "amountInHuman": "85.516403",
+      "tokenOut": "0x8D65744527f55d0b2338350912d5C99A81ddF0e2",
+      "tokenOutSym": "Pro",
+      "amountOut": "1413603106",
+      "amountOutHuman": "1.413603",
+      "bscscan": "https://bscscan.com/tx/0xeedbdca6fc6b0ee9d432db643ab27397ffd3c1d5c1902fcb42d63f3ec588c4e6",
+      "flags": []
+    },
+    "tx": {
+      "from": "0xed1ecf236da95df9faed9d359334e302cbbed0b9",
+      "to": "0x20042403d6e98a393b0d51a1e4a871637dc573b0",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0xed1ecf236da95df9faed9d359334e302cbbed0b9",
+        "to": "0x20042403d6e98a393b0d51a1e4a871637dc573b0",
+        "value": "85516403604581920000"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x20042403d6e98a393b0d51a1e4a871637dc573b0",
+        "to": "0x63844bd4bfad910b1643713302a1cc1ed20d50c3",
+        "value": "85516403604581920000"
+      },
+      {
+        "token": "0x8d65744527f55d0b2338350912d5c99a81ddf0e2",
+        "from": "0x63844bd4bfad910b1643713302a1cc1ed20d50c3",
+        "to": "0x20042403d6e98a393b0d51a1e4a871637dc573b0",
+        "value": "1413603106"
+      },
+      {
+        "token": "0x8d65744527f55d0b2338350912d5c99a81ddf0e2",
+        "from": "0x20042403d6e98a393b0d51a1e4a871637dc573b0",
+        "to": "0xed1ecf236da95df9faed9d359334e302cbbed0b9",
+        "value": "1413603106"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x2c00fa8285f2c221fb6c01adce3e91d401e909c131249b57354931d7eb79d091",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0xb70d5b5a22a3fee05d52fd82b9f0cdc93b443183",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "498500000000000000",
+      "amountInHuman": "0.4985",
+      "tokenOut": "0x6CB88a951bC738a2BA9c33185e31B6B10B2Bc23A",
+      "tokenOutSym": "GTS",
+      "amountOut": "1551606613527966778",
+      "amountOutHuman": "1.551606",
+      "bscscan": "https://bscscan.com/tx/0x2c00fa8285f2c221fb6c01adce3e91d401e909c131249b57354931d7eb79d091",
+      "flags": []
+    },
+    "tx": {
+      "from": "0xb70d5b5a22a3fee05d52fd82b9f0cdc93b443183",
+      "to": "0xb70d5b5a22a3fee05d52fd82b9f0cdc93b443183",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0xb70d5b5a22a3fee05d52fd82b9f0cdc93b443183",
+        "to": "0x07964f135f276412b3182a3b2407b8dd45000000",
+        "value": "500000000000000000"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x07964f135f276412b3182a3b2407b8dd45000000",
+        "to": "0x72a815c51e0be4dfac8e089079fe8f36a9151c04",
+        "value": "498500000000000000"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x72a815c51e0be4dfac8e089079fe8f36a9151c04",
+        "to": "0xfd07f5a6efdd1a5ab9e7d27d029555924569fd46",
+        "value": "498500000000000000"
+      },
+      {
+        "token": "0x6cb88a951bc738a2ba9c33185e31b6b10b2bc23a",
+        "from": "0xfd07f5a6efdd1a5ab9e7d27d029555924569fd46",
+        "to": "0x000000000000000000000000000000000000dead",
+        "value": "6982229760875850"
+      },
+      {
+        "token": "0x6cb88a951bc738a2ba9c33185e31b6b10b2bc23a",
+        "from": "0xfd07f5a6efdd1a5ab9e7d27d029555924569fd46",
+        "to": "0x6cb88a951bc738a2ba9c33185e31b6b10b2bc23a",
+        "value": "39565968644963153"
+      },
+      {
+        "token": "0x6cb88a951bc738a2ba9c33185e31b6b10b2bc23a",
+        "from": "0xfd07f5a6efdd1a5ab9e7d27d029555924569fd46",
+        "to": "0xb70d5b5a22a3fee05d52fd82b9f0cdc93b443183",
+        "value": "1505058415122127775"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x6347979a2666adf02ed3386bad0837317732e6dd28250c9fdf0bb970b3a9f30b",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0xb0d0854902dcd0555a4c898fa8031e63f4f4778a",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "48242473411453705383",
+      "amountInHuman": "48.242473",
+      "tokenOut": "0xCae117ca6Bc8A341D2E7207F30E180f0e5618B9D",
+      "tokenOutSym": "ARK",
+      "amountOut": "6000000000000000000",
+      "amountOutHuman": "6",
+      "bscscan": "https://bscscan.com/tx/0x6347979a2666adf02ed3386bad0837317732e6dd28250c9fdf0bb970b3a9f30b",
+      "flags": []
+    },
+    "tx": {
+      "from": "0xb0d0854902dcd0555a4c898fa8031e63f4f4778a",
+      "to": "0x8366a748e02f730911cb5ab4fd049d2e1e0414b7",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0xb0d0854902dcd0555a4c898fa8031e63f4f4778a",
+        "to": "0x8366a748e02f730911cb5ab4fd049d2e1e0414b7",
+        "value": "48724898145568242436"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x8366a748e02f730911cb5ab4fd049d2e1e0414b7",
+        "to": "0xcaaf3c41a40103a23eeaa4bba468af3cf5b0e0d8",
+        "value": "48242473411453705383"
+      },
+      {
+        "token": "0xcae117ca6bc8a341d2e7207f30e180f0e5618b9d",
+        "from": "0xcaaf3c41a40103a23eeaa4bba468af3cf5b0e0d8",
+        "to": "0x8366a748e02f730911cb5ab4fd049d2e1e0414b7",
+        "value": "6000000000000000000"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x8366a748e02f730911cb5ab4fd049d2e1e0414b7",
+        "to": "0xb0d0854902dcd0555a4c898fa8031e63f4f4778a",
+        "value": "482424734114537053"
+      },
+      {
+        "token": "0xcae117ca6bc8a341d2e7207f30e180f0e5618b9d",
+        "from": "0x8366a748e02f730911cb5ab4fd049d2e1e0414b7",
+        "to": "0xb0d0854902dcd0555a4c898fa8031e63f4f4778a",
+        "value": "6000000000000000000"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0xd3d4f20037acd9d07bed3a6a949bf548d67863125f088e6682b69501bcce3bf5",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0xca99022cc90ac847f22465dd154339161754f165",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x826923122A8521Be36358Bdc53d3B4362B6f46E5",
+      "tokenInSym": "MCoin",
+      "amountIn": "2697850000000000000",
+      "amountInHuman": "2.69785",
+      "tokenOut": "0x1B282603099647E2Ec3461B2714ACf38009D66b6",
+      "tokenOutSym": "WMAI",
+      "amountOut": "48186511710971593",
+      "amountOutHuman": "0.048186",
+      "bscscan": "https://bscscan.com/tx/0xd3d4f20037acd9d07bed3a6a949bf548d67863125f088e6682b69501bcce3bf5",
+      "flags": []
+    },
+    "tx": {
+      "from": "0xca99022cc90ac847f22465dd154339161754f165",
+      "to": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x22a2c54b15287472f4adbe7587226e3c998cdd96",
+        "from": "0x0000000000000000000000000000000000000000",
+        "to": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "value": "1601097922848664688"
+      },
+      {
+        "token": "0x22a2c54b15287472f4adbe7587226e3c998cdd96",
+        "from": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "to": "0x0663c4b19d139b9582539f6053a9c69a2bcebc9f",
+        "value": "1601097922848664688"
+      },
+      {
+        "token": "0x35803e77c3163fed8a942536c1c8e0d5bf90f906",
+        "from": "0x0000000000000000000000000000000000000000",
+        "to": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "value": "32093004189444717"
+      },
+      {
+        "token": "0x35803e77c3163fed8a942536c1c8e0d5bf90f906",
+        "from": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "to": "0x0e8a6b4aac077ca27da4b2267f07333fd5e89ce4",
+        "value": "3209300418944471"
+      },
+      {
+        "token": "0x35803e77c3163fed8a942536c1c8e0d5bf90f906",
+        "from": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "to": "0xca99022cc90ac847f22465dd154339161754f165",
+        "value": "28883703770500239"
+      },
+      {
+        "token": "0x826923122a8521be36358bdc53d3b4362b6f46e5",
+        "from": "0x0000000000000000000000000000000000000000",
+        "to": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "value": "2697850000000000000"
+      },
+      {
+        "token": "0x826923122a8521be36358bdc53d3b4362b6f46e5",
+        "from": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "to": "0x583788e138deb72d674c96dd220566e28355b569",
+        "value": "2697850000000000000"
+      },
+      {
+        "token": "0x1b282603099647e2ec3461b2714acf38009d66b6",
+        "from": "0x583788e138deb72d674c96dd220566e28355b569",
+        "to": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "value": "48186511710971593"
+      },
+      {
+        "token": "0x1b282603099647e2ec3461b2714acf38009d66b6",
+        "from": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "to": "0x0000000000000000000000000000000000000000",
+        "value": "48186511710971593"
+      },
+      {
+        "token": "0x35803e77c3163fed8a942536c1c8e0d5bf90f906",
+        "from": "0x12f2fbc79a16337043e2597f8f086a42f987af1f",
+        "to": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "value": "48186511710971593"
+      },
+      {
+        "token": "0x35803e77c3163fed8a942536c1c8e0d5bf90f906",
+        "from": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "to": "0x0e8a6b4aac077ca27da4b2267f07333fd5e89ce4",
+        "value": "4818651171097159"
+      },
+      {
+        "token": "0x35803e77c3163fed8a942536c1c8e0d5bf90f906",
+        "from": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "to": "0xca99022cc90ac847f22465dd154339161754f165",
+        "value": "21683930269937215"
+      },
+      {
+        "token": "0x35803e77c3163fed8a942536c1c8e0d5bf90f906",
+        "from": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "to": "0xf94e41e173febf5177626231b1ce7fbc1f059309",
+        "value": "8673572107974886"
+      },
+      {
+        "token": "0x35803e77c3163fed8a942536c1c8e0d5bf90f906",
+        "from": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "to": "0x65848ada713a5857fda55de5fecdadee51b3ac99",
+        "value": "4336786053987443"
+      },
+      {
+        "token": "0x35803e77c3163fed8a942536c1c8e0d5bf90f906",
+        "from": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "to": "0x77345f82ce93ce7f386c7f0e5b0893c53172e597",
+        "value": "4336786053987443"
+      },
+      {
+        "token": "0x35803e77c3163fed8a942536c1c8e0d5bf90f906",
+        "from": "0x1f40465dce9a07a5273b4b63f5f9c31ff2bcbd9a",
+        "to": "0xcc4f874a67e013b123202546dcc088b821cca8b9",
+        "value": "4336786053987443"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0xb3ed258311730483fd5fb469892a97a2d8e6109514976e8918af6a3c98746205",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x9eb5893d51a2fe79ce9ef9ce7ed4d1a059dccac6",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x99E604dC70502B982128cFC3591e757ef0069837",
+      "tokenInSym": "BOX",
+      "amountIn": "72183074981177394532",
+      "amountInHuman": "72.183074",
+      "tokenOut": "0xFF0157CE99c9B3A1bE63e02eC85F0FCf29DF8447",
+      "tokenOutSym": "USDB",
+      "amountOut": "58851294581518015721",
+      "amountOutHuman": "58.851294",
+      "bscscan": "https://bscscan.com/tx/0xb3ed258311730483fd5fb469892a97a2d8e6109514976e8918af6a3c98746205",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x9eb5893d51a2fe79ce9ef9ce7ed4d1a059dccac6",
+      "to": "0x10ed43c718714eb63d5aa57b78b54704e256024e",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x99e604dc70502b982128cfc3591e757ef0069837",
+        "from": "0x9eb5893d51a2fe79ce9ef9ce7ed4d1a059dccac6",
+        "to": "0x2743dee8397c8dfade2e38053ddbd77d4f1dd8d0",
+        "value": "72183074981177394532"
+      },
+      {
+        "token": "0xff0157ce99c9b3a1be63e02ec85f0fcf29df8447",
+        "from": "0x2743dee8397c8dfade2e38053ddbd77d4f1dd8d0",
+        "to": "0x9eb5893d51a2fe79ce9ef9ce7ed4d1a059dccac6",
+        "value": "58851294581518015721"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x29ef54563fcf099ce1ac1998f3c10dbbd540c935976e51d6593fd2fbae487226",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0xa5b0451f7ead2d33630e21bcd0169056426daa32",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "10450025835218000000000",
+      "amountInHuman": "10450.025835",
+      "tokenOut": "0x13aBDC89aD5cf15074D5732da19D03e4F9c343F4",
+      "tokenOutSym": "RE",
+      "amountOut": "500173213891102640725351",
+      "amountOutHuman": "500173.213891",
+      "bscscan": "https://bscscan.com/tx/0x29ef54563fcf099ce1ac1998f3c10dbbd540c935976e51d6593fd2fbae487226",
+      "flags": []
+    },
+    "tx": {
+      "from": "0xa5b0451f7ead2d33630e21bcd0169056426daa32",
+      "to": "0x248250764ccbfe0a14ce3badefe5539a7ad44280",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x731cf4d2b356d24118557446c13ab798ec4e991f",
+        "to": "0x88c1a15854904881628465d8a1e636039fbba089",
+        "value": "10450025835218000000000"
+      },
+      {
+        "token": "0x13abdc89ad5cf15074d5732da19d03e4f9c343f4",
+        "from": "0x88c1a15854904881628465d8a1e636039fbba089",
+        "to": "0x731cf4d2b356d24118557446c13ab798ec4e991f",
+        "value": "500173213891102640725351"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0xaa630e0034853b9b9bb1a37e241951fe1182f5c907ce90d3958cc4e34d7699b2",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x00a96ba64a1e9d9627953cc501724a7d541cc793",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x8C4E2bf9593529963C83559d1dBEdCb6d87dae5A",
+      "tokenInSym": "NAS",
+      "amountIn": "424272354793182673319",
+      "amountInHuman": "424.272354",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "17100000000000000000",
+      "amountOutHuman": "17.1",
+      "bscscan": "https://bscscan.com/tx/0xaa630e0034853b9b9bb1a37e241951fe1182f5c907ce90d3958cc4e34d7699b2",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x00a96ba64a1e9d9627953cc501724a7d541cc793",
+      "to": "0x90a762ae6572c023ec7f213b5ba64568854b171b",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x8c4e2bf9593529963c83559d1dbedcb6d87dae5a",
+        "from": "0x90a762ae6572c023ec7f213b5ba64568854b171b",
+        "to": "0x64c6c6281f11656978ad993d5d4f9266ee739864",
+        "value": "424272354793182673319"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x64c6c6281f11656978ad993d5d4f9266ee739864",
+        "to": "0x90a762ae6572c023ec7f213b5ba64568854b171b",
+        "value": "17100000000000000000"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x90a762ae6572c023ec7f213b5ba64568854b171b",
+        "to": "0xdf40525b8b5d7e57d1a5099be928b524aa94f63b",
+        "value": "6840000000000000000"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x90a762ae6572c023ec7f213b5ba64568854b171b",
+        "to": "0x00a96ba64a1e9d9627953cc501724a7d541cc793",
+        "value": "10260000000000000000"
+      },
+      {
+        "token": "0x8c4e2bf9593529963c83559d1dbedcb6d87dae5a",
+        "from": "0x64c6c6281f11656978ad993d5d4f9266ee739864",
+        "to": "0x90a762ae6572c023ec7f213b5ba64568854b171b",
+        "value": "424272354793182673319"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x591900475a244f036367c2831835ba4693f071cb04b7842f344fb548defc81a8",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x05a69a25622344a6c2168928292929355ccf81a7",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "8138383502078247322",
+      "amountInHuman": "8.138383",
+      "tokenOut": "0xEECa71A751AB52F25A371065d168E0FCc3c8b00D",
+      "tokenOutSym": "AIT",
+      "amountOut": "200000000000000000000",
+      "amountOutHuman": "200",
+      "bscscan": "https://bscscan.com/tx/0x591900475a244f036367c2831835ba4693f071cb04b7842f344fb548defc81a8",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x05a69a25622344a6c2168928292929355ccf81a7",
+      "to": "0x7139dd70593b6c08138cf35d739b2d64cf55c770",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0xeeca71a751ab52f25a371065d168e0fcc3c8b00d",
+        "from": "0x9ab1c1c0c58fdd82fd43f79953fd928a71c3e1a7",
+        "to": "0x05a69a25622344a6c2168928292929355ccf81a7",
+        "value": "200000000000000000000"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x05a69a25622344a6c2168928292929355ccf81a7",
+        "to": "0x9ab1c1c0c58fdd82fd43f79953fd928a71c3e1a7",
+        "value": "8138383502078247322"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x9a8cc009d86878f32f4e31e1313704eac02dcfef14359e312add57ff26509ff2",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0xc67f43a2cb75f70f0ae3e8bc4e0fbf61d3bad250",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0xEECa71A751AB52F25A371065d168E0FCc3c8b00D",
+      "tokenInSym": "AIT",
+      "amountIn": "55555555555600000000",
+      "amountInHuman": "55.555555",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "2215677616907583064",
+      "amountOutHuman": "2.215677",
+      "bscscan": "https://bscscan.com/tx/0x9a8cc009d86878f32f4e31e1313704eac02dcfef14359e312add57ff26509ff2",
+      "flags": []
+    },
+    "tx": {
+      "from": "0xc67f43a2cb75f70f0ae3e8bc4e0fbf61d3bad250",
+      "to": "0x7139dd70593b6c08138cf35d739b2d64cf55c770",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x9ab1c1c0c58fdd82fd43f79953fd928a71c3e1a7",
+        "to": "0xc67f43a2cb75f70f0ae3e8bc4e0fbf61d3bad250",
+        "value": "2215677616907583064"
+      },
+      {
+        "token": "0xeeca71a751ab52f25a371065d168e0fcc3c8b00d",
+        "from": "0xc67f43a2cb75f70f0ae3e8bc4e0fbf61d3bad250",
+        "to": "0x9ab1c1c0c58fdd82fd43f79953fd928a71c3e1a7",
+        "value": "55555555555600000000"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0xc61d10419674692a3c247e6f32f970e59d951a49ce370dc13eb4f9d4df0e3101",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0xb79f939aded7341edddc6a862436997a8f8b714e",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0x55ad16Bd573B3365f43A9dAeB0Cc66A73821b4a5",
+      "tokenInSym": "AIOT",
+      "amountIn": "205888433857059817238",
+      "amountInHuman": "205.888433",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "19383390743745725159",
+      "amountOutHuman": "19.38339",
+      "bscscan": "https://bscscan.com/tx/0xc61d10419674692a3c247e6f32f970e59d951a49ce370dc13eb4f9d4df0e3101",
+      "flags": []
+    },
+    "tx": {
+      "from": "0xb79f939aded7341edddc6a862436997a8f8b714e",
+      "to": "0x59c26d4ae5b89a5b5844011fee22dd41c0a50cfa",
+      "value": "60"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x3e4979289ce2c5612414df715e1f0dee315c5e03",
+        "to": "0x59c26d4ae5b89a5b5844011fee22dd41c0a50cfa",
+        "value": "19383390743745725159"
+      },
+      {
+        "token": "0x55ad16bd573b3365f43a9daeb0cc66a73821b4a5",
+        "from": "0x59c26d4ae5b89a5b5844011fee22dd41c0a50cfa",
+        "to": "0x3e4979289ce2c5612414df715e1f0dee315c5e03",
+        "value": "205888433857059817238"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0xe556f8e5354451001b854db9e2bcfb5f8e33f16c5a8f73882caff29a3da9982d",
+      "block": "104740171",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x8ea2b0b0a5d292661c6597533bbb47e4f58d23d9",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0x55ad16Bd573B3365f43A9dAeB0Cc66A73821b4a5",
+      "tokenInSym": "AIOT",
+      "amountIn": "198662840512581187058",
+      "amountInHuman": "198.66284",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "18699137962465317669",
+      "amountOutHuman": "18.699137",
+      "bscscan": "https://bscscan.com/tx/0xe556f8e5354451001b854db9e2bcfb5f8e33f16c5a8f73882caff29a3da9982d",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x8ea2b0b0a5d292661c6597533bbb47e4f58d23d9",
+      "to": "0x59c26d4ae5b89a5b5844011fee22dd41c0a50cfa",
+      "value": "60"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x3e4979289ce2c5612414df715e1f0dee315c5e03",
+        "to": "0x59c26d4ae5b89a5b5844011fee22dd41c0a50cfa",
+        "value": "18699137962465317669"
+      },
+      {
+        "token": "0x55ad16bd573b3365f43a9daeb0cc66a73821b4a5",
+        "from": "0x59c26d4ae5b89a5b5844011fee22dd41c0a50cfa",
+        "to": "0x3e4979289ce2c5612414df715e1f0dee315c5e03",
+        "value": "198662840512581187058"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0xb95571d0ba7eab3754eb330518fb448adecabcb9b6dba34276df94bbe8997e19",
+      "block": "104740171",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x286509739e0ab493922eae4b03dca39d104704dc",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0xEECa71A751AB52F25A371065d168E0FCc3c8b00D",
+      "tokenInSym": "AIT",
+      "amountIn": "100000000000000000000",
+      "amountInHuman": "100",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "3988214532590519035",
+      "amountOutHuman": "3.988214",
+      "bscscan": "https://bscscan.com/tx/0xb95571d0ba7eab3754eb330518fb448adecabcb9b6dba34276df94bbe8997e19",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x286509739e0ab493922eae4b03dca39d104704dc",
+      "to": "0x7139dd70593b6c08138cf35d739b2d64cf55c770",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x9ab1c1c0c58fdd82fd43f79953fd928a71c3e1a7",
+        "to": "0x286509739e0ab493922eae4b03dca39d104704dc",
+        "value": "3988214532590519035"
+      },
+      {
+        "token": "0xeeca71a751ab52f25a371065d168e0fcc3c8b00d",
+        "from": "0x286509739e0ab493922eae4b03dca39d104704dc",
+        "to": "0x9ab1c1c0c58fdd82fd43f79953fd928a71c3e1a7",
+        "value": "100000000000000000000"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0xfe7408b89e771238fd8f4d0cbf427ffa4d4b9b308f072a09658ad2e25ace3fc4",
+      "block": "104740171",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x3d7c8d54f20ad14e3ec42029ccadd84161c633ef",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0xEECa71A751AB52F25A371065d168E0FCc3c8b00D",
+      "tokenInSym": "AIT",
+      "amountIn": "100000000000000000000",
+      "amountInHuman": "100",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "3988207875381938300",
+      "amountOutHuman": "3.988207",
+      "bscscan": "https://bscscan.com/tx/0xfe7408b89e771238fd8f4d0cbf427ffa4d4b9b308f072a09658ad2e25ace3fc4",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x3d7c8d54f20ad14e3ec42029ccadd84161c633ef",
+      "to": "0x7139dd70593b6c08138cf35d739b2d64cf55c770",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x9ab1c1c0c58fdd82fd43f79953fd928a71c3e1a7",
+        "to": "0x3d7c8d54f20ad14e3ec42029ccadd84161c633ef",
+        "value": "3988207875381938300"
+      },
+      {
+        "token": "0xeeca71a751ab52f25a371065d168e0fcc3c8b00d",
+        "from": "0x3d7c8d54f20ad14e3ec42029ccadd84161c633ef",
+        "to": "0x9ab1c1c0c58fdd82fd43f79953fd928a71c3e1a7",
+        "value": "100000000000000000000"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0xccea62aaf8bae43d9b4193dde79b0e5d863669fe0669b003a69fd7f53e20a879",
+      "block": "104740171",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0xadbb1fea038e21495bf223e8e5548ebb536fe557",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0xEECa71A751AB52F25A371065d168E0FCc3c8b00D",
+      "tokenInSym": "AIT",
+      "amountIn": "50000000000000000000",
+      "amountInHuman": "50",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "1994101441242960285",
+      "amountOutHuman": "1.994101",
+      "bscscan": "https://bscscan.com/tx/0xccea62aaf8bae43d9b4193dde79b0e5d863669fe0669b003a69fd7f53e20a879",
+      "flags": []
+    },
+    "tx": {
+      "from": "0xadbb1fea038e21495bf223e8e5548ebb536fe557",
+      "to": "0x7139dd70593b6c08138cf35d739b2d64cf55c770",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x9ab1c1c0c58fdd82fd43f79953fd928a71c3e1a7",
+        "to": "0xadbb1fea038e21495bf223e8e5548ebb536fe557",
+        "value": "1994101441242960285"
+      },
+      {
+        "token": "0xeeca71a751ab52f25a371065d168e0fcc3c8b00d",
+        "from": "0xadbb1fea038e21495bf223e8e5548ebb536fe557",
+        "to": "0x9ab1c1c0c58fdd82fd43f79953fd928a71c3e1a7",
+        "value": "50000000000000000000"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0xad744e72ac3e4d776ef4b140b6bafa09096dcb89bdcf24c52649c5d4acd4eac5",
+      "block": "104740172",
+      "timestamp": "2026-06-17T10:13:09.000Z",
+      "wallet": "0x466272e44e930817da5b44f94b16352f4928686b",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "34769595687919040690",
+      "amountInHuman": "34.769595",
+      "tokenOut": "0xaa036928c9c0Df07d525B55ea8EE690Bb5a628C1",
+      "tokenOutSym": "EVAA",
+      "amountOut": "52940427845638561792",
+      "amountOutHuman": "52.940427",
+      "bscscan": "https://bscscan.com/tx/0xad744e72ac3e4d776ef4b140b6bafa09096dcb89bdcf24c52649c5d4acd4eac5",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x466272e44e930817da5b44f94b16352f4928686b",
+      "to": "0xa2a8317a97dbd4a6af0be9f23c187765d28b70d6",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0xaa036928c9c0df07d525b55ea8ee690bb5a628c1",
+        "from": "0xccb5e080c38e4e7a1c6437db53bcbe016e45b9db",
+        "to": "0xa2a8317a97dbd4a6af0be9f23c187765d28b70d6",
+        "value": "52940427845638561792"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x26deb24a2623cf54452ab5183e2c34551831d54d",
+        "to": "0xa2a8317a97dbd4a6af0be9f23c187765d28b70d6",
+        "value": "34778469972635561427"
+      },
+      {
+        "token": "0xaa036928c9c0df07d525b55ea8ee690bb5a628c1",
+        "from": "0xa2a8317a97dbd4a6af0be9f23c187765d28b70d6",
+        "to": "0x26deb24a2623cf54452ab5183e2c34551831d54d",
+        "value": "52940427845638561792"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0xa2a8317a97dbd4a6af0be9f23c187765d28b70d6",
+        "to": "0xccb5e080c38e4e7a1c6437db53bcbe016e45b9db",
+        "value": "34769595687919040690"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0xa2a8317a97dbd4a6af0be9f23c187765d28b70d6",
+        "to": "0x16b9a82891338f9ba80e2d6970fdda79d1eb0dae",
+        "value": "8874284716520737"
+      },
+      {
+        "token": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+        "from": "0x16b9a82891338f9ba80e2d6970fdda79d1eb0dae",
+        "to": "0xa2a8317a97dbd4a6af0be9f23c187765d28b70d6",
+        "value": "14699088887706"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0xdaddaf65d9decf3c396fe59221b5168474224ce264e852a9f304b1ddd50c24c5",
+      "block": "104740172",
+      "timestamp": "2026-06-17T10:13:09.000Z",
+      "wallet": "0xd26e30a14835e9396ee34c96527e981e5a906406",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+      "tokenInSym": "BUSD",
+      "amountIn": "96892990415000074",
+      "amountInHuman": "0.096892",
+      "tokenOut": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenOutSym": "WBNB",
+      "amountOut": "161001698370275",
+      "amountOutHuman": "0.000161",
+      "bscscan": "https://bscscan.com/tx/0xdaddaf65d9decf3c396fe59221b5168474224ce264e852a9f304b1ddd50c24c5",
+      "flags": []
+    },
+    "tx": {
+      "from": "0xd26e30a14835e9396ee34c96527e981e5a906406",
+      "to": "0x8a14f589cbef104c0c742fa3b6039210f32d81b6",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+        "from": "0xcb99fe720124129520f7a09ca3cbef78d58ed934",
+        "to": "0x8a14f589cbef104c0c742fa3b6039210f32d81b6",
+        "value": "161001698370275"
+      },
+      {
+        "token": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+        "from": "0x8a14f589cbef104c0c742fa3b6039210f32d81b6",
+        "to": "0xc107783281b54616abfa46135ec9a167450cf0b0",
+        "value": "160587364067615"
+      },
+      {
+        "token": "0xf9b27685bfaaf96aaedffd45da69bf7f5d0ea07d",
+        "from": "0xc107783281b54616abfa46135ec9a167450cf0b0",
+        "to": "0x218214f5cc66768965a92f1f5f300d9b07d3b8e2",
+        "value": "130852486341999402668"
+      },
+      {
+        "token": "0xe9e7cea3dedca5984780bafc599bd69add087d56",
+        "from": "0x218214f5cc66768965a92f1f5f300d9b07d3b8e2",
+        "to": "0xcb99fe720124129520f7a09ca3cbef78d58ed934",
+        "value": "96892990415000075"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0xe642abc6b87bf6c61a4802819a84e598593056f31381b855db9dd8024eb1cc1c",
+      "block": "104740174",
+      "timestamp": "2026-06-17T10:13:10.000Z",
+      "wallet": "0x27e1e2b516ee9dc973adb35a8ebe1a14a424ee6b",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0xD0DeB481e4Ab6DB5bDcBcdE45bFa481558c08E55",
+      "tokenInSym": "NEXUSX",
+      "amountIn": "2980583310884745252",
+      "amountInHuman": "2.980583",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "2498438514986963421",
+      "amountOutHuman": "2.498438",
+      "bscscan": "https://bscscan.com/tx/0xe642abc6b87bf6c61a4802819a84e598593056f31381b855db9dd8024eb1cc1c",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x27e1e2b516ee9dc973adb35a8ebe1a14a424ee6b",
+      "to": "0x31d6ea082acc3d4e377528a721ac5c4b891726fb",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0xd0deb481e4ab6db5bdcbcde45bfa481558c08e55",
+        "from": "0x7e5ae3e2d80db7ab268f34d042126b3aa4ed86fa",
+        "to": "0x36228aac3ccd3f932011062ac163ed23a0fc9fcd",
+        "value": "45389593566772770"
+      },
+      {
+        "token": "0xd0deb481e4ab6db5bdcbcde45bfa481558c08e55",
+        "from": "0x7e5ae3e2d80db7ab268f34d042126b3aa4ed86fa",
+        "to": "0x31d6ea082acc3d4e377528a721ac5c4b891726fb",
+        "value": "2980583310884745252"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x6c15c8e68a99594542ebb9e65d6d7cb67e208a0f",
+        "to": "0x31d6ea082acc3d4e377528a721ac5c4b891726fb",
+        "value": "2498438514986963421"
+      },
+      {
+        "token": "0xd0deb481e4ab6db5bdcbcde45bfa481558c08e55",
+        "from": "0x31d6ea082acc3d4e377528a721ac5c4b891726fb",
+        "to": "0x6c15c8e68a99594542ebb9e65d6d7cb67e208a0f",
+        "value": "2980583310884745252"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x31d6ea082acc3d4e377528a721ac5c4b891726fb",
+        "to": "0x7e5ae3e2d80db7ab268f34d042126b3aa4ed86fa",
+        "value": "2065527465155037801"
+      },
+      {
+        "token": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+        "from": "0x172fcd41e0913e95784454622d1c3724f546f849",
+        "to": "0x31d6ea082acc3d4e377528a721ac5c4b891726fb",
+        "value": "718865069828042"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x31d6ea082acc3d4e377528a721ac5c4b891726fb",
+        "to": "0x172fcd41e0913e95784454622d1c3724f546f849",
+        "value": "432911049831925620"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x81370118b43a2dab02d6d74eae9e1c2c1d0c388b8880dde86d9c2ae7583d0cfe",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x15e04e4890c6019cbe693c37688c3f326e8806d1",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x87acfa3fd7a6e0d48677d070644d76905c2bdc00",
+      "tokenInSym": "SPACE",
+      "amountIn": "13590000000000000524288",
+      "amountInHuman": "13590",
+      "tokenOut": "0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d",
+      "tokenOutSym": "USD1",
+      "amountOut": "101600808718265429069",
+      "amountOutHuman": "101.600808",
+      "bscscan": "https://bscscan.com/tx/0x81370118b43a2dab02d6d74eae9e1c2c1d0c388b8880dde86d9c2ae7583d0cfe",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x15e04e4890c6019cbe693c37688c3f326e8806d1",
+      "to": "0x1e1ebf170bb49659297b09d9f80abfdc235a85e2",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x87acfa3fd7a6e0d48677d070644d76905c2bdc00",
+        "from": "0x1e1ebf170bb49659297b09d9f80abfdc235a85e2",
+        "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "value": "13590000000000000524288"
+      },
+      {
+        "token": "0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d",
+        "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "to": "0x1e1ebf170bb49659297b09d9f80abfdc235a85e2",
+        "value": "101600808718265429069"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0xbfc3251ad13bb3f1bc19d2c5a5dd4efe8415770bae6557b7ecde406b4c386b4b",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0xe56d735d488ee5e41a2a971be4cd68213775cce1",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0xcf3232b85b43bca90e51d38cc06cc8bb8c8a3e36",
+      "tokenInSym": "Beat",
+      "amountIn": "93180930176300700000",
+      "amountInHuman": "93.18093",
+      "tokenOut": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "175386481782322002974",
+      "amountOutHuman": "175.386481",
+      "bscscan": "https://bscscan.com/tx/0xbfc3251ad13bb3f1bc19d2c5a5dd4efe8415770bae6557b7ecde406b4c386b4b",
+      "flags": []
+    },
+    "tx": {
+      "from": "0xe56d735d488ee5e41a2a971be4cd68213775cce1",
+      "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+        "value": "175386481782322002974"
+      },
+      {
+        "token": "0xcf3232b85b43bca90e51d38cc06cc8bb8c8a3e36",
+        "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+        "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "value": "93180930176300700000"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x5406c2846e744583e177dd11210817a10a9b446358faf3ad671c419da1b542be",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0xe6d0bb4f4d007b6a6806f699d00956a43b004636",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0xcf3232b85b43bca90e51d38cc06cc8bb8c8a3e36",
+      "tokenInSym": "Beat",
+      "amountIn": "74639027862753749381",
+      "amountInHuman": "74.639027",
+      "tokenOut": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "140444299246204781377",
+      "amountOutHuman": "140.444299",
+      "bscscan": "https://bscscan.com/tx/0x5406c2846e744583e177dd11210817a10a9b446358faf3ad671c419da1b542be",
+      "flags": []
+    },
+    "tx": {
+      "from": "0xe6d0bb4f4d007b6a6806f699d00956a43b004636",
+      "to": "0x3b4945745608768f37de52f39874cb48ddfed762",
+      "value": "18670000000000"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "to": "0x3b4945745608768f37de52f39874cb48ddfed762",
+        "value": "140444299246204781377"
+      },
+      {
+        "token": "0xcf3232b85b43bca90e51d38cc06cc8bb8c8a3e36",
+        "from": "0x3b4945745608768f37de52f39874cb48ddfed762",
+        "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "value": "74639027862753749381"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x98a0cdff4611a391409a6e48eea2fc83a4ef32b02f5d7ce65fdbf9dbf3e90850",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x5a8abca0c7fa49e5e276ec1aac7c68ae6a5e3601",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0xb0b92de23baa85fb06208277e925ced53edab482",
+      "tokenInSym": "TRIA",
+      "amountIn": "1346275281205190000000",
+      "amountInHuman": "1346.275281",
+      "tokenOut": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "42437161364400724665",
+      "amountOutHuman": "42.437161",
+      "bscscan": "https://bscscan.com/tx/0x98a0cdff4611a391409a6e48eea2fc83a4ef32b02f5d7ce65fdbf9dbf3e90850",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x5a8abca0c7fa49e5e276ec1aac7c68ae6a5e3601",
+      "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+        "value": "42437161364400724665"
+      },
+      {
+        "token": "0xb0b92de23baa85fb06208277e925ced53edab482",
+        "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+        "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "value": "1346275281205190000000"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x1900863e368e093a33404b5a293c9ec4cc9a6da9d61184cf58b0f0a36ec2b3e8",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x22e4668ab0c1ee4a249f3a8a975f2ad780b08444",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x9b6a1d4fa5d90e5f2d34130053978d14cd301d58",
+      "tokenInSym": "DN",
+      "amountIn": "34125304719236083712",
+      "amountInHuman": "34.125304",
+      "tokenOut": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "20995055787540674835",
+      "amountOutHuman": "20.995055",
+      "bscscan": "https://bscscan.com/tx/0x1900863e368e093a33404b5a293c9ec4cc9a6da9d61184cf58b0f0a36ec2b3e8",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x22e4668ab0c1ee4a249f3a8a975f2ad780b08444",
+      "to": "0x3bc367866468d4f80096be899b66ab29d03f2717",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x9b6a1d4fa5d90e5f2d34130053978d14cd301d58",
+        "from": "0x3bc367866468d4f80096be899b66ab29d03f2717",
+        "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "value": "34125304719236083712"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "to": "0x3bc367866468d4f80096be899b66ab29d03f2717",
+        "value": "20995055787540674835"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x07f24138d462d6511922348635cfd45f6664a3549d8382389193e94cb65258cd",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0xb32e38df51587fe41fb343943a370dfc7a3d1f05",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x87acfa3fd7a6e0d48677d070644d76905c2bdc00",
+      "tokenInSym": "SPACE",
+      "amountIn": "30712795895249872845060",
+      "amountInHuman": "30712.795895",
+      "tokenOut": "0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d",
+      "tokenOutSym": "USD1",
+      "amountOut": "229537276808854486958",
+      "amountOutHuman": "229.537276",
+      "bscscan": "https://bscscan.com/tx/0x07f24138d462d6511922348635cfd45f6664a3549d8382389193e94cb65258cd",
+      "flags": []
+    },
+    "tx": {
+      "from": "0xb32e38df51587fe41fb343943a370dfc7a3d1f05",
+      "to": "0x6245517f5403b276eab78a42a78edc9b144e2c97",
+      "value": "3720000000132"
+    },
+    "transfers": [
+      {
+        "token": "0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d",
+        "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "to": "0x6245517f5403b276eab78a42a78edc9b144e2c97",
+        "value": "229537276808854486958"
+      },
+      {
+        "token": "0x87acfa3fd7a6e0d48677d070644d76905c2bdc00",
+        "from": "0x6245517f5403b276eab78a42a78edc9b144e2c97",
+        "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "value": "30712795895249872845060"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x876aa5e0a54774d3cc162a78fe4a2076be345625cad2535e611f265368420eb7",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x64b00a5a46a0602cd45ea856a9d6535d76410e34",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x475cbf5919608e0c6af00e7bf87fab83bf3ef6e2",
+      "tokenInSym": "ROBO",
+      "amountIn": "7871492749799191848336",
+      "amountInHuman": "7871.492749",
+      "tokenOut": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+      "tokenOutSym": "USDC",
+      "amountOut": "157144042552206058700",
+      "amountOutHuman": "157.144042",
+      "bscscan": "https://bscscan.com/tx/0x876aa5e0a54774d3cc162a78fe4a2076be345625cad2535e611f265368420eb7",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x64b00a5a46a0602cd45ea856a9d6535d76410e34",
+      "to": "0xe94753d6e067d25e0dbe90ed782b7ea21475fc48",
+      "value": "7680000000000"
+    },
+    "transfers": [
+      {
+        "token": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+        "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "to": "0xe94753d6e067d25e0dbe90ed782b7ea21475fc48",
+        "value": "157144042552206058700"
+      },
+      {
+        "token": "0x475cbf5919608e0c6af00e7bf87fab83bf3ef6e2",
+        "from": "0xe94753d6e067d25e0dbe90ed782b7ea21475fc48",
+        "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "value": "7871492749799191848336"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x8c5e4e0eee05be94a11efc476b25629eb2a320697e4e506056040d54a96d1d32",
+      "block": "104740170",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x6812a6921539d7dc53b20cdae44bff2d187f651c",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x9dc44ae5be187eca9e2a67e33f27a4c91cea1223",
+      "tokenInSym": "POWER",
+      "amountIn": "669384702138970000000",
+      "amountInHuman": "669.384702",
+      "tokenOut": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "49407473522464217173",
+      "amountOutHuman": "49.407473",
+      "bscscan": "https://bscscan.com/tx/0x8c5e4e0eee05be94a11efc476b25629eb2a320697e4e506056040d54a96d1d32",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x6812a6921539d7dc53b20cdae44bff2d187f651c",
+      "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+        "value": "49407473522464217173"
+      },
+      {
+        "token": "0x9dc44ae5be187eca9e2a67e33f27a4c91cea1223",
+        "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+        "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "value": "669384702138970000000"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x2465e38662d8ff30dfe71a79bb4433fe309706341983a155243b3015e46a67aa",
+      "block": "104740171",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x1f67f6a095e6da4a936c0b2d8105c1d1cd9103f5",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "412047815025447317468",
+      "amountInHuman": "412.047815",
+      "tokenOut": "0x81d3a238b02827f62b9f390f947d36d4a5bf89d2",
+      "tokenOutSym": "CLO",
+      "amountOut": "2756000000000000000000",
+      "amountOutHuman": "2756",
+      "bscscan": "https://bscscan.com/tx/0x2465e38662d8ff30dfe71a79bb4433fe309706341983a155243b3015e46a67aa",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x1f67f6a095e6da4a936c0b2d8105c1d1cd9103f5",
+      "to": "0x00002b0917f313b8dd648e38b33574ede37a951f",
+      "value": "0"
+    },
+    "transfers": [
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x60b97709d633dd4e0f0f44f6102fd50341c0afa6",
+        "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "value": "412047815025447317468"
+      },
+      {
+        "token": "0x81d3a238b02827f62b9f390f947d36d4a5bf89d2",
+        "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "to": "0x2087d8fe927966fee758ba5563fb8f2347180b7c",
+        "value": "2756000000000000000000"
+      },
+      {
+        "token": "0x81d3a238b02827f62b9f390f947d36d4a5bf89d2",
+        "from": "0x2087d8fe927966fee758ba5563fb8f2347180b7c",
+        "to": "0x60b97709d633dd4e0f0f44f6102fd50341c0afa6",
+        "value": "2756000000000000000000"
+      }
+    ]
+  },
+  {
+    "trade": {
+      "txHash": "0x48a7cadb2eca2973ef5b1397fc735a87c1ef98248c4e302b953d7ae134691ff3",
+      "block": "104740171",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x3b8c1c9e0f3847876a3ecb379549f09c80e237e1",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "137856736850516102044",
+      "amountInHuman": "137.856736",
+      "tokenOut": "0x81d3a238b02827f62b9f390f947d36d4a5bf89d2",
+      "tokenOutSym": "CLO",
+      "amountOut": "921494109909201923543",
+      "amountOutHuman": "921.494109",
+      "bscscan": "https://bscscan.com/tx/0x48a7cadb2eca2973ef5b1397fc735a87c1ef98248c4e302b953d7ae134691ff3",
+      "flags": []
+    },
+    "tx": {
+      "from": "0x3b8c1c9e0f3847876a3ecb379549f09c80e237e1",
+      "to": "0x3b4945745608768f37de52f39874cb48ddfed762",
+      "value": "37340000000000"
+    },
+    "transfers": [
+      {
+        "token": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+        "from": "0xee6ff918a1f68b5d2fdecb14b367fa2eb5c6951c",
+        "to": "0x3b4945745608768f37de52f39874cb48ddfed762",
+        "value": "86812996995006719"
+      },
+      {
+        "token": "0x3aee7602b612de36088f3ffed8c8f10e86ebf2bf",
+        "from": "0x3b4945745608768f37de52f39874cb48ddfed762",
+        "to": "0xee6ff918a1f68b5d2fdecb14b367fa2eb5c6951c",
+        "value": "1300788728408324680424"
+      },
+      {
+        "token": "0x81d3a238b02827f62b9f390f947d36d4a5bf89d2",
+        "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "to": "0x3b4945745608768f37de52f39874cb48ddfed762",
+        "value": "921494109909201923543"
+      },
+      {
+        "token": "0x55d398326f99059ff775485246999027b3197955",
+        "from": "0x3b4945745608768f37de52f39874cb48ddfed762",
+        "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+        "value": "137856736850516102044"
+      }
+    ]
+  }
+]

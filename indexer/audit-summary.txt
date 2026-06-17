@@ -1,0 +1,384 @@
+══════════════════════════════════════════════════════════════════════
+MANUAL AUDIT SHEET — Direct User Swaps
+Generated: 2026-06-17T11:10:27.590Z
+══════════════════════════════════════════════════════════════════════
+
+Filters applied:
+  ✓ Single-hop only (txHash unique in report)
+  ✓ No circular/arbitrage route
+  ✓ Wallet frequency ≤ 4 trades per 100-block window
+  ✓ At least one well-known token (WBNB / USDT / USDC / BUSD / etc.)
+  ✓ No EXTREME_PRICE_RATIO flag
+  ✓ Fee-on-transfer checked (V2/V3): no tax > 0.5%
+  ✓ Non-zero human-readable amounts
+
+Verify on BscScan: wallet address, token symbols, amounts (18-dec precision).
+
+══════════════════════════════════════════════════════════════════════
+PANCAKESWAP-V2 — 10 trades
+══════════════════════════════════════════════════════════════════════
+
+[01] https://bscscan.com/tx/0x6b1b08ae705a9a95a53bf5e4f04fb51aa409c9d926c20c89ff85782258ca06f6
+     Wallet:  0xc9ee69f087f95fb74bba4e5ef62e53e59a54da92
+     Sold:    0.047784             WBNB (0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c)
+     Bought:  291864.584746        BBFT (0xfB69e2d3d673A8DB9Fa74ffc036A8Cf641255769)
+     Block:   104740190  2026-06-17T10:13:17.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [x] Token sent:    WBNB — amount matches Sold
+     [x] Token received: BBFT — amount matches Bought
+
+[02] https://bscscan.com/tx/0x2d5b29424a4c86c7d58c1232be12abad6efc642e1c85d387402ea387f1f3e288
+     Wallet:  0x6c1c0d3044217c918794f47b0dd3d5c52a752ef2
+     Sold:    6.511679             USDT (0x55d398326f99059fF775485246999027B3197955)
+     Bought:  5.190264             GOT (0x701add4311E85c1f9C1549319fe2c476bc8a1b8b)
+     Block:   104740255  2026-06-17T10:13:46.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [x] Token sent:    USDT — amount matches Sold
+     [x] Token received: GOT — amount matches Bought
+
+[03] https://bscscan.com/tx/0xd4b61a486623222dd71fa412a8654f4e64e9b9a4b39a9637db69590a1c7faecd
+     Wallet:  0xed451593442f932c61600cce4d11341591fd1df2
+     Sold:    49.85                USDT (0x55d398326f99059fF775485246999027B3197955)
+     Bought:  2301.577738          METAS (0x567fd5658f48C1c826a912ea1Ba37696A6B32006)
+     Block:   104740261  2026-06-17T10:13:49.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [x] Token sent:    USDT — amount matches Sold
+     [x] Token received: METAS — amount matches Bought
+
+[04] https://bscscan.com/tx/0x48060b610cf922d81c8f2c568cbfa0faf456c89f749e8636af44daaf16a087b2
+     Wallet:  0xf9596d7e07bfab1c494ebcb6fa8d29e8adf41e95
+     Sold:    71221.77196          RE (0x13aBDC89aD5cf15074D5732da19D03e4F9c343F4)
+     Bought:  1484.077787          USDT (0x55d398326f99059fF775485246999027B3197955)
+     Block:   104740200  2026-06-17T10:13:21.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    RE — amount matches Sold
+     [FAIL] Token received: USDT — amount matches Bought
+
+[05] https://bscscan.com/tx/0xf9df231e377406f24a4c5c9132c4298a13fc4ea7864f9e220b21d69ebc3efcd1
+     Wallet:  0x324479ef80458e08325931e29b5ef8f0b53c1f5a
+     Sold:    0.1091               WBNB (0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c)
+     Bought:  383839.467486        属狗 (0xbDb37ad0B5b39f2E41FA87AEc9bF76D6Ea246D21)
+     Block:   104740264  2026-06-17T10:13:50.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [x] Token sent:    WBNB — amount matches Sold
+     [FAIL] Token received: 属狗 — amount matches Bought
+
+[06] https://bscscan.com/tx/0xfaf44d335dd2326106720d7f1118d0b16cf86d49f244b1a5863091b72b1bb0c8
+     Wallet:  0xf9f52c24663866a1d901c6378823eae89935db41
+     Sold:    2674927.920977       凡尔赛玫瑰 (0xaa67B10258843f402cC95aF02E5F60a167234444)
+     Bought:  0.10562              WBNB (0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c)
+     Block:   104740235  2026-06-17T10:13:37.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    凡尔赛玫瑰 — amount matches Sold
+     [FAIL] Token received: WBNB — amount matches Bought
+
+[07] https://bscscan.com/tx/0xdf1db8f675d879be443c657167d4ba422b0b559ad08a9d7860b54e139178f647
+     Wallet:  0x5cbd810bdb6c71a74eb7e2cd8c7f876c6ef85661
+     Sold:    19007.239288         USDT (0x55d398326f99059fF775485246999027B3197955)
+     Bought:  1086772.832647       O (0x1126A53AF6Ba337b988F6d85A594b46d42AC96E4)
+     Block:   104740264  2026-06-17T10:13:50.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    USDT — amount matches Sold
+     [FAIL] Token received: O — amount matches Bought
+
+[08] https://bscscan.com/tx/0x547885f2e2b4fff303b2676da0862d021801c9a2bb2512cd49015420965f315e
+     Wallet:  0x08d43d24495a7f7f82df348dcbf08d0206038f6f
+     Sold:    3942.403992          ELEU (0xaaAd33E1edb32dac799b748dEE70c53f76fE4444)
+     Bought:  0.033028             WBNB (0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c)
+     Block:   104740179  2026-06-17T10:13:12.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [x] Token sent:    ELEU — amount matches Sold
+     [FAIL] Token received: WBNB — amount matches Bought
+
+[09] https://bscscan.com/tx/0xc4265679a2c3e906d05eb2befae58b34e00e353b6e5db4a143b4ba586200ef9a
+     Wallet:  0xb5cb0557d4d281813bf5073c05e10d8896dc145b
+     Sold:    0.885792             B2 (0x783c3f003f172c6Ac5AC700218a357d2D66Ee2a2)
+     Bought:  0.402481             USDT (0x55d398326f99059fF775485246999027B3197955)
+     Block:   104740194  2026-06-17T10:13:19.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    B2 — amount matches Sold
+     [FAIL] Token received: USDT — amount matches Bought
+
+[10] https://bscscan.com/tx/0x9d46a96dfc122ebbf86c25a632d8db6b7a0b930e98cb135f8587472411d72d81
+     Wallet:  0x5626a1aacc96116512ac947fb357fa944fd24298
+     Sold:    0.000139             WBNB (0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c)
+     Bought:  65.1491              DRAGON (0x66969ecD173451F00a4652a53acc6246569D4444)
+     Block:   104740188  2026-06-17T10:13:16.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    WBNB — amount matches Sold
+     [FAIL] Token received: DRAGON — amount matches Bought
+
+══════════════════════════════════════════════════════════════════════
+PANCAKESWAP-V3 — 10 trades
+══════════════════════════════════════════════════════════════════════
+
+[01] https://bscscan.com/tx/0x59b882268c34d611f727c8d7e537b8db54054fc78a29f7eaa6d64eb8b398865a
+     Wallet:  0x89f37b1c2d14c8927791ee9f0ceda3b6cbf76ba5
+     Sold:    100                  AIT (0xEECa71A751AB52F25A371065d168E0FCc3c8b00D)
+     Bought:  3.987901             USDT (0x55d398326f99059fF775485246999027B3197955)
+     Block:   104740201  2026-06-17T10:13:22.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [x] Token sent:    AIT — amount matches Sold
+     [x] Token received: USDT — amount matches Bought
+
+[02] https://bscscan.com/tx/0x7e158ecffb3295061ec102364349584949259a59ab7499010b7166d62e63f422
+     Wallet:  0x8da7e596d3bd4ac7e550d13e8aba451aa75d72b0
+     Sold:    111.111111           AIT (0xEECa71A751AB52F25A371065d168E0FCc3c8b00D)
+     Bought:  4.430974             USDT (0x55d398326f99059fF775485246999027B3197955)
+     Block:   104740214  2026-06-17T10:13:28.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [x] Token sent:    AIT — amount matches Sold
+     [x] Token received: USDT — amount matches Bought
+
+[03] https://bscscan.com/tx/0x173c114fd5359989dcb9dcffabd181f16eb29bd7cdfff7bf2318db5fa8445e88
+     Wallet:  0xd5b9eed95db6c84ae663d76a49b61ea658520d73
+     Sold:    121.678375           BSB (0x595dEaad1eB5476Ff1E649fDb7EFC36F1E4679cc)
+     Bought:  67.399811            USDT (0x55d398326f99059fF775485246999027B3197955)
+     Block:   104740237  2026-06-17T10:13:38.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    BSB — amount matches Sold
+     [FAIL] Token received: USDT — amount matches Bought
+
+[04] https://bscscan.com/tx/0x664b81cabde931a07628960771d4b17247c52e137d31b0e84869f5272c488c00
+     Wallet:  0xb0b7e3cc9e3440d513470a88e569226d2a3d2ec3
+     Sold:    111.111111           AIT (0xEECa71A751AB52F25A371065d168E0FCc3c8b00D)
+     Bought:  4.430966             USDT (0x55d398326f99059fF775485246999027B3197955)
+     Block:   104740214  2026-06-17T10:13:28.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [x] Token sent:    AIT — amount matches Sold
+     [x] Token received: USDT — amount matches Bought
+
+[05] https://bscscan.com/tx/0xdd8f30ad2ab268cce607592db08f6df95291bc35e7701eb8f675b6883a63945f
+     Wallet:  0x8298477b5d6ac42b3e4d82434f678634c723556c
+     Sold:    0.179891             WBNB (0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c)
+     Bought:  108.29857            USDT (0x55d398326f99059fF775485246999027B3197955)
+     Block:   104740231  2026-06-17T10:13:35.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    WBNB — amount matches Sold
+     [FAIL] Token received: USDT — amount matches Bought
+
+[06] https://bscscan.com/tx/0x728c26efe220fa5ed65fda1e7d50d253f23a2f7563405cad9963f1d4387a710e
+     Wallet:  0x0d0032a610268ad79165718fd246f6942fd77dd5
+     Sold:    100                  AIT (0xEECa71A751AB52F25A371065d168E0FCc3c8b00D)
+     Bought:  3.987797             USDT (0x55d398326f99059fF775485246999027B3197955)
+     Block:   104740225  2026-06-17T10:13:33.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [x] Token sent:    AIT — amount matches Sold
+     [x] Token received: USDT — amount matches Bought
+
+[07] https://bscscan.com/tx/0xaa998dc54b7308631a61d1ecb630b3df3848ed7c0e2cb94e2d6c291edf89ec18
+     Wallet:  0x3980daa7eaad0b7e0c53cfc5c2760037270da54d
+     Sold:    250                  BSB (0x595dEaad1eB5476Ff1E649fDb7EFC36F1E4679cc)
+     Bought:  138.346068           USDT (0x55d398326f99059fF775485246999027B3197955)
+     Block:   104740220  2026-06-17T10:13:30.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    BSB — amount matches Sold
+     [FAIL] Token received: USDT — amount matches Bought
+
+[08] https://bscscan.com/tx/0x47d8a2f9ec1a427a25ae5793196eb114437251c4110a84f10ae98f1df6f26692
+     Wallet:  0xcf32cdfdd4e2ad8199339d6aa1f57efb3a011ac6
+     Sold:    100                  AIT (0xEECa71A751AB52F25A371065d168E0FCc3c8b00D)
+     Bought:  3.987844             USDT (0x55d398326f99059fF775485246999027B3197955)
+     Block:   104740220  2026-06-17T10:13:30.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [x] Token sent:    AIT — amount matches Sold
+     [x] Token received: USDT — amount matches Bought
+
+[09] https://bscscan.com/tx/0x579aec0f9706cb94b078313aba7349eefc0f613c5db1a2d6223093398d68d75a
+     Wallet:  0x450745f1a2ba96942526b37c0d30b636cd8ef636
+     Sold:    200                  AIT (0xEECa71A751AB52F25A371065d168E0FCc3c8b00D)
+     Bought:  7.975622             USDT (0x55d398326f99059fF775485246999027B3197955)
+     Block:   104740225  2026-06-17T10:13:33.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [x] Token sent:    AIT — amount matches Sold
+     [x] Token received: USDT — amount matches Bought
+
+[10] https://bscscan.com/tx/0xcee7e64d8686d6a7aa3af2e42734da1c7676079bb9e84a1a113fe858aa3709a4
+     Wallet:  0xbafd3f1b9667e1f7e2809e9f391691ccbd3a3e0b
+     Sold:    52.265524            USDT (0x55d398326f99059fF775485246999027B3197955)
+     Bought:  79.539748            EVAA (0xaa036928c9c0Df07d525B55ea8EE690Bb5a628C1)
+     Block:   104740175  2026-06-17T10:13:10.000Z
+     Fee chk: clean
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    USDT — amount matches Sold
+     [FAIL] Token received: EVAA — amount matches Bought
+
+══════════════════════════════════════════════════════════════════════
+PANCAKESWAP-V4 — 10 trades
+══════════════════════════════════════════════════════════════════════
+
+[01] https://bscscan.com/tx/0xcd305b247d3e0fc435e6c3719932d4bb381ce31d70dd1bc456ed2fcc12dc02c7
+     Wallet:  0xf3f449eb9f9ece8309f39d55374c47f5678b63b6
+     Sold:    538.167991           USDC (0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d)
+     Bought:  3435.446724          OPG (0x5feccd17c393caf1001d18164236a37e731fcb9d)
+     Block:   104740210  2026-06-17T10:13:26.000Z
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    USDC — amount matches Sold
+     [FAIL] Token received: OPG — amount matches Bought
+
+[02] https://bscscan.com/tx/0x5cf1f15b960dcab7d14c5abb869739634c11ece50680e5bab3b16a5d2781e7a8
+     Wallet:  0x832df8a2d7712977e725cd8f67dba872eb50956f
+     Sold:    160.256814           USDT (0x55d398326f99059ff775485246999027b3197955)
+     Bought:  987.621188           PRL (0xd20fb09a49a8e75fef536a2dbc68222900287bac)
+     Block:   104740231  2026-06-17T10:13:35.000Z
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    USDT — amount matches Sold
+     [FAIL] Token received: PRL — amount matches Bought
+
+[03] https://bscscan.com/tx/0xe89b132b93c6d83fe9bc7bb862aeba938a7558d439d2d6de39ef8bf47dce4a8f
+     Wallet:  0xbf1b8dc88af9d7d3451566c0771ae36983d3ef7d
+     Sold:    7435032.7            NEX (0x365de036a1f7dccb621530d517133521debb2013)
+     Bought:  22.465371            USDT (0x55d398326f99059ff775485246999027b3197955)
+     Block:   104740192  2026-06-17T10:13:18.000Z
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    NEX — amount matches Sold
+     [FAIL] Token received: USDT — amount matches Bought
+
+[04] https://bscscan.com/tx/0xdb09e7ea56e2d9b67aac51b4f375b20c9198e1b3f93c9933806fc92408fdeb8e
+     Wallet:  0x5d5275ca4829ce03a9df9703ed82c97920605623
+     Sold:    24.849276            FOLKS (0xff7f8f301f7a706e3cfd3d2275f5dc0b9ee8009b)
+     Bought:  51.944081            USDT (0x55d398326f99059ff775485246999027b3197955)
+     Block:   104740171  2026-06-17T10:13:08.000Z
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    FOLKS — amount matches Sold
+     [FAIL] Token received: USDT — amount matches Bought
+
+[05] https://bscscan.com/tx/0x4f14a15e0dd80b5ba94ccf6d47d7e9f28ed563ccda8e5a522bb7127ea85c10f5
+     Wallet:  0xab5430b68271bb53b13ee3962e9647a84a6fa96d
+     Sold:    187.709076           USDT (0x55d398326f99059ff775485246999027b3197955)
+     Bought:  2845.820325          BTW (0x444045b0ee1ee319a660a5e3d604ca0ffa35acaa)
+     Block:   104740173  2026-06-17T10:13:09.000Z
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    USDT — amount matches Sold
+     [FAIL] Token received: BTW — amount matches Bought
+
+[06] https://bscscan.com/tx/0x444bc110c4412c9845881be9fd582253140950a55befecd4dec1af4eb87e49d3
+     Wallet:  0x60adeb78b64f4f269dd209d31ed2a7289e186d69
+     Sold:    188.801212           USDT (0x55d398326f99059ff775485246999027b3197955)
+     Bought:  37.390311            RIVER (0xda7ad9dea9397cffddae2f8a052b82f1484252b3)
+     Block:   104740206  2026-06-17T10:13:24.000Z
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    USDT — amount matches Sold
+     [FAIL] Token received: RIVER — amount matches Bought
+
+[07] https://bscscan.com/tx/0x461a2cc6b5806cefd04413340975f588d06dd031adb50dd99ee14083e607513d
+     Wallet:  0x2ccc798fee83245096b83c1f6e39adf5416ea8d6
+     Sold:    83.949119            USDT (0x55d398326f99059ff775485246999027b3197955)
+     Bought:  58.345381            RTX (0x4829a1d1fb6ded1f81d26868ab8976648baf9893)
+     Block:   104740171  2026-06-17T10:13:08.000Z
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    USDT — amount matches Sold
+     [FAIL] Token received: RTX — amount matches Bought
+
+[08] https://bscscan.com/tx/0xf160543cda61980c18a533fd1a0b93632b6685dce8e7eb05e802fca565555ea8
+     Wallet:  0x0b2fdbfd27f16bf00ad0fd72c4050004cf5f28b4
+     Sold:    26.818116            USDT (0x55d398326f99059ff775485246999027b3197955)
+     Bought:  89.311177            RAVE (0x97693439ea2f0ecdeb9135881e49f354656a911c)
+     Block:   104740176  2026-06-17T10:13:11.000Z
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    USDT — amount matches Sold
+     [FAIL] Token received: RAVE — amount matches Bought
+
+[09] https://bscscan.com/tx/0x3bb243995908c04d0b74bcee55b71ccca4ef3b5a2d4532947ff9f657a335683b
+     Wallet:  0xf9be3e564b06de9c0524e11647bf958f2a80635d
+     Sold:    329                  EDGE (0x70f2eadf1ca1969ff42b0c78e9da519e8937cbaf)
+     Bought:  118.685167           USDT (0x55d398326f99059ff775485246999027b3197955)
+     Block:   104740247  2026-06-17T10:13:42.000Z
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    EDGE — amount matches Sold
+     [FAIL] Token received: USDT — amount matches Bought
+
+[10] https://bscscan.com/tx/0xd719e467ef70794643b68e126e7de932d46e51bfc68136fb5d6f1c1278bc5d3a
+     Wallet:  0xdb448c8d37cf0b3875793ec1e49b15ed24b511e8
+     Sold:    0.104265             WBNB (0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c)
+     Bought:  2949.02388           MITO (0x8e1e6bf7e13c400269987b65ab2b5724b016caef)
+     Block:   104740233  2026-06-17T10:13:36.000Z
+
+     BscScan columns to verify:
+     [x] From:   matches wallet above
+     [FAIL] Token sent:    WBNB — amount matches Sold
+     [FAIL] Token received: MITO — amount matches Bought
+
+══════════════════════════════════════════════════════════════════════
+SUMMARY: 30 trades ready for manual BscScan verification
+  V2: 10 / 10
+  V3: 10 / 10
+  V4: 10 / 10
+══════════════════════════════════════════════════════════════════════

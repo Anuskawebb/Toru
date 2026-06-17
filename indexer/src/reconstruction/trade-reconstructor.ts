@@ -156,36 +156,42 @@ function resolveV4Tokens(raw: RawSwap): { token0: `0x${string}`; token1: `0x${st
   let token1: `0x${string}` | null = null;
 
   for (const t of transfers) {
-    if (t.amount === abs0 && token0 === null) {
-      token0 = t.token;
-    }
-    if (t.amount === abs1 && token1 === null) {
-      token1 = t.token;
-    }
+    if (t.amount === abs0 && token0 === null) token0 = t.token;
+    if (t.amount === abs1 && token1 === null) token1 = t.token;
   }
 
-  // Fallback if one of the legs is native BNB (which has no ERC-20 Transfer event)
-  if (token0 === null && abs0 > 0n) {
-    token0 = WBNB;
-  }
-  if (token1 === null && abs1 > 0n) {
-    token1 = WBNB;
-  }
+  // Native-BNB fallback: BNB has no ERC-20 Transfer. If exactly ONE side is
+  // unresolved and the other was found, the missing side is likely native BNB.
+  // We do NOT apply this when BOTH sides are unresolved — that signals an
+  // intermediate hop in a multi-hop V4 tx where internal tokens never touch
+  // the user's wallet (the amounts come from pool-to-pool routing).
+  if (token0 !== null && token1 === null && abs1 > 0n) token1 = WBNB;
+  if (token1 !== null && token0 === null && abs0 > 0n) token0 = WBNB;
 
-  if (token0 !== null && token1 !== null) {
-    return { token0, token1 };
-  }
+  if (token0 !== null && token1 !== null) return { token0, token1 };
   return null;
 }
 
 // ── Public entry point ────────────────────────────────────────────────────────
+
+// Multi-hop design decision:
+//
+// A 2-hop swap (TOKEN_A → WBNB → TOKEN_B) emits two Swap events, one per pool.
+// This function produces one NormalizedTrade per pool event — so a 2-hop produces
+// 2 NormalizedTrades in the same block with the same txHash.
+//
+// Rationale: storing per-hop is correct for the indexer because each hop is a
+// real on-chain pool interaction. The PnL engine sees both legs and the
+// intermediate token nets to zero across them. The frontend groups by txHash
+// to present a single user-facing trade. Do NOT aggregate here — that would
+// destroy intermediate price information.
 
 /**
  * Converts a protocol-neutral RawSwap into a NormalizedTrade.
  *
  * Routing:
  *   token0 + token1 present → fromPair  (V2, V3)
- *   absent                  → Resolve using Transfer matching, else fallback to fromTransfers
+ *   absent                  → resolve via Transfer-amount matching, then fromTransfers fallback
  */
 export function reconstructTrade(raw: RawSwap): NormalizedTrade | null {
   if (raw.token0 !== undefined && raw.token1 !== undefined) {

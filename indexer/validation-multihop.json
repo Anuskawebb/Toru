@@ -1,0 +1,1605 @@
+[
+  {
+    "txHash": "0x05451e73198579a862f8d1656f0ccba56d36e0986928a3ce4046334ab5c4ff6e",
+    "hops": 2,
+    "route": "WBNB → USDT → BTT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x71b4d63370504e79ebc76749fd1b5038d156850ddb9b4cd89130484626926583",
+    "hops": 2,
+    "route": "wkeyDAO2 → USDT → wkeyDAO2 → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xd191fc56fd7fa6a7fbe2545aecf41907940d23fb34cceae1fb3337312f4c6d52",
+    "hops": 2,
+    "route": "ELITE → WBNB → ELITE → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x436cc2a8ae71509163785660e4a3351d0cc8f6f3560f92357e63b8688497ef6e",
+    "hops": 2,
+    "route": "wkeyDAO2 → USDT → wkeyDAO2 → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xad744e72ac3e4d776ef4b140b6bafa09096dcb89bdcf24c52649c5d4acd4eac5",
+    "hops": 2,
+    "route": "USDT → EVAA → USDT → WBNB",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x14e149ee81ca81da913156a913be0764dcc53670d4fdb90d3df4d8fcc22271b3",
+    "hops": 2,
+    "route": "MSN → FIST → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x9d7cf394de77f5152952e76bf92eabf50498790f08da357a45ac5a20e35d5d42",
+    "hops": 5,
+    "route": "USDC → COS → WBNB → COS → WBNB → USDC",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xdaddaf65d9decf3c396fe59221b5168474224ce264e852a9f304b1ddd50c24c5",
+    "hops": 3,
+    "route": "WBNB → BNANA → BUSD → WBNB",
+    "dexes": [
+      "pancakeswap-v2",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0xe92dc7c7eb61ecb080a379e0bfd9c388db543b967c328c5b745ea79efb90aede",
+    "hops": 2,
+    "route": "USDT → Beat → TRIA → USDT",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x30c26c1cbe4014da3b9afbe8a747a19ab09228abb7ce33d7dfc6b047b2b5d815",
+    "hops": 2,
+    "route": "hey stock → WBNB → 螃蟹效应",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xe642abc6b87bf6c61a4802819a84e598593056f31381b855db9dd8024eb1cc1c",
+    "hops": 2,
+    "route": "NEXUSX → USDT → NEXUSX",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x9fe66bf6b94dc64c585cbe844034bafaeb18ba2a9a82cfb18e232e0e2567b2b6",
+    "hops": 2,
+    "route": "USDT → DN → USDT → DN",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x9a5185cd04e74786261695e8416c05c4b3d2048fe7b23102331881e8e76ee1f5",
+    "hops": 2,
+    "route": "WBNB → USDT → WARD",
+    "dexes": [
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0xad504dde6c40d00d4f70c601721627c4c5b0cd4d13f9fdc89236c90b45fe7419",
+    "hops": 2,
+    "route": "AIOT → MARCO → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xa2c1921262019f761cd44992f4880a06edf3a395396412463a942214421bec4a",
+    "hops": 2,
+    "route": "USDT → NEXUSX → USDT → NEXUSX",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x2d00ea94fd67bcb41614af97c9d10a881b78c5dc995baa4ef9b98bb1f892ecf5",
+    "hops": 7,
+    "route": "USDT → Cmsn → FIST → USDT → WBNB → FIST → 金刚 → PALU → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x14598c73c34de131f80a0028009cc8c50f04a98dc89a965ae771ec5dd5b9bf50",
+    "hops": 3,
+    "route": "USDT → USD1 → SPACE → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0xa07fa6bfcb99751142c87b145e7b6c0a21f0f5d448c09ca4574651ffbb3b29c6",
+    "hops": 2,
+    "route": "WBNB → FIL → WBNB → FIL",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x538a8148795610504d6ecc1997838ed05d2da1beb935edf5b88fc3848ae183c5",
+    "hops": 2,
+    "route": "USDT → WBNB → AIOT → USDT",
+    "dexes": [
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x1fac175561efb989f205b374ee1f631481e5c082af82f13e7f559b91af6682e3",
+    "hops": 2,
+    "route": "GOT → USDT → GOT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x4164308b9f9c093572c601da314528f12892a0242cd5623222dd41d9c926bf41",
+    "hops": 2,
+    "route": "NBDAO → USDT → NBDAO → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x32f75b949ce6808d1ed619a79afa4b8236c397ea5d82341e5f5294cc910003e4",
+    "hops": 2,
+    "route": "WBNB → USDT → FIL",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xf3bf0357b924115f2ab961993a34cc93f70a2e76042d602b397003e78d25b246",
+    "hops": 2,
+    "route": "wkeyDAO2 → USDT → wkeyDAO2 → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xd80e52ee71afe675f5360e0d84fa38aa3c00862e06535e695a79bf6341f8ece1",
+    "hops": 2,
+    "route": "GOT → USDT → GOT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xb0ec31f2d03abb3d933df12bf83b64f4e5d77c73321dce6473dbbc3e4547135a",
+    "hops": 2,
+    "route": "ORI → USDT → ORI → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x2d447e40892c58e6439d2444cc20a9606d2ebccd3840a33adadaef870c7426bf",
+    "hops": 2,
+    "route": "LAX → USDT → LAX",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x72d1bd5f0670630f926120e065fabaf272b283fb9778aebd528e68e79d2ba294",
+    "hops": 3,
+    "route": "USDT → XYZ → QJ → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xd447dcf1f2989732cc8328f06d61bbd4d9fb547de82395f51f9905c816dca14a",
+    "hops": 2,
+    "route": "USDT → POWER → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x16b19beb8c37f5f0288183b566ecd681954ca3b08386f307fcbb2c41cdae1143",
+    "hops": 3,
+    "route": "CBTC → WBNB → USDT → CBTC → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x6b4da07e37a6e1b7ff2d5b2a0bfc4d1d8da1f9f11149b4255894cdd04832fcae",
+    "hops": 2,
+    "route": "USDT → WBNB → BLM",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xb08016dbb5f5a9e22f8eda0c78677311d276a918e6e2e62707e759feca549d48",
+    "hops": 2,
+    "route": "USDT → WBNB → 凡尔赛玫瑰",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x2d4b21bec75e0714d8176d298c7b4b442083e29a18fbe5cba5cda4aad86c5c85",
+    "hops": 2,
+    "route": "JOJO → USDT → JOJO",
+    "dexes": [
+      "pancakeswap-v2",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x864f4986c88bbb92f4834e8eac3de261e363db4da51a015ef5ebc5cd525471c6",
+    "hops": 2,
+    "route": "USDT → AIT → USDT",
+    "dexes": [
+      "pancakeswap-v2",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x79a4f2e41482dffb95bfc4e1ba5749cc17ea8b76a5078928f8912fc9fc2cfcc0",
+    "hops": 3,
+    "route": "BILL → USDT → PIEVERSE → USDT → KGEN → USDT",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0xe3e96f410da256845ef7ab703efa5f00afdb2874280d312034f1b8164419a615",
+    "hops": 2,
+    "route": "USDT → BTW → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0xcfb12f9efc8fda5df72f493c741a2620021a9b0f0cdf3b61b44edab4578c59c5",
+    "hops": 2,
+    "route": "黑马 → WBNB → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x2c0cc39e9353a82d8972b94e5f4e045fe4ad7c1a26fac2b13befbcbf8c8493f9",
+    "hops": 2,
+    "route": "LAX → USDT → LAX",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x31f20852491963072c05b96e90fa3427293640cf12674cf064887f52c57e8621",
+    "hops": 2,
+    "route": "USDT → ZEST → WBNB → UAI",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0xe4900e879202d1e312baeb38cdbf573668c279a654e4f6c61d769f3bb44ee97a",
+    "hops": 4,
+    "route": "ASTDOGE  → WBNB → ASTDOGE  → WBNB → ASTDOGE  → WBNB → ASTDOGE  → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x113f949696f7fefd40da5a0bca70062defe3618f35d9aeb449e8243fd2b3cf8b",
+    "hops": 2,
+    "route": "USDT → USDC → USD1 → USDC",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0xd29f1f72811f46c53dc024faab809b99194bde68e793854657a4dcce0b91e248",
+    "hops": 2,
+    "route": "GOT → USDT → GOT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xf602df4477a6c2e87d44b7d317db569c5f13f71d88cb901fc1c11965cbc67e6a",
+    "hops": 2,
+    "route": "WBNB → USDT → BabyMoco",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x0d84557ee95269cb43a0e30778be8f2021bfa54bbc4d98dd34a617cec061928b",
+    "hops": 2,
+    "route": "USDT → BTW → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0xdf661e673ff99ca94d7be52b5c89d27fa790675393b8c8ec185299f766fa1c76",
+    "hops": 2,
+    "route": "WBNB → BBFT → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xd77521f53f07abf5bc70fee777584566b61ef76b0df61de8866a420b6bc9f665",
+    "hops": 2,
+    "route": "ULTIMA → USDT → ULTIMA",
+    "dexes": [
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0xb03439d303446ec7a6e892a568e26e615e9fcc98fa9ca9165bea770b0c82bd83",
+    "hops": 6,
+    "route": "FHL → USDT → WBNB → FHL → USDT → WBNB → FHL → USDT → FHL → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x95915e670b160be84b007e8a93c5af2a8bc535ed90c11ab378aedf82be50eccc",
+    "hops": 2,
+    "route": "KGEN → USDT → TRIA",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x6006faa8168e3bb542461af9f32c90e73efc525c2802356e7aadd7b0ecd3d45c",
+    "hops": 3,
+    "route": "RUYI → WBNB → USDT → RUYI → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x157e10ec5ea944fb05741a6ae498560d72507dd408974e570cb6cbde7420a628",
+    "hops": 3,
+    "route": "WSPP → WBNB → USDC → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xc6195498465ab3db03c2f985f8e65c962e3d21849f25835010b85a35853af898",
+    "hops": 3,
+    "route": "WBNB → LIC → BUSD → WBNB",
+    "dexes": [
+      "pancakeswap-v2",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x5bce5b6ae6cc20bb37ae13e83459630741a0e45325db3e0f8293cc8abf179b4f",
+    "hops": 2,
+    "route": "USDT → WBNB → 瑞士银行",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x7923bb77f0a3f7f29756238775a7cf3ca68f34bea932253c8bbfefc961a31759",
+    "hops": 3,
+    "route": "OSK → OSP → OSK → OSP",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x207b5d481dd2f60fb5f8e3c21f872421688d47b79f953a0ba6f0227b8fd7647f",
+    "hops": 2,
+    "route": "GOT → USDT → GOT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xe1db83b78fbb8825c4186bf49bb96b6d640df35b8d90b101750c3f47b9b7efd2",
+    "hops": 2,
+    "route": "USDT → RTX → USDT",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x4e9e29bb675e7dd61ea65d3d56b64baaccb1e4bbf344ed8ed23ee93eabac71fd",
+    "hops": 2,
+    "route": "Beat → USDT → USDC → GENIUS",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0xfb829478be97033d35499bc125f1db4522643bb6ae7c455c0ff3487564da3401",
+    "hops": 3,
+    "route": "OSK → OSP → OSK → OSP",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xae3bed9f8d89dd213d1ca2291f24334eee9b750c4569ad93fe9433f5084e30fa",
+    "hops": 3,
+    "route": "USDT → FIST → WBNB → RDNT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x7a5992c073a60afc16956db0628e70298da0161ba57d7bfdefefe8da65829a47",
+    "hops": 2,
+    "route": "USDT → CLO → USDT → Beat",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0xe470e572f7eef68e732987c9c075aa3fd6e5ea82f3e4ba111ea32c21f79eaaa2",
+    "hops": 2,
+    "route": "USDT → WBNB → COS",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x6ab2e81ea70300a7ee5b8dbdba309fa9e455862f4f4afd1256cd81619d12419b",
+    "hops": 2,
+    "route": "COS → WBNB → COS",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x126ee49ad0f8b363601e2f8759143ddb6188a3d2914ccc0b8a2f43cb6a67fd8a",
+    "hops": 3,
+    "route": "xxM → USDT → pandax → xxM → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x41b40f39de3f2d12bcda3d00417ef408adc2682f88a1f2df05daa15c8e8e8f52",
+    "hops": 2,
+    "route": "USDT → NEX → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x7e374445b0fd6bca86ae846a0db672bdd1f08799581943f4e822609358f005d6",
+    "hops": 3,
+    "route": "WBNB → CUBY → BUSD → WBNB",
+    "dexes": [
+      "pancakeswap-v2",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x44589ce3ae930e9c7ab3d7bb3e29f7ccfe44f183d49166b16bcf6b9b997f3538",
+    "hops": 2,
+    "route": "PNUTMOON → WBNB → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x8f9f3462b212fb6a886b1a4f248300afead9d701efc2935e518da61e4ab9ff9b",
+    "hops": 2,
+    "route": "USD1 → SPACE → USDT → SENT",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x2a41ba2ae5174c086d30a281dc03324d4a094681fdf0da7643b608ea04ef81f7",
+    "hops": 2,
+    "route": "USDT → BASED → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x5a3201570de40ff4817f5ae83ef00ce6b42879310f7e848ccd52a2a544e86fb0",
+    "hops": 3,
+    "route": "USDT → ASTER → WBNB → 锄头",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v4",
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x2f3590c4dff369f81f75b37bd835eec881823333393a782b58ca201e6d4e5c1a",
+    "hops": 2,
+    "route": "wkeyDAO → USDT → wkeyDAO → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xc2808829d4f402ffc2a0d884f8a71193ff294c51cd36385469e8ef8bf88f5e58",
+    "hops": 2,
+    "route": "USDT → USDC → USDT → USDC",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x4830de3e3e32e3ca1e7a32b2f5e42997fffd59bbaa27cd4b42100565b2a0f00e",
+    "hops": 2,
+    "route": "BCOIN → WBNB → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x4458b318e75ac25a623df4c2402242240dc2feb75016f8317d4f5b1c7750945e",
+    "hops": 6,
+    "route": "USDT → USDC → USDT → USD1 → USDT → USD1 → USDC → USD1 → USDC → USD1 → SPACE",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x79911fb621ac3044dabb0a18c27b1675b7855260d8126d8be3e1f5db5600859c",
+    "hops": 2,
+    "route": "LAX → USDT → LAX",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x4b642c4aebb740f46c29734f37c965dd12366ee75ed86f1578c8e9248afd2d7a",
+    "hops": 2,
+    "route": "DePIN → WBNB → DePIN → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x0e948f46de1a65d5d839b714285c52bc3827ff1fab04cbc5b08acb260436d1f1",
+    "hops": 3,
+    "route": "杀零屎 → WBNB → USDT → 杀零屎 → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x95974b048b760908d97585d8ce3551b4c623908b3289a1e86bd8edf264d5b974",
+    "hops": 3,
+    "route": "杀零屎 → WBNB → USDT → 杀零屎 → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x376a90401dea8160cbbfeaf0d5677129ad4910f33a1c475cd2fce1b65dcbd271",
+    "hops": 2,
+    "route": "SAC → USDT → SAC → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x247b52c64733ddb7b0d19cd952590fc8e2cd5dde52c8b663dc6f6461efed2404",
+    "hops": 2,
+    "route": "OPG → USDC → USDT → OPG",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x5c3e7ee458084b459ec818c0a03263701275e211de3eaa65a39b1eb03027a482",
+    "hops": 2,
+    "route": "79AU → USDT → CAT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x390503a3e3c273ca006feb438072197231419cf30812530a2383a0f2622963b6",
+    "hops": 2,
+    "route": "YSDAO → USDT → YSDAO → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xc3030381a73ebe6a8e2247696e7baeeb9dd9f2c950b6d5adf363d34c05921b52",
+    "hops": 2,
+    "route": "GOT → USDT → GOT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x9510b872be510fc7f86736bebda2f2dd7929f5ac899a2f81a93750f10b9242ff",
+    "hops": 4,
+    "route": "白毛股神 → WBNB → USD1 → USDT → 白毛股神 → WBNB → USDT",
+    "dexes": [
+      "pancakeswap-v2",
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x07130da2a166a148ba59cf5ca89fe24d90279417b6a251be4abcaff785e85c73",
+    "hops": 2,
+    "route": "ZIMOMO → LABUBU → 1CAKE",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xf4e4c32163da3b7e178928302213e90c2b29198a1cf4437ced2aa4c81677cff0",
+    "hops": 2,
+    "route": "LAX → USDT → LAX",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xd346f96ac8359682044de3c754eb97552e7e99f456043bf674674942c6b9ee47",
+    "hops": 2,
+    "route": "SPACEMOON → WBNB → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x495b2fccd50011974c26a7f83e99e270615180659fa7ad2da9d1947b311f4fad",
+    "hops": 3,
+    "route": "USDT → WBNB → AIOT → USDT → WBNB",
+    "dexes": [
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x9c2a1d6e9242939ab902082fbd41bb8f36ecde1ba4ce4bb6a98f3f38550d433e",
+    "hops": 3,
+    "route": "PRL → USDT → Beat → USDT → TRIA → USDT",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x6b077719d4498d7b10a7768b9fb58afaceb6eef4a91b0e26a175eb7ba364eb04",
+    "hops": 2,
+    "route": "USDT → WBNB → PNUTMOON",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x7b4793029c14643f5be45631aebe05e8992a40aa87a745d5d944a4d4bfa67c2d",
+    "hops": 2,
+    "route": "USDT → WBNB → USDT",
+    "dexes": [
+      "pancakeswap-v2",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x6b4dc7dc5ffda50e4e0972021bba95ec58b007aa2447f5adf8777b95da217e51",
+    "hops": 2,
+    "route": "YSDAO → USDT → YSDAO → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xf77626f0d7b0087fc839d3859fc1dbf1944468feb663111ada9455ee1e45426c",
+    "hops": 2,
+    "route": "wkeyDAO2 → USDT → wkeyDAO2 → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x5da765f93be8ce983816b84cc57ba0d89b0db8b0dc77a8a6c072e1539452f1b0",
+    "hops": 2,
+    "route": "GOT → USDT → GOT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x5a7c2fb6fc6e77992c3efefc71b96fab650101d1b75d5e709a3508551447ed54",
+    "hops": 2,
+    "route": "CAKE → BUSD → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xd3381a34945b3c2d910f8c29e3d83c107bf179f9ae11d33bd5bb090a3abe54dc",
+    "hops": 3,
+    "route": "WBNB → CAKE → COS → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xb1968601f67241251837e6ec402a114e5f848e5f338b54b30b08409a77b98a14",
+    "hops": 2,
+    "route": "GOT → USDT → GOT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x687e53c0b826e99478a8b80c99901e8b7e9fb009874e177b208ec890d11917c3",
+    "hops": 3,
+    "route": "AIOT → USDT → WBNB → USDT → WBNB",
+    "dexes": [
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x31802c9e50abf026868fea7a8d4664b78295fafa0edae3a4254182d6a34d24e5",
+    "hops": 2,
+    "route": "布布 → WBNB → USDT → H",
+    "dexes": [
+      "pancakeswap-v2",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x49d84b01c3b4ef25a4e4bb957c80eb609c4f514f579610cd17456f9ef6a6f316",
+    "hops": 2,
+    "route": "凡尔赛玫瑰 → WBNB → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xb73b6ef33b83919c3c203285dcd46550023b48547033837492f386cc6d1241b4",
+    "hops": 2,
+    "route": "USDT → NEX → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x4f6d08ab2a932d9e5d9caac479f54582e23d528b80296d31241dabe3590fc95d",
+    "hops": 2,
+    "route": "BLZ → COS → WBNB",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x4653afd6bc1ec77c6e5ce15ae1a1c77b9c8863532ecc85ffdfeea2eb2e5420ce",
+    "hops": 2,
+    "route": "币安金库NFT → WBNB → 币安金库NFT → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xdadd5d6505c5ca82681a6650afd89b727b32fc54595178368eb2f245c8b96f3c",
+    "hops": 2,
+    "route": "USDC → USDT → TRIA",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x530e6c2dfe7c82765604ba45badc6ffe82a666e9c6f93ec7ed945b77bb42f30e",
+    "hops": 7,
+    "route": "USDT → TRIA → USDT → TRIA → USDT → TRIA → USDT → TRIA → EV → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x25846840d3c983e27066947491bf5f1500c4b7e36e187cfb096d9cd76a6247f2",
+    "hops": 3,
+    "route": "GANA → USDT → GANA → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x1957534ec1bba9132c72906cfe3761820d80f6eefb1d838e383107b06be6e502",
+    "hops": 2,
+    "route": "BTCB → JULb → BUSD",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xec1214251df91309aaa8fcee8c359f511d2ee89a6cab85562fea8ed1553188fc",
+    "hops": 2,
+    "route": "PNUTMOON → WBNB → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x1efa0eb8082d5cdc81be214c041db6309bbd2cfc9829a83f51307682775589ad",
+    "hops": 3,
+    "route": "USDT → 中本聪 → WBNB → USDT",
+    "dexes": [
+      "pancakeswap-v2",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0xd47b0edd2e58210ec63e99f6c6657fa1a50b21b5bd62a223975e5c1e19e1ebd4",
+    "hops": 6,
+    "route": "USDC → USDT → WBNB → USDT → BSB → EV → TRIA → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xcdc72fcbe66977d713e4cc32d95bbb7ae9e449eb9f925a9b3616ca42df8d24ba",
+    "hops": 2,
+    "route": "AIT → USDT → DAO",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xc9ddbd7dda71ce91df5906a31e482be4d43c8ebe81d07c259858a78129a73ebd",
+    "hops": 2,
+    "route": "USDT → AIT → USDT",
+    "dexes": [
+      "pancakeswap-v2",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x85473ac39567e15214b038f764bb25e2a682554dc4b7afde8b97d982bfda1ef6",
+    "hops": 2,
+    "route": "WBNB → 黑马 → DPJF",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xc15b63cd969b94af9da8c26a63a9d9e1ecabb15ef7fe687ca87fdfbf894c020d",
+    "hops": 8,
+    "route": "BUSD → WBNB → BETA → VAI → WBNB → FTM → LUNA → WBNB → BUSD",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x2751d8537af224928c59a7798bfccf0b78aeb4f5d722f7113ca9026e9bfca710",
+    "hops": 2,
+    "route": "CLO → USDT → TRIA",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0xb6b7c97967d9d8c7e07c91697b5507a9214490c6a235d51e1d8e98b4dd015a65",
+    "hops": 2,
+    "route": "RTX → USDT → USDC",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x6ac144c3f2983d5ecd24f73b1f1b8de82adab767308d3df67900ac61c4edf355",
+    "hops": 2,
+    "route": "FP → FIST → FP → FIST",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x2e168b38881d25334311d7bca715e6c8524f9a63bd19a36d6828248c76554d25",
+    "hops": 3,
+    "route": "SPACE → USD1 → USDT → SPACE",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x3fe543cac3608d9a10a8299d4ffc9664936641d869cd8e3b224a99b473de7412",
+    "hops": 2,
+    "route": "WBNB → AIC → USDT",
+    "dexes": [
+      "pancakeswap-v2",
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x7696035a187a42152565033560087d6cbe81a78a9ee01cd069a88493f9322c03",
+    "hops": 2,
+    "route": "YSDAO → USDT → YSDAO → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x5081fc6c0c8f3aeb658f02f890811d2012d081b4921bcecf6ce3f17532dc3880",
+    "hops": 2,
+    "route": "USDT → ATOM → BUSD",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xcd2e64f78bd35c7bebc522037156286167dd8f47d9ca9acfa96822f5e4f8998e",
+    "hops": 2,
+    "route": "USDT → NPL → ABX",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xc0d5317efd1b04e1fae27f27a0ce247c5ce3f4202d5937ee2b1825d201b0e314",
+    "hops": 6,
+    "route": "USDC → WBNB → ID → USDC → WBNB → ID → USDC → XRP → BEL → USDC",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xe976ad106b9afe71d3c90346c1c270bad9edbf5c9ac2d9e498830348d4e268fe",
+    "hops": 2,
+    "route": "CAKE → COS → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x936137dc2c3346f221f388861a928930d45192cfd8a85f8f2e975bdd7b1d1122",
+    "hops": 2,
+    "route": "GOT → USDT → GOT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x22479990a88a212d30be71d7810556a0e451ee2d78e9e57ef67034fe6e3d1975",
+    "hops": 2,
+    "route": "USD1 → SPACE → USDT → PIEVERSE",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x69301682d8509da8048dc2a6fa6fba93f24d0f7872bc6f857fd3b800c175efd1",
+    "hops": 2,
+    "route": "WBNB → USDT → hldr",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xb7f6ddad9c511499a3edfdc82996fa927ebfb9b7c15e85d8d90195ae56ffd177",
+    "hops": 2,
+    "route": "wkeyDAO2 → USDT → wkeyDAO2 → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x82ddf8b360e69be72a09fc6122c5528a5b71ad4a97c4cb0b734a82a6f927c3c7",
+    "hops": 2,
+    "route": "PRL → USDT → CLO → USDT",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x969f1c967b1da70a44f560c0214976b8599e6eb00e51d7b48c0de02dc98fcada",
+    "hops": 2,
+    "route": "BCOIN → WBNB → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xc87034bd5cae777b12b8211f0881c179d885d972a02ce3940a33f82380a70067",
+    "hops": 3,
+    "route": "OSK → OSP → OSK → OSP",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x4cdd0e886518e133b90d6985bafff5cdefd27788855992879a388670b33a1a01",
+    "hops": 2,
+    "route": "WBNB → USDT → ESPORTS",
+    "dexes": [
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x9e7979ef57e845cd12ff5878513d92d8bbd2f3cc7c3c917a97f34b9ce9d45f37",
+    "hops": 2,
+    "route": "老子 → USDT → SPACE",
+    "dexes": [
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x33a6cbed76e36dbc0a9102d1d53227709c71c93a70567e595e95b21ea7b00ced",
+    "hops": 3,
+    "route": "SAC → USDT → SAC → USDT → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x1b8090c943bec13095b76a669de8e512b7d8c7a3f5bda257480d8d7b05fea5c9",
+    "hops": 2,
+    "route": "BTCB → PETOLD → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x0424b7a095b4855475d066a22ec6b5607f108dcf2c382e50a1aa6c4f87392ba1",
+    "hops": 3,
+    "route": "WBNB → 以太坊 → XVS → WBNB",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x61a0226b254092ffc4f3dc4e65f2ef65fb4a4b585096ade842d98a6496342bf4",
+    "hops": 2,
+    "route": "SAC → USDT → SAC → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xe3cc3dd90ba057b82df9936c62bf914705eb32ab482e10a93c4c9bb14f76ad10",
+    "hops": 5,
+    "route": "USDT → WBNB → DOMI → USDT → AIAR → USDT → AIAR → USDT → AIAR",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xb743884ec1e507f3fe7c47914652ce90b7db584ec9c659a3acbb1ee99ee10f48",
+    "hops": 2,
+    "route": "WBNB → USDT → OGDOGE",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x3c0eb6355dc420795b9dd4b175abad1157fc87248f2c0e3e51585c1d11fe9cc1",
+    "hops": 2,
+    "route": "WBNB → USDT → OGDOGE",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x1c65f5684ca9619e9f7baa6db38966c6b1966d95afbfcc94a47f18391cd0733e",
+    "hops": 3,
+    "route": "GANA → USDT → GANA → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x8b5b470ea08703b60fcb2359946c21eee34d65845d185207698c3eb776afacf6",
+    "hops": 2,
+    "route": "GOT → USDT → GOT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x6bea0a773942bf3b35297b18efc6b0b318a92f7fc63e9eea1c01dea4c32cd9eb",
+    "hops": 2,
+    "route": "GOT → USDT → GOT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x5abbac8a99ed620d5b3822142d080a3838e43e22213cc4f70f4224d34704da72",
+    "hops": 3,
+    "route": "考拉狗 → WBNB → USDT → 考拉狗 → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xe73a6f9f69abed92c72333d0239dd1d1321408f7f38e165ba5e1fec82d6fa13d",
+    "hops": 2,
+    "route": "USDT → WBNB → 蝴蝶骑士",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xd4f7ac0c6eb48f9cc14ab13f409400f221f7fc2098ab20795e612ee489b43106",
+    "hops": 2,
+    "route": "H → USDT → H → USDT",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x174b6c2ead0b911d9ccfc6356739dcf593052d6d2a5d0f49c0942f076ac16fd6",
+    "hops": 3,
+    "route": "USDT → H → USDT → H",
+    "dexes": [
+      "pancakeswap-v2",
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0xf4244c91263437727f534a26aae3e9ab5551a87d9146f6f594bec571437b1e47",
+    "hops": 2,
+    "route": "WBNB → USDT → HST",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x04c6008d16fa23f096987f18a0b0bd16c26c61f513d9206f0948e1487d2e933c",
+    "hops": 2,
+    "route": "GOT → USDT → GOT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xba20132881a47bbd94085d863112ff6e884edf7167a58612bac990418a8d027e",
+    "hops": 2,
+    "route": "WBNB → USDT → ESPORTS",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x262982b8009f7099ddbd2675c5413557373578c63d94ae39a590e437f8eec357",
+    "hops": 3,
+    "route": "USDT → USD1 → SPACE → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0xc88c6bb0662392a2d87293a5722040b80f32e28a98f7671d8f005ed91fb46517",
+    "hops": 3,
+    "route": "OSK → OSP → OSK → OSP",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xf674cfdc434ae17f80393cff789477550c833b1bc8e1e06c48e5bb95f8add219",
+    "hops": 2,
+    "route": "LAX → USDT → LAX",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x922276ec219576c1c756ff61dd15e4918f845c4d17269ec489d538c36d013a16",
+    "hops": 2,
+    "route": "EDN → USDT → WBNB → OFC",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xd3eac296f47aaa171357085b3f6f68cfb404e77bc2d6cdcd8a593bf0d72141f1",
+    "hops": 2,
+    "route": "BTCB → BTCx → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x29f62c83b984971c85321c609c0f6f6439fa5a4e4291d3c05d12d74de5ea46bb",
+    "hops": 3,
+    "route": "BSB → USDT → USD1 → USDT → USD1",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0xeecbf3cec3f89e351525052171dea0fb2b9e7b829be726ab48312cbdbe43834f",
+    "hops": 2,
+    "route": "USDC → USDT → USDC → USDT",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0xee77acfe5b292073155e6bbbd244d277425312d4b46636b49bfd375c7118f903",
+    "hops": 2,
+    "route": "零号病毒 → WBNB → 零号病毒 → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x1f8415ff01466332825eaef0511d9365b828f3a5c26e6b836c12d61152389c66",
+    "hops": 2,
+    "route": "USDT → AT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xe17034b1357f7069b79e44231fee4d732b148661646e862bbe251bca837319b9",
+    "hops": 2,
+    "route": "WBNB → USD1 → USDC → USDT",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x7cfac456decdfd955858a073f5e1a9d63ad79753cf126a4f6850d6f310273c71",
+    "hops": 2,
+    "route": "wkeyDAO2 → USDT → wkeyDAO2 → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xcc34b8a7ecf95f75376782208c3dfa5f10207a0f4fc9ead26e49778d4cc79b5d",
+    "hops": 2,
+    "route": "USDC → USDT → USDC → USDT",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0xf5691da8adc8af53c430b5a2d6c9cd434c89d953097ec3443513e7b21a74ac52",
+    "hops": 4,
+    "route": "FWC → WBNB → FWC → WBNB → FWC → WBNB → FWC → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x12a30a920b266765ac4db874cb9de92208c3d86531fd7b3fb37492d5a0878589",
+    "hops": 2,
+    "route": "USDT → RAVE → USDT → Beat",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x67574d9282eb5e14215fe94b73e058caedd9f3b42d97f536e875d72eefd0fb20",
+    "hops": 2,
+    "route": "NVDAon → WBNB → RWA",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x9f18188fc3bf8b777094f65ba2b8ecc298c468e1d56698b6b54d8ba7ceae84da",
+    "hops": 3,
+    "route": "GANA → USDT → GANA → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x517f25222f940930d785881cff50d2ccbe9d30074e95a1de9f40ca8ca8cc75d4",
+    "hops": 2,
+    "route": "USDT → RAVE → USDT → Beat",
+    "dexes": [
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0xc3939813fd5032d60158707992264dd4f81d21d30979500fa2a52b6ff2b6f4ec",
+    "hops": 2,
+    "route": "wkeyDAO2 → USDT → wkeyDAO2 → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xb6043f8deea4d02ccfd77d30e2686218ec7ac2f44400977f14fd69e46a6fc509",
+    "hops": 2,
+    "route": "NEXUSX → USDT → NEXUSX",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xe8c5ea08c4466475f3e1bed231f913b3b0b03f24889a4b0e050ce96a8e5ff5cf",
+    "hops": 2,
+    "route": "USDT → NEXUSX → USDT → NEXUSX",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x652497b3475039b22727182e1faa07ad7d1e659a36c354f9e6954b1b245e98bf",
+    "hops": 2,
+    "route": "WBNB → ATA → WBNB → ATA",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x7568f29ef5c4a34787ede9ae6d5c2a867ff197be1b3d8f6c547ff773df67a263",
+    "hops": 2,
+    "route": "ATA → WBNB → ATA",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xd1d1c2ce4548d05a87097051ad76ae5bb3edf14033f5686326813a69a1f892b0",
+    "hops": 2,
+    "route": "USDT → BTW → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x5839c23e323485b1b7b9bddfcf2fa55dff7585c6ab20607aa2000217af740deb",
+    "hops": 2,
+    "route": "OPG → USDT → OPG → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xad31c55facbbcdb4b57192992d6a988a434f852874f7a6bbb9cb62c0d12da4bf",
+    "hops": 2,
+    "route": "GOT → USDT → GOT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x0fd87cb64cdc8dfb2a388f53148a6493bf06a8eca6b1e79a6980174f1c9182d3",
+    "hops": 2,
+    "route": "SPCXB → USDT → USDC",
+    "dexes": [
+      "pancakeswap-v3",
+      "pancakeswap-v4"
+    ]
+  },
+  {
+    "txHash": "0x3c9903e125eb2393377fbf9621fcd8498160c598953ed798d500acdd239cd75a",
+    "hops": 2,
+    "route": "ZIMOMO → LABUBU → 1CAKE",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xfe710b6a2d5232138d3064c3040053eeaf91fc93952c607d8af23c216d87afbc",
+    "hops": 2,
+    "route": "USDT → BTW → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x7cb7a035d227add527957cce8276ec08fe33232d5e5b5d20f045bc0672fe32dd",
+    "hops": 2,
+    "route": "wkeyDAO2 → USDT → wkeyDAO2 → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xcf45d1ac47d28028de4e94673d3e42a3781e286c53b134061be0e7ed04a28538",
+    "hops": 2,
+    "route": "PHI → USDC → PHI → USDC",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xd93cc63206f4085ac7e41c7aadeb1d60b3494769f1df074d24df8c53d71f0765",
+    "hops": 2,
+    "route": "BTT → USDT → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x21f9c7349b26f738f2d63bb455acee62d78c929dbea66fdfe7263814db2e01e9",
+    "hops": 2,
+    "route": "SKYAI → WBNB → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x9d9e93ea2d0785d77797e6f2854083fa70337f76dc8268d7d4e01aadbe5ea6b3",
+    "hops": 5,
+    "route": "BABYNKYC → WBNB → NKYC → BABYNKYC → WBNB → BABYNKYC → WBNB → NKYC",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x2762384f642372d1bd1d64b748bf713f99e081f2352b2eb5f1f7560b342ff55f",
+    "hops": 2,
+    "route": "NVB → USDT → NVB → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x016555a570a8ca143f7638870ccf4f45f6c1bebd164ad121a8f39867ab85311b",
+    "hops": 2,
+    "route": "GOT → USDT → GOT → USDT",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xc6a885854cfb35f7a9422ef2c93a6fe5dca9904d6fcc1d182d7a94dec5662009",
+    "hops": 3,
+    "route": "WBNB → COS → WBNB → USDT → MYX",
+    "dexes": [
+      "pancakeswap-v2",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x1b6532837dd4242f3b508490bc80aaafeced51c4a5ced63ca66dd4acb191d5cf",
+    "hops": 2,
+    "route": "BTCB → PALM → BUSD",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x608ad3f707b0e3fdde5a0137ab28cdbd70f9e2f439be99b8d72545baacf7fba4",
+    "hops": 2,
+    "route": "USDT → BTW → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0xe25b8362953482c6c2fcf4b9418e1c05551404a126c29522cadd018c22f0d435",
+    "hops": 3,
+    "route": "WBNB → 托底人生 → WBNB → DREAM → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x5a9a6af33e239ea712c9291f48bb44dada28f131f558b81b9d243f0f996e8859",
+    "hops": 2,
+    "route": "盘古骑士 → WBNB → 盘古骑士 → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xda9db41dde7de860802e135371864a8ef7b5f85d8e94a01d52983819abb92fbd",
+    "hops": 2,
+    "route": "PHI → USDC → PHI → USDC",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x820f8c0e817407d45801f5d8e338099ca943ca036be207d5b0b7f7e383ebd3b4",
+    "hops": 6,
+    "route": "WBNB → USDT → H → $FREN → USDT → ARK → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x06cbefc708babaae73feccbdd3b239e91dad298218a726a7db1f376a03d88956",
+    "hops": 2,
+    "route": "USDT → BASED → USDT",
+    "dexes": [
+      "pancakeswap-v4",
+      "pancakeswap-v3"
+    ]
+  },
+  {
+    "txHash": "0x04b367ae098972ed9f5d7e5038b1e7bb4011c700d3038cb5e9d86a8450121d8e",
+    "hops": 2,
+    "route": "WBNB → USDT → OGDOGE",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0xff156767d8e9c7405db6294a7788c2f63895fe79f2183eea31aaf37127d8795f",
+    "hops": 2,
+    "route": "WBNB → USDT → FDC",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x82c3bdd36203ab9c70e945b14b6c9ae565b9f0bd8e9c5a8fa53b6e0122f38868",
+    "hops": 2,
+    "route": "CAKE → WBNB → CAKE",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  },
+  {
+    "txHash": "0x6554c5f2926e5d450af6c124f731ee605afb5ced9162b35c2c89a9963d232a25",
+    "hops": 2,
+    "route": "WBNB → MBOX → WBNB",
+    "dexes": [
+      "pancakeswap-v2"
+    ]
+  }
+]

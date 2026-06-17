@@ -1,0 +1,758 @@
+{
+  "pancakeswap-v2": [
+    {
+      "txHash": "0x6b1b08ae705a9a95a53bf5e4f04fb51aa409c9d926c20c89ff85782258ca06f6",
+      "block": "104740190",
+      "timestamp": "2026-06-17T10:13:17.000Z",
+      "wallet": "0xc9ee69f087f95fb74bba4e5ef62e53e59a54da92",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "47784000000000000",
+      "amountInHuman": "0.047784",
+      "tokenOut": "0xfB69e2d3d673A8DB9Fa74ffc036A8Cf641255769",
+      "tokenOutSym": "BBFT",
+      "amountOut": "291864584746494633635556",
+      "amountOutHuman": "291864.584746",
+      "bscscan": "https://bscscan.com/tx/0x6b1b08ae705a9a95a53bf5e4f04fb51aa409c9d926c20c89ff85782258ca06f6",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0x2d5b29424a4c86c7d58c1232be12abad6efc642e1c85d387402ea387f1f3e288",
+      "block": "104740255",
+      "timestamp": "2026-06-17T10:13:46.000Z",
+      "wallet": "0x6c1c0d3044217c918794f47b0dd3d5c52a752ef2",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "6511679909000000000",
+      "amountInHuman": "6.511679",
+      "tokenOut": "0x701add4311E85c1f9C1549319fe2c476bc8a1b8b",
+      "tokenOutSym": "GOT",
+      "amountOut": "5190264207",
+      "amountOutHuman": "5.190264",
+      "bscscan": "https://bscscan.com/tx/0x2d5b29424a4c86c7d58c1232be12abad6efc642e1c85d387402ea387f1f3e288",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0xd4b61a486623222dd71fa412a8654f4e64e9b9a4b39a9637db69590a1c7faecd",
+      "block": "104740261",
+      "timestamp": "2026-06-17T10:13:49.000Z",
+      "wallet": "0xed451593442f932c61600cce4d11341591fd1df2",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "49850000000000000000",
+      "amountInHuman": "49.85",
+      "tokenOut": "0x567fd5658f48C1c826a912ea1Ba37696A6B32006",
+      "tokenOutSym": "METAS",
+      "amountOut": "2301577738640852950154",
+      "amountOutHuman": "2301.577738",
+      "bscscan": "https://bscscan.com/tx/0xd4b61a486623222dd71fa412a8654f4e64e9b9a4b39a9637db69590a1c7faecd",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0x48060b610cf922d81c8f2c568cbfa0faf456c89f749e8636af44daaf16a087b2",
+      "block": "104740200",
+      "timestamp": "2026-06-17T10:13:21.000Z",
+      "wallet": "0xf9596d7e07bfab1c494ebcb6fa8d29e8adf41e95",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x13aBDC89aD5cf15074D5732da19D03e4F9c343F4",
+      "tokenInSym": "RE",
+      "amountIn": "71221771960115633961564",
+      "amountInHuman": "71221.77196",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "1484077787571000000000",
+      "amountOutHuman": "1484.077787",
+      "bscscan": "https://bscscan.com/tx/0x48060b610cf922d81c8f2c568cbfa0faf456c89f749e8636af44daaf16a087b2",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0xf9df231e377406f24a4c5c9132c4298a13fc4ea7864f9e220b21d69ebc3efcd1",
+      "block": "104740264",
+      "timestamp": "2026-06-17T10:13:50.000Z",
+      "wallet": "0x324479ef80458e08325931e29b5ef8f0b53c1f5a",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "109100000000000000",
+      "amountInHuman": "0.1091",
+      "tokenOut": "0xbDb37ad0B5b39f2E41FA87AEc9bF76D6Ea246D21",
+      "tokenOutSym": "属狗",
+      "amountOut": "383839467486839852977186",
+      "amountOutHuman": "383839.467486",
+      "bscscan": "https://bscscan.com/tx/0xf9df231e377406f24a4c5c9132c4298a13fc4ea7864f9e220b21d69ebc3efcd1",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0xfaf44d335dd2326106720d7f1118d0b16cf86d49f244b1a5863091b72b1bb0c8",
+      "block": "104740235",
+      "timestamp": "2026-06-17T10:13:37.000Z",
+      "wallet": "0xf9f52c24663866a1d901c6378823eae89935db41",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xaa67B10258843f402cC95aF02E5F60a167234444",
+      "tokenInSym": "凡尔赛玫瑰",
+      "amountIn": "2674927920977152983933310",
+      "amountInHuman": "2674927.920977",
+      "tokenOut": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenOutSym": "WBNB",
+      "amountOut": "105620198281940792",
+      "amountOutHuman": "0.10562",
+      "bscscan": "https://bscscan.com/tx/0xfaf44d335dd2326106720d7f1118d0b16cf86d49f244b1a5863091b72b1bb0c8",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0xdf1db8f675d879be443c657167d4ba422b0b559ad08a9d7860b54e139178f647",
+      "block": "104740264",
+      "timestamp": "2026-06-17T10:13:50.000Z",
+      "wallet": "0x5cbd810bdb6c71a74eb7e2cd8c7f876c6ef85661",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "19007239288868000000000",
+      "amountInHuman": "19007.239288",
+      "tokenOut": "0x1126A53AF6Ba337b988F6d85A594b46d42AC96E4",
+      "tokenOutSym": "O",
+      "amountOut": "1086772832647448594833698",
+      "amountOutHuman": "1086772.832647",
+      "bscscan": "https://bscscan.com/tx/0xdf1db8f675d879be443c657167d4ba422b0b559ad08a9d7860b54e139178f647",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0x547885f2e2b4fff303b2676da0862d021801c9a2bb2512cd49015420965f315e",
+      "block": "104740179",
+      "timestamp": "2026-06-17T10:13:12.000Z",
+      "wallet": "0x08d43d24495a7f7f82df348dcbf08d0206038f6f",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xaaAd33E1edb32dac799b748dEE70c53f76fE4444",
+      "tokenInSym": "ELEU",
+      "amountIn": "3942403992448661761097",
+      "amountInHuman": "3942.403992",
+      "tokenOut": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenOutSym": "WBNB",
+      "amountOut": "33028331245348862",
+      "amountOutHuman": "0.033028",
+      "bscscan": "https://bscscan.com/tx/0x547885f2e2b4fff303b2676da0862d021801c9a2bb2512cd49015420965f315e",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0xc4265679a2c3e906d05eb2befae58b34e00e353b6e5db4a143b4ba586200ef9a",
+      "block": "104740194",
+      "timestamp": "2026-06-17T10:13:19.000Z",
+      "wallet": "0xb5cb0557d4d281813bf5073c05e10d8896dc145b",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x783c3f003f172c6Ac5AC700218a357d2D66Ee2a2",
+      "tokenInSym": "B2",
+      "amountIn": "885792286206875261",
+      "amountInHuman": "0.885792",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "402481248100099920",
+      "amountOutHuman": "0.402481",
+      "bscscan": "https://bscscan.com/tx/0xc4265679a2c3e906d05eb2befae58b34e00e353b6e5db4a143b4ba586200ef9a",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0x9d46a96dfc122ebbf86c25a632d8db6b7a0b930e98cb135f8587472411d72d81",
+      "block": "104740188",
+      "timestamp": "2026-06-17T10:13:16.000Z",
+      "wallet": "0x5626a1aacc96116512ac947fb357fa944fd24298",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "139649227130253",
+      "amountInHuman": "0.000139",
+      "tokenOut": "0x66969ecD173451F00a4652a53acc6246569D4444",
+      "tokenOutSym": "DRAGON",
+      "amountOut": "65149100000000000000",
+      "amountOutHuman": "65.1491",
+      "bscscan": "https://bscscan.com/tx/0x9d46a96dfc122ebbf86c25a632d8db6b7a0b930e98cb135f8587472411d72d81",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    }
+  ],
+  "pancakeswap-v3": [
+    {
+      "txHash": "0x59b882268c34d611f727c8d7e537b8db54054fc78a29f7eaa6d64eb8b398865a",
+      "block": "104740201",
+      "timestamp": "2026-06-17T10:13:22.000Z",
+      "wallet": "0x89f37b1c2d14c8927791ee9f0ceda3b6cbf76ba5",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0xEECa71A751AB52F25A371065d168E0FCc3c8b00D",
+      "tokenInSym": "AIT",
+      "amountIn": "100000000000000000000",
+      "amountInHuman": "100",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "3987901084582272461",
+      "amountOutHuman": "3.987901",
+      "bscscan": "https://bscscan.com/tx/0x59b882268c34d611f727c8d7e537b8db54054fc78a29f7eaa6d64eb8b398865a",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0x7e158ecffb3295061ec102364349584949259a59ab7499010b7166d62e63f422",
+      "block": "104740214",
+      "timestamp": "2026-06-17T10:13:28.000Z",
+      "wallet": "0x8da7e596d3bd4ac7e550d13e8aba451aa75d72b0",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0xEECa71A751AB52F25A371065d168E0FCc3c8b00D",
+      "tokenInSym": "AIT",
+      "amountIn": "111111111111200000000",
+      "amountInHuman": "111.111111",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "4430974646722781881",
+      "amountOutHuman": "4.430974",
+      "bscscan": "https://bscscan.com/tx/0x7e158ecffb3295061ec102364349584949259a59ab7499010b7166d62e63f422",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0x173c114fd5359989dcb9dcffabd181f16eb29bd7cdfff7bf2318db5fa8445e88",
+      "block": "104740237",
+      "timestamp": "2026-06-17T10:13:38.000Z",
+      "wallet": "0xd5b9eed95db6c84ae663d76a49b61ea658520d73",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0x595dEaad1eB5476Ff1E649fDb7EFC36F1E4679cc",
+      "tokenInSym": "BSB",
+      "amountIn": "121678375710000000000",
+      "amountInHuman": "121.678375",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "67399811263621144408",
+      "amountOutHuman": "67.399811",
+      "bscscan": "https://bscscan.com/tx/0x173c114fd5359989dcb9dcffabd181f16eb29bd7cdfff7bf2318db5fa8445e88",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0x664b81cabde931a07628960771d4b17247c52e137d31b0e84869f5272c488c00",
+      "block": "104740214",
+      "timestamp": "2026-06-17T10:13:28.000Z",
+      "wallet": "0xb0b7e3cc9e3440d513470a88e569226d2a3d2ec3",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0xEECa71A751AB52F25A371065d168E0FCc3c8b00D",
+      "tokenInSym": "AIT",
+      "amountIn": "111111111000000000000",
+      "amountInHuman": "111.111111",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "4430966424556170427",
+      "amountOutHuman": "4.430966",
+      "bscscan": "https://bscscan.com/tx/0x664b81cabde931a07628960771d4b17247c52e137d31b0e84869f5272c488c00",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0xdd8f30ad2ab268cce607592db08f6df95291bc35e7701eb8f675b6883a63945f",
+      "block": "104740231",
+      "timestamp": "2026-06-17T10:13:35.000Z",
+      "wallet": "0x8298477b5d6ac42b3e4d82434f678634c723556c",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "179891211071503460",
+      "amountInHuman": "0.179891",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "108298570730501022966",
+      "amountOutHuman": "108.29857",
+      "bscscan": "https://bscscan.com/tx/0xdd8f30ad2ab268cce607592db08f6df95291bc35e7701eb8f675b6883a63945f",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0x728c26efe220fa5ed65fda1e7d50d253f23a2f7563405cad9963f1d4387a710e",
+      "block": "104740225",
+      "timestamp": "2026-06-17T10:13:33.000Z",
+      "wallet": "0x0d0032a610268ad79165718fd246f6942fd77dd5",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0xEECa71A751AB52F25A371065d168E0FCc3c8b00D",
+      "tokenInSym": "AIT",
+      "amountIn": "100000000000000000000",
+      "amountInHuman": "100",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "3987797608461845833",
+      "amountOutHuman": "3.987797",
+      "bscscan": "https://bscscan.com/tx/0x728c26efe220fa5ed65fda1e7d50d253f23a2f7563405cad9963f1d4387a710e",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0xaa998dc54b7308631a61d1ecb630b3df3848ed7c0e2cb94e2d6c291edf89ec18",
+      "block": "104740220",
+      "timestamp": "2026-06-17T10:13:30.000Z",
+      "wallet": "0x3980daa7eaad0b7e0c53cfc5c2760037270da54d",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0x595dEaad1eB5476Ff1E649fDb7EFC36F1E4679cc",
+      "tokenInSym": "BSB",
+      "amountIn": "250000000000000000000",
+      "amountInHuman": "250",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "138346068014789314522",
+      "amountOutHuman": "138.346068",
+      "bscscan": "https://bscscan.com/tx/0xaa998dc54b7308631a61d1ecb630b3df3848ed7c0e2cb94e2d6c291edf89ec18",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0x47d8a2f9ec1a427a25ae5793196eb114437251c4110a84f10ae98f1df6f26692",
+      "block": "104740220",
+      "timestamp": "2026-06-17T10:13:30.000Z",
+      "wallet": "0xcf32cdfdd4e2ad8199339d6aa1f57efb3a011ac6",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0xEECa71A751AB52F25A371065d168E0FCc3c8b00D",
+      "tokenInSym": "AIT",
+      "amountIn": "100000000000000000000",
+      "amountInHuman": "100",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "3987844740834817194",
+      "amountOutHuman": "3.987844",
+      "bscscan": "https://bscscan.com/tx/0x47d8a2f9ec1a427a25ae5793196eb114437251c4110a84f10ae98f1df6f26692",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0x579aec0f9706cb94b078313aba7349eefc0f613c5db1a2d6223093398d68d75a",
+      "block": "104740225",
+      "timestamp": "2026-06-17T10:13:33.000Z",
+      "wallet": "0x450745f1a2ba96942526b37c0d30b636cd8ef636",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0xEECa71A751AB52F25A371065d168E0FCc3c8b00D",
+      "tokenInSym": "AIT",
+      "amountIn": "200000000000000000000",
+      "amountInHuman": "200",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "7975622581265189414",
+      "amountOutHuman": "7.975622",
+      "bscscan": "https://bscscan.com/tx/0x579aec0f9706cb94b078313aba7349eefc0f613c5db1a2d6223093398d68d75a",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    },
+    {
+      "txHash": "0xcee7e64d8686d6a7aa3af2e42734da1c7676079bb9e84a1a113fe858aa3709a4",
+      "block": "104740175",
+      "timestamp": "2026-06-17T10:13:10.000Z",
+      "wallet": "0xbafd3f1b9667e1f7e2809e9f391691ccbd3a3e0b",
+      "dex": "pancakeswap-v3",
+      "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "52265524515351539372",
+      "amountInHuman": "52.265524",
+      "tokenOut": "0xaa036928c9c0Df07d525B55ea8EE690Bb5a628C1",
+      "tokenOutSym": "EVAA",
+      "amountOut": "79539748501486138110",
+      "amountOutHuman": "79.539748",
+      "bscscan": "https://bscscan.com/tx/0xcee7e64d8686d6a7aa3af2e42734da1c7676079bb9e84a1a113fe858aa3709a4",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": true,
+        "hasFee": false,
+        "detail": "clean"
+      }
+    }
+  ],
+  "pancakeswap-v4": [
+    {
+      "txHash": "0xcd305b247d3e0fc435e6c3719932d4bb381ce31d70dd1bc456ed2fcc12dc02c7",
+      "block": "104740210",
+      "timestamp": "2026-06-17T10:13:26.000Z",
+      "wallet": "0xf3f449eb9f9ece8309f39d55374c47f5678b63b6",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+      "tokenInSym": "USDC",
+      "amountIn": "538167991612781178078",
+      "amountInHuman": "538.167991",
+      "tokenOut": "0x5feccd17c393caf1001d18164236a37e731fcb9d",
+      "tokenOutSym": "OPG",
+      "amountOut": "3435446724740891203209",
+      "amountOutHuman": "3435.446724",
+      "bscscan": "https://bscscan.com/tx/0xcd305b247d3e0fc435e6c3719932d4bb381ce31d70dd1bc456ed2fcc12dc02c7",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": false,
+        "hasFee": false,
+        "detail": "skipped for V4"
+      }
+    },
+    {
+      "txHash": "0x5cf1f15b960dcab7d14c5abb869739634c11ece50680e5bab3b16a5d2781e7a8",
+      "block": "104740231",
+      "timestamp": "2026-06-17T10:13:35.000Z",
+      "wallet": "0x832df8a2d7712977e725cd8f67dba872eb50956f",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "160256814545299564573",
+      "amountInHuman": "160.256814",
+      "tokenOut": "0xd20fb09a49a8e75fef536a2dbc68222900287bac",
+      "tokenOutSym": "PRL",
+      "amountOut": "98762118877",
+      "amountOutHuman": "987.621188",
+      "bscscan": "https://bscscan.com/tx/0x5cf1f15b960dcab7d14c5abb869739634c11ece50680e5bab3b16a5d2781e7a8",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": false,
+        "hasFee": false,
+        "detail": "skipped for V4"
+      }
+    },
+    {
+      "txHash": "0xe89b132b93c6d83fe9bc7bb862aeba938a7558d439d2d6de39ef8bf47dce4a8f",
+      "block": "104740192",
+      "timestamp": "2026-06-17T10:13:18.000Z",
+      "wallet": "0xbf1b8dc88af9d7d3451566c0771ae36983d3ef7d",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x365de036a1f7dccb621530d517133521debb2013",
+      "tokenInSym": "NEX",
+      "amountIn": "7435032700000000186264514",
+      "amountInHuman": "7435032.7",
+      "tokenOut": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "22465371274529498278",
+      "amountOutHuman": "22.465371",
+      "bscscan": "https://bscscan.com/tx/0xe89b132b93c6d83fe9bc7bb862aeba938a7558d439d2d6de39ef8bf47dce4a8f",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": false,
+        "hasFee": false,
+        "detail": "skipped for V4"
+      }
+    },
+    {
+      "txHash": "0xdb09e7ea56e2d9b67aac51b4f375b20c9198e1b3f93c9933806fc92408fdeb8e",
+      "block": "104740171",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x5d5275ca4829ce03a9df9703ed82c97920605623",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0xff7f8f301f7a706e3cfd3d2275f5dc0b9ee8009b",
+      "tokenInSym": "FOLKS",
+      "amountIn": "24849276",
+      "amountInHuman": "24.849276",
+      "tokenOut": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "51944081671357552111",
+      "amountOutHuman": "51.944081",
+      "bscscan": "https://bscscan.com/tx/0xdb09e7ea56e2d9b67aac51b4f375b20c9198e1b3f93c9933806fc92408fdeb8e",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": false,
+        "hasFee": false,
+        "detail": "skipped for V4"
+      }
+    },
+    {
+      "txHash": "0x4f14a15e0dd80b5ba94ccf6d47d7e9f28ed563ccda8e5a522bb7127ea85c10f5",
+      "block": "104740173",
+      "timestamp": "2026-06-17T10:13:09.000Z",
+      "wallet": "0xab5430b68271bb53b13ee3962e9647a84a6fa96d",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "187709076436485558215",
+      "amountInHuman": "187.709076",
+      "tokenOut": "0x444045b0ee1ee319a660a5e3d604ca0ffa35acaa",
+      "tokenOutSym": "BTW",
+      "amountOut": "2845820325469210157438",
+      "amountOutHuman": "2845.820325",
+      "bscscan": "https://bscscan.com/tx/0x4f14a15e0dd80b5ba94ccf6d47d7e9f28ed563ccda8e5a522bb7127ea85c10f5",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": false,
+        "hasFee": false,
+        "detail": "skipped for V4"
+      }
+    },
+    {
+      "txHash": "0x444bc110c4412c9845881be9fd582253140950a55befecd4dec1af4eb87e49d3",
+      "block": "104740206",
+      "timestamp": "2026-06-17T10:13:24.000Z",
+      "wallet": "0x60adeb78b64f4f269dd209d31ed2a7289e186d69",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "188801212134455426118",
+      "amountInHuman": "188.801212",
+      "tokenOut": "0xda7ad9dea9397cffddae2f8a052b82f1484252b3",
+      "tokenOutSym": "RIVER",
+      "amountOut": "37390311339465367552",
+      "amountOutHuman": "37.390311",
+      "bscscan": "https://bscscan.com/tx/0x444bc110c4412c9845881be9fd582253140950a55befecd4dec1af4eb87e49d3",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": false,
+        "hasFee": false,
+        "detail": "skipped for V4"
+      }
+    },
+    {
+      "txHash": "0x461a2cc6b5806cefd04413340975f588d06dd031adb50dd99ee14083e607513d",
+      "block": "104740171",
+      "timestamp": "2026-06-17T10:13:08.000Z",
+      "wallet": "0x2ccc798fee83245096b83c1f6e39adf5416ea8d6",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "83949119554686691902",
+      "amountInHuman": "83.949119",
+      "tokenOut": "0x4829a1d1fb6ded1f81d26868ab8976648baf9893",
+      "tokenOutSym": "RTX",
+      "amountOut": "58345381491652702857",
+      "amountOutHuman": "58.345381",
+      "bscscan": "https://bscscan.com/tx/0x461a2cc6b5806cefd04413340975f588d06dd031adb50dd99ee14083e607513d",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": false,
+        "hasFee": false,
+        "detail": "skipped for V4"
+      }
+    },
+    {
+      "txHash": "0xf160543cda61980c18a533fd1a0b93632b6685dce8e7eb05e802fca565555ea8",
+      "block": "104740176",
+      "timestamp": "2026-06-17T10:13:11.000Z",
+      "wallet": "0x0b2fdbfd27f16bf00ad0fd72c4050004cf5f28b4",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "26818116379218800000",
+      "amountInHuman": "26.818116",
+      "tokenOut": "0x97693439ea2f0ecdeb9135881e49f354656a911c",
+      "tokenOutSym": "RAVE",
+      "amountOut": "89311177575599359476",
+      "amountOutHuman": "89.311177",
+      "bscscan": "https://bscscan.com/tx/0xf160543cda61980c18a533fd1a0b93632b6685dce8e7eb05e802fca565555ea8",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": false,
+        "hasFee": false,
+        "detail": "skipped for V4"
+      }
+    },
+    {
+      "txHash": "0x3bb243995908c04d0b74bcee55b71ccca4ef3b5a2d4532947ff9f657a335683b",
+      "block": "104740247",
+      "timestamp": "2026-06-17T10:13:42.000Z",
+      "wallet": "0xf9be3e564b06de9c0524e11647bf958f2a80635d",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0x70f2eadf1ca1969ff42b0c78e9da519e8937cbaf",
+      "tokenInSym": "EDGE",
+      "amountIn": "329000000000000000000",
+      "amountInHuman": "329",
+      "tokenOut": "0x55d398326f99059ff775485246999027b3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "118685167953468965655",
+      "amountOutHuman": "118.685167",
+      "bscscan": "https://bscscan.com/tx/0x3bb243995908c04d0b74bcee55b71ccca4ef3b5a2d4532947ff9f657a335683b",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": false,
+        "hasFee": false,
+        "detail": "skipped for V4"
+      }
+    },
+    {
+      "txHash": "0xd719e467ef70794643b68e126e7de932d46e51bfc68136fb5d6f1c1278bc5d3a",
+      "block": "104740233",
+      "timestamp": "2026-06-17T10:13:36.000Z",
+      "wallet": "0xdb448c8d37cf0b3875793ec1e49b15ed24b511e8",
+      "dex": "pancakeswap-v4",
+      "tokenIn": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "104265850793844896",
+      "amountInHuman": "0.104265",
+      "tokenOut": "0x8e1e6bf7e13c400269987b65ab2b5724b016caef",
+      "tokenOutSym": "MITO",
+      "amountOut": "2949023880368269489391",
+      "amountOutHuman": "2949.02388",
+      "bscscan": "https://bscscan.com/tx/0xd719e467ef70794643b68e126e7de932d46e51bfc68136fb5d6f1c1278bc5d3a",
+      "flags": [],
+      "filterReasons": {
+        "preFiltered": true
+      },
+      "feeCheck": {
+        "checked": false,
+        "hasFee": false,
+        "detail": "skipped for V4"
+      }
+    }
+  ]
+}

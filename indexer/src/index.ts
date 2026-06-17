@@ -10,6 +10,12 @@ import { pancakeswapV4Parser } from './parsers/pancakeswap-v4.js';
 import { resolveTokenMeta, tokenCacheSize } from './cache/token-cache.js';
 import { formatAmount } from './tokens/registry.js';
 import type { IndexedBlock, NormalizedTrade } from './types/index.js';
+import {
+  TradeRepository,
+  TokenRepository,
+  TokenDiscoveryQueueRepository,
+  IndexerStateRepository,
+} from '@aether/db';
 
 // ── Wallet watch ──────────────────────────────────────────────────────────────
 
@@ -67,6 +73,16 @@ async function printTrade(trade: NormalizedTrade): Promise<void> {
 // ── Block handler (shared by both modes) ──────────────────────────────────────
 
 async function handleBlock(block: IndexedBlock, trades: NormalizedTrade[]): Promise<void> {
+  // Always update checkpoint in the database
+  try {
+    await IndexerStateRepository.saveCheckpoint('bsc', block.number);
+  } catch (err) {
+    logger.error('Failed to save indexer checkpoint in database', {
+      block: block.number.toString(),
+      error: err instanceof Error ? err.message : String(err),
+    });
+  }
+
   if (trades.length === 0) {
     logger.debug('Block processed — no swaps', {
       block:   block.number.toString(),
@@ -81,7 +97,13 @@ async function handleBlock(block: IndexedBlock, trades: NormalizedTrade[]): Prom
     ...new Set(trades.flatMap((t) => [t.tokenIn, t.tokenOut])),
   ] as `0x${string}`[];
 
-  await Promise.all(uniqueTokens.map(resolveTokenMeta));
+  const metas = await Promise.all(
+    uniqueTokens.map(async (addr) => {
+      const meta = await resolveTokenMeta(addr);
+      return { address: addr.toLowerCase(), meta };
+    })
+  );
+  const metaMap = new Map(metas.map(m => [m.address, m.meta]));
 
   logger.info('Block processed', {
     block:        block.number.toString(),
@@ -90,10 +112,80 @@ async function handleBlock(block: IndexedBlock, trades: NormalizedTrade[]): Prom
     tokensCached: tokenCacheSize(),
   });
 
+  const tradesToInsert = [];
+  const tokensToUpsert = new Map<string, { address: string; symbol: string; decimals: number }>();
+
   for (const trade of trades) {
+    const metaIn = metaMap.get(trade.tokenIn.toLowerCase());
+    const metaOut = metaMap.get(trade.tokenOut.toLowerCase());
+
+    const tokenInSymbol = metaIn?.symbol ?? trade.tokenIn.slice(0, 8);
+    const tokenOutSymbol = metaOut?.symbol ?? trade.tokenOut.slice(0, 8);
+    const decimalsIn = metaIn?.decimals ?? 18;
+    const decimalsOut = metaOut?.decimals ?? 18;
+
+    tradesToInsert.push({
+      txHash: trade.txHash,
+      blockNumber: trade.blockNumber,
+      timestamp: new Date(trade.blockTimestampMs),
+      wallet: trade.wallet,
+      dex: trade.dex,
+      tokenInAddress: trade.tokenIn.toLowerCase(),
+      tokenOutAddress: trade.tokenOut.toLowerCase(),
+      tokenInSymbol,
+      tokenOutSymbol,
+      amountIn: trade.amountIn.toString(),
+      amountOut: trade.amountOut.toString(),
+    });
+
+    if (!tokensToUpsert.has(trade.tokenIn.toLowerCase())) {
+      tokensToUpsert.set(trade.tokenIn.toLowerCase(), {
+        address: trade.tokenIn.toLowerCase(),
+        symbol: tokenInSymbol,
+        decimals: decimalsIn,
+      });
+    }
+
+    if (!tokensToUpsert.has(trade.tokenOut.toLowerCase())) {
+      tokensToUpsert.set(trade.tokenOut.toLowerCase(), {
+        address: trade.tokenOut.toLowerCase(),
+        symbol: tokenOutSymbol,
+        decimals: decimalsOut,
+      });
+    }
+
     await printTrade(trade);
   }
+
+  // Persist trades, upsert tokens, and queue metadata lookups
+  try {
+    // 1. Insert trades
+    await TradeRepository.insertTrades(tradesToInsert);
+
+    // 2. Upsert tokens and enqueue for metadata resolution
+    for (const tokenData of tokensToUpsert.values()) {
+      // Upsert basic cache properties.
+      await TokenRepository.upsertToken({
+        address: tokenData.address,
+        symbol: tokenData.symbol,
+        name: tokenData.symbol + ' Token', // default stub
+        decimals: tokenData.decimals,
+      });
+
+      // Enqueue if missing logo/coingecko ID
+      const cached = await TokenRepository.findByAddress(tokenData.address);
+      if (!cached || !cached.imageUrl || !cached.coingeckoId) {
+        await TokenDiscoveryQueueRepository.enqueueToken(tokenData.address);
+      }
+    }
+  } catch (err) {
+    logger.error('Failed to persist trades or tokens to database', {
+      block: block.number.toString(),
+      error: err instanceof Error ? err.message : String(err),
+    });
+  }
 }
+
 
 // ── Parser registry ───────────────────────────────────────────────────────────
 

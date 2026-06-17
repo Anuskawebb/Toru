@@ -7,11 +7,14 @@
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts",
     "debug": "tsx src/debug.ts",
+    "validate": "CHECKPOINT_FILE=/tmp/aether-validator.json tsx src/tests/validate.ts",
+    "audit": "tsx src/tests/audit.ts",
     "build": "tsc",
     "build:run": "tsc && node dist/index.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@aether/db": "file:../packages/db",
     "dotenv": "^16.4.5",
     "viem": "^2.21.0"
   },
