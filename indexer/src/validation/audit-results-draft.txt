@@ -1,0 +1,224 @@
+# PancakeSwap V2
+
+[FAIL]
+txHash: 0xe8c05f749e5edaea9824a577a8fc6b16be8677c36fea7700a861a3cb7f3cdd56
+reason: amountIn mismatch: trade.amountIn is 495000000000000000 (0.495), but BscScan observed leaving 500000000000000000
+
+[FAIL]
+txHash: 0x0d14e0007172627e5e566e8e85e6fcc5334d0c0cac05f6c70b739fc7cddfba47
+reason: amountIn mismatch: trade.amountIn is 99000000000000000 (0.099), but BscScan observed leaving 100000000000000000
+
+[PASS]
+txHash: 0x0aa86f76cb836881f433ffd02af6e1b21aecc866613525bb331fb66fd05b153c
+wallet: correct
+tokenIn: correct
+tokenOut: correct
+amountIn: correct
+amountOut: correct
+
+[PASS]
+txHash: 0xeedbdca6fc6b0ee9d432db643ab27397ffd3c1d5c1902fcb42d63f3ec588c4e6
+wallet: correct
+tokenIn: correct
+tokenOut: correct
+amountIn: correct
+amountOut: correct
+
+[FAIL]
+txHash: 0x2c00fa8285f2c221fb6c01adce3e91d401e909c131249b57354931d7eb79d091
+reason: amountOut mismatch: trade.amountOut is 1551606613527966778 (1.551606), but BscScan observed received 1505058415122127775
+
+[PASS]
+txHash: 0x6347979a2666adf02ed3386bad0837317732e6dd28250c9fdf0bb970b3a9f30b
+wallet: correct
+tokenIn: correct
+tokenOut: correct
+amountIn: correct
+amountOut: correct
+
+[FAIL]
+txHash: 0xd3d4f20037acd9d07bed3a6a949bf548d67863125f088e6682b69501bcce3bf5
+reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: trade.tokenOut is WMAI (0x1B282603099647E2Ec3461B2714ACf38009D66b6), but received asset(s) are: 0x35803e77c3163fed8a942536c1c8e0d5bf90f906
+
+[PASS]
+txHash: 0xb3ed258311730483fd5fb469892a97a2d8e6109514976e8918af6a3c98746205
+wallet: correct
+tokenIn: correct
+tokenOut: correct
+amountIn: correct
+amountOut: correct
+
+[FAIL]
+txHash: 0x29ef54563fcf099ce1ac1998f3c10dbbd540c935976e51d6593fd2fbae487226
+reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+
+[FAIL]
+txHash: 0xaa630e0034853b9b9bb1a37e241951fe1182f5c907ce90d3958cc4e34d7699b2
+reason: tokenIn mismatch: no asset leaving wallet detected, amountOut mismatch: trade.amountOut is 17100000000000000000 (17.1), but BscScan observed received 10260000000000000000
+
+# PancakeSwap V3
+
+[PASS]
+txHash: 0x591900475a244f036367c2831835ba4693f071cb04b7842f344fb548defc81a8
+wallet: correct
+tokenIn: correct
+tokenOut: correct
+amountIn: correct
+amountOut: correct
+
+[PASS]
+txHash: 0x9a8cc009d86878f32f4e31e1313704eac02dcfef14359e312add57ff26509ff2
+wallet: correct
+tokenIn: correct
+tokenOut: correct
+amountIn: correct
+amountOut: correct
+
+[FAIL]
+txHash: 0xc61d10419674692a3c247e6f32f970e59d951a49ce370dc13eb4f9d4df0e3101
+reason: tokenIn mismatch: trade.tokenIn is AIOT (0x55ad16Bd573B3365f43A9dAeB0Cc66A73821b4a5), but native BNB leaving wallet instead, tokenOut mismatch: no asset received by wallet detected
+
+[FAIL]
+txHash: 0xe556f8e5354451001b854db9e2bcfb5f8e33f16c5a8f73882caff29a3da9982d
+reason: tokenIn mismatch: trade.tokenIn is AIOT (0x55ad16Bd573B3365f43A9dAeB0Cc66A73821b4a5), but native BNB leaving wallet instead, tokenOut mismatch: no asset received by wallet detected
+
+[PASS]
+txHash: 0xb95571d0ba7eab3754eb330518fb448adecabcb9b6dba34276df94bbe8997e19
+wallet: correct
+tokenIn: correct
+tokenOut: correct
+amountIn: correct
+amountOut: correct
+
+[PASS]
+txHash: 0xfe7408b89e771238fd8f4d0cbf427ffa4d4b9b308f072a09658ad2e25ace3fc4
+wallet: correct
+tokenIn: correct
+tokenOut: correct
+amountIn: correct
+amountOut: correct
+
+[PASS]
+txHash: 0xccea62aaf8bae43d9b4193dde79b0e5d863669fe0669b003a69fd7f53e20a879
+wallet: correct
+tokenIn: correct
+tokenOut: correct
+amountIn: correct
+amountOut: correct
+
+[FAIL]
+txHash: 0xad744e72ac3e4d776ef4b140b6bafa09096dcb89bdcf24c52649c5d4acd4eac5
+reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+
+[FAIL]
+txHash: 0xdaddaf65d9decf3c396fe59221b5168474224ce264e852a9f304b1ddd50c24c5
+reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+
+[FAIL]
+txHash: 0xe642abc6b87bf6c61a4802819a84e598593056f31381b855db9dd8024eb1cc1c
+reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+
+# PancakeSwap V4
+
+[FAIL]
+txHash: 0x81370118b43a2dab02d6d74eae9e1c2c1d0c388b8880dde86d9c2ae7583d0cfe
+reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+
+[FAIL]
+txHash: 0xbfc3251ad13bb3f1bc19d2c5a5dd4efe8415770bae6557b7ecde406b4c386b4b
+reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+
+[FAIL]
+txHash: 0x5406c2846e744583e177dd11210817a10a9b446358faf3ad671c419da1b542be
+reason: tokenIn mismatch: trade.tokenIn is Beat (0xcf3232b85b43bca90e51d38cc06cc8bb8c8a3e36), but native BNB leaving wallet instead, tokenOut mismatch: no asset received by wallet detected
+
+[FAIL]
+txHash: 0x98a0cdff4611a391409a6e48eea2fc83a4ef32b02f5d7ce65fdbf9dbf3e90850
+reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+
+[FAIL]
+txHash: 0x1900863e368e093a33404b5a293c9ec4cc9a6da9d61184cf58b0f0a36ec2b3e8
+reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+
+[FAIL]
+txHash: 0x07f24138d462d6511922348635cfd45f6664a3549d8382389193e94cb65258cd
+reason: tokenIn mismatch: trade.tokenIn is SPACE (0x87acfa3fd7a6e0d48677d070644d76905c2bdc00), but native BNB leaving wallet instead, tokenOut mismatch: no asset received by wallet detected
+
+[FAIL]
+txHash: 0x876aa5e0a54774d3cc162a78fe4a2076be345625cad2535e611f265368420eb7
+reason: tokenIn mismatch: trade.tokenIn is ROBO (0x475cbf5919608e0c6af00e7bf87fab83bf3ef6e2), but native BNB leaving wallet instead, tokenOut mismatch: no asset received by wallet detected
+
+[FAIL]
+txHash: 0x8c5e4e0eee05be94a11efc476b25629eb2a320697e4e506056040d54a96d1d32
+reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+
+[FAIL]
+txHash: 0x2465e38662d8ff30dfe71a79bb4433fe309706341983a155243b3015e46a67aa
+reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+
+[FAIL]
+txHash: 0x48a7cadb2eca2973ef5b1397fc735a87c1ef98248c4e302b953d7ae134691ff3
+reason: tokenIn mismatch: trade.tokenIn is USDT (0x55d398326f99059ff775485246999027b3197955), but native BNB leaving wallet instead, tokenOut mismatch: no asset received by wallet detected
+
+## FINAL SUMMARY
+
+Total Audited: 30
+
+V2:
+Pass: 4
+Fail: 6
+
+V3:
+Pass: 5
+Fail: 5
+
+V4:
+Pass: 0
+Fail: 10
+
+Overall Accuracy:
+30.0%
+
+List of failed transactions:
+- [V2] Tx: 0xe8c05f749e5edaea9824a577a8fc6b16be8677c36fea7700a861a3cb7f3cdd56
+Reason: amountIn mismatch: trade.amountIn is 495000000000000000 (0.495), but BscScan observed leaving 500000000000000000
+- [V2] Tx: 0x0d14e0007172627e5e566e8e85e6fcc5334d0c0cac05f6c70b739fc7cddfba47
+Reason: amountIn mismatch: trade.amountIn is 99000000000000000 (0.099), but BscScan observed leaving 100000000000000000
+- [V2] Tx: 0x2c00fa8285f2c221fb6c01adce3e91d401e909c131249b57354931d7eb79d091
+Reason: amountOut mismatch: trade.amountOut is 1551606613527966778 (1.551606), but BscScan observed received 1505058415122127775
+- [V2] Tx: 0xd3d4f20037acd9d07bed3a6a949bf548d67863125f088e6682b69501bcce3bf5
+Reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: trade.tokenOut is WMAI (0x1B282603099647E2Ec3461B2714ACf38009D66b6), but received asset(s) are: 0x35803e77c3163fed8a942536c1c8e0d5bf90f906
+- [V2] Tx: 0x29ef54563fcf099ce1ac1998f3c10dbbd540c935976e51d6593fd2fbae487226
+Reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+- [V2] Tx: 0xaa630e0034853b9b9bb1a37e241951fe1182f5c907ce90d3958cc4e34d7699b2
+Reason: tokenIn mismatch: no asset leaving wallet detected, amountOut mismatch: trade.amountOut is 17100000000000000000 (17.1), but BscScan observed received 10260000000000000000
+- [V3] Tx: 0xc61d10419674692a3c247e6f32f970e59d951a49ce370dc13eb4f9d4df0e3101
+Reason: tokenIn mismatch: trade.tokenIn is AIOT (0x55ad16Bd573B3365f43A9dAeB0Cc66A73821b4a5), but native BNB leaving wallet instead, tokenOut mismatch: no asset received by wallet detected
+- [V3] Tx: 0xe556f8e5354451001b854db9e2bcfb5f8e33f16c5a8f73882caff29a3da9982d
+Reason: tokenIn mismatch: trade.tokenIn is AIOT (0x55ad16Bd573B3365f43A9dAeB0Cc66A73821b4a5), but native BNB leaving wallet instead, tokenOut mismatch: no asset received by wallet detected
+- [V3] Tx: 0xad744e72ac3e4d776ef4b140b6bafa09096dcb89bdcf24c52649c5d4acd4eac5
+Reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+- [V3] Tx: 0xdaddaf65d9decf3c396fe59221b5168474224ce264e852a9f304b1ddd50c24c5
+Reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+- [V3] Tx: 0xe642abc6b87bf6c61a4802819a84e598593056f31381b855db9dd8024eb1cc1c
+Reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+- [V4] Tx: 0x81370118b43a2dab02d6d74eae9e1c2c1d0c388b8880dde86d9c2ae7583d0cfe
+Reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+- [V4] Tx: 0xbfc3251ad13bb3f1bc19d2c5a5dd4efe8415770bae6557b7ecde406b4c386b4b
+Reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+- [V4] Tx: 0x5406c2846e744583e177dd11210817a10a9b446358faf3ad671c419da1b542be
+Reason: tokenIn mismatch: trade.tokenIn is Beat (0xcf3232b85b43bca90e51d38cc06cc8bb8c8a3e36), but native BNB leaving wallet instead, tokenOut mismatch: no asset received by wallet detected
+- [V4] Tx: 0x98a0cdff4611a391409a6e48eea2fc83a4ef32b02f5d7ce65fdbf9dbf3e90850
+Reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+- [V4] Tx: 0x1900863e368e093a33404b5a293c9ec4cc9a6da9d61184cf58b0f0a36ec2b3e8
+Reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+- [V4] Tx: 0x07f24138d462d6511922348635cfd45f6664a3549d8382389193e94cb65258cd
+Reason: tokenIn mismatch: trade.tokenIn is SPACE (0x87acfa3fd7a6e0d48677d070644d76905c2bdc00), but native BNB leaving wallet instead, tokenOut mismatch: no asset received by wallet detected
+- [V4] Tx: 0x876aa5e0a54774d3cc162a78fe4a2076be345625cad2535e611f265368420eb7
+Reason: tokenIn mismatch: trade.tokenIn is ROBO (0x475cbf5919608e0c6af00e7bf87fab83bf3ef6e2), but native BNB leaving wallet instead, tokenOut mismatch: no asset received by wallet detected
+- [V4] Tx: 0x8c5e4e0eee05be94a11efc476b25629eb2a320697e4e506056040d54a96d1d32
+Reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+- [V4] Tx: 0x2465e38662d8ff30dfe71a79bb4433fe309706341983a155243b3015e46a67aa
+Reason: tokenIn mismatch: no asset leaving wallet detected, tokenOut mismatch: no asset received by wallet detected
+- [V4] Tx: 0x48a7cadb2eca2973ef5b1397fc735a87c1ef98248c4e302b953d7ae134691ff3
+Reason: tokenIn mismatch: trade.tokenIn is USDT (0x55d398326f99059ff775485246999027b3197955), but native BNB leaving wallet instead, tokenOut mismatch: no asset received by wallet detected
