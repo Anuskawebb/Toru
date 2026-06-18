@@ -1,27 +1,37 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
+import { Anton, Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 
+// Heavy condensed grotesque — the bold "CRYPTO"-style headlines.
+const anton = Anton({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+// Elegant high-contrast serif — the green "Off" / "HOT" accents.
+const playfair = Playfair_Display({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  weight: ["400", "500", "600"],
+});
+
+// Clean grotesque — body copy, labels, UI.
 const inter = Inter({
-  variable: "--font-inter",
+  variable: "--font-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "800", "900"],
-});
-
 export const metadata: Metadata = {
-  title: "Aether — AI copy-trading agents on Mantle",
-  description: "Deploy AI agents that copy top traders on Mantle — on-chain, in real time, fully autonomous.",
-  keywords: ["copy trading", "AI agents", "Mantle", "DeFi", "on-chain trading", "aether"],
-  authors: [{ name: "Aether" }],
+  title: "TORU — Autonomous on-chain copy-trading",
+  description: "Follow the best traders and let your TORU agent mirror their moves on-chain — non-custodial, 24/7, within the limits you set.",
+  keywords: ["copy trading", "AI agents", "Mantle", "DeFi", "on-chain trading", "toru", "non-custodial"],
+  authors: [{ name: "TORU" }],
   openGraph: {
-    title: "Aether — AI copy-trading agents on Mantle",
-    description: "Deploy AI agents that copy top traders on Mantle — on-chain, in real time, fully autonomous.",
+    title: "TORU — Autonomous on-chain copy-trading",
+    description: "Follow the best traders and let your TORU agent mirror their moves on-chain — non-custodial, 24/7, within the limits you set.",
     type: "website",
   },
 };
@@ -32,10 +42,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
-      <body id="midu-body">
-        {children}
-      </body>
+    <html lang="en" className={`${anton.variable} ${playfair.variable} ${inter.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

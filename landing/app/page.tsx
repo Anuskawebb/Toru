@@ -1,469 +1,463 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Aurora from "@/components/ui/Aurora";
+import React, { useEffect, useRef, useState } from "react";
 
-// Micro sun/asterisk icon
-const SunAsteriskIcon = () => (
-  <svg
-    width="10"
-    height="10"
-    viewBox="0 0 10 10"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    style={{ display: "inline-block", verticalAlign: "middle" }}
-  >
-    <circle cx="5" cy="5" r="1.5" fill="currentColor" />
-    <line x1="5" y1="1" x2="5" y2="3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-    <line x1="5" y1="7" x2="5" y2="9" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-    <line x1="1" y1="5" x2="3" y2="5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-    <line x1="7" y1="5" x2="9" y2="5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-    <line x1="2.2" y1="2.2" x2="3.6" y2="3.6" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-    <line x1="6.4" y1="6.4" x2="7.8" y2="7.8" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-    <line x1="7.8" y1="2.2" x2="6.4" y2="3.6" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-    <line x1="3.6" y1="6.4" x2="2.2" y2="7.8" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+const APP_URL = "https://aether-trader.vercel.app/";
+
+// Small arrow glyph used inside the green "Try Demo" button (matches the
+// reference's button-icon swap on hover).
+const ArrowIcon = () => (
+  <svg height="100%" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4.66699 11.3332L11.3337 4.6665" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M4.66699 4.6665H11.3337V11.3332" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-// Bento menu icon (4 small squares forming a larger square)
-const BentoIcon = () => (
+// Original app logo (the cloud/swirl mark). Uses currentColor so it inherits
+// the brand-mark colour.
+const ToruMark = ({ size = 26 }: { size?: number }) => (
   <svg
-    width="12"
-    height="12"
-    viewBox="0 0 12 12"
+    width={size}
+    height={Math.round(size * (400 / 520))}
+    viewBox="0 0 520 400"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-  >
-    <rect x="0" y="0" width="5" height="5" rx="1" fill="currentColor" />
-    <rect x="7" y="0" width="5" height="5" rx="1" fill="currentColor" />
-    <rect x="0" y="7" width="5" height="5" rx="1" fill="currentColor" />
-    <rect x="7" y="7" width="5" height="5" rx="1" fill="currentColor" />
-  </svg>
-);
-
-// Minimal downward arrow
-const DownArrowIcon = () => (
-  <svg
-    width="12"
-    height="12"
-    viewBox="0 0 12 12"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    style={{ display: "inline-block", verticalAlign: "middle" }}
   >
     <path
-      d="M6 2V10M6 10L2.5 6.5M6 10L9.5 6.5"
-      stroke="currentColor"
-      strokeWidth="1.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      fill="currentColor"
+      fillRule="evenodd"
+      d="M 35 230 A 125 125 0 0 0 260 305 A 125 125 0 0 0 485 230 C 485 190 460 160 430 145 L 260 55 C 230 40 190 90 160 90 C 140 90 110 40 90 40 C 60 40 35 130 35 230 Z M 250 230 A 90 90 0 1 0 70 230 A 90 90 0 1 0 250 230 Z M 450 230 A 90 90 0 1 0 270 230 A 90 90 0 1 0 450 230 Z M 227 265 A 32 32 0 1 0 163 265 A 32 32 0 1 0 227 265 Z M 427 265 A 32 32 0 1 0 363 265 A 32 32 0 1 0 427 265 Z"
     />
   </svg>
 );
 
-// Plus / minus glyph for the FAQ accordion rows
-const PlusMinusIcon = ({ open }: { open: boolean }) => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    style={{ flexShrink: 0 }}
-  >
-    <line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    <line
-      x1="8"
-      y1="2"
-      x2="8"
-      y2="14"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      style={{
-        transformOrigin: "center",
-        transform: open ? "scaleY(0)" : "scaleY(1)",
-        transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-      }}
+// Animated "eye" version of the logo — same cloud, but the two sockets are
+// hollow and each pupil is a separate <g> we can orbit (the eye-scroll motion).
+const EyeLogo = ({
+  pupilLeft,
+  pupilRight,
+}: {
+  pupilLeft: React.RefObject<SVGGElement | null>;
+  pupilRight: React.RefObject<SVGGElement | null>;
+}) => (
+  <svg viewBox="0 0 520 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Cloud with two hollow eye sockets (pupils removed from this path) */}
+    <path
+      fill="currentColor"
+      fillRule="evenodd"
+      d="M 35 230 A 125 125 0 0 0 260 305 A 125 125 0 0 0 485 230 C 485 190 460 160 430 145 L 260 55 C 230 40 190 90 160 90 C 140 90 110 40 90 40 C 60 40 35 130 35 230 Z M 250 230 A 90 90 0 1 0 70 230 A 90 90 0 1 0 250 230 Z M 450 230 A 90 90 0 1 0 270 230 A 90 90 0 1 0 450 230 Z"
     />
+    <g ref={pupilLeft} className="eye-pupil eye-pupil-l">
+      <circle cx="195" cy="265" r="32" fill="currentColor" />
+    </g>
+    <g ref={pupilRight} className="eye-pupil eye-pupil-r">
+      <circle cx="395" cy="265" r="32" fill="currentColor" />
+    </g>
   </svg>
 );
 
-// Single expandable FAQ row (midu-style accordion)
-function FaqItem({ question, answer }: { question: string; answer: string }) {
-  const [open, setOpen] = useState(false);
+// ── Right-hand media panels — on-theme mock product UI that swaps as you scroll,
+//    standing in for the reference's product videos. ──────────────────────────
+
+function LeadersPanel() {
+  const rows = [
+    { rank: "01", name: "0xVega", win: "92%", vol: "$2.4M", up: true },
+    { rank: "02", name: "satoshi.eth", win: "88%", vol: "$1.9M", up: true },
+    { rank: "03", name: "0xNova", win: "81%", vol: "$1.1M", up: true },
+    { rank: "04", name: "deltahunter", win: "76%", vol: "$840K", up: false },
+  ];
   return (
-    <div className={`faq-item${open ? " open" : ""}`}>
-      <button
-        className="faq-question interactive-element"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-      >
-        <span>{question}</span>
-        <PlusMinusIcon open={open} />
-      </button>
-      <div className="faq-answer-wrap" style={{ gridTemplateRows: open ? "1fr" : "0fr" }}>
-        <div className="faq-answer-inner">
-          <p>{answer}</p>
-        </div>
+    <div className="toru-card">
+      <div className="toru-card-head">
+        <span className="toru-card-title">Leaderboard</span>
+        <span className="toru-pill-live"><span className="toru-dot" /> 24h</span>
+      </div>
+      <div className="toru-leaders">
+        {rows.map((r, i) => (
+          <div className="toru-leader-row" key={r.name}>
+            <span className="toru-leader-rank">{r.rank}</span>
+            <span className="toru-leader-name">{r.name}</span>
+            <span className="toru-leader-win">{r.win}</span>
+            <span className="toru-leader-vol">{r.vol}</span>
+            <span className={`toru-copy${i === 0 ? " is-active" : ""}`}>{i === 0 ? "Copying" : "Copy"}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-// Live local time display, detected from the visitor's timezone (hydration-safe)
-function LocalTime() {
-  const [timeStr, setTimeStr] = useState<string>("");
-  const [zoneLabel, setZoneLabel] = useState<string>("");
-
-  useEffect(() => {
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const city = timeZone.split("/").pop()?.replace(/_/g, " ") ?? timeZone;
-    setZoneLabel(city);
-
-    const updateTime = () => {
-      const formatted = new Intl.DateTimeFormat("en-US", {
-        timeZone,
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-      }).format(new Date());
-      setTimeStr(formatted);
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return <span>{timeStr ? `${timeStr} ${zoneLabel}` : "10:50 AM"}</span>;
+function FeedPanel() {
+  const rows = [
+    { side: "BUY", asset: "ETH", amt: "1.20", t: "now", ok: true },
+    { side: "SELL", asset: "MNT", amt: "4,800", t: "12s", ok: true },
+    { side: "BUY", asset: "USDC", amt: "5,000", t: "1m", ok: true },
+    { side: "SKIP", asset: "PEPE", amt: "—", t: "2m", ok: false },
+  ];
+  return (
+    <div className="toru-card">
+      <div className="toru-card-head">
+        <span className="toru-card-title">Agent activity</span>
+        <span className="toru-pill-live"><span className="toru-dot" /> Live</span>
+      </div>
+      <div className="toru-feed">
+        {rows.map((r, i) => (
+          <div className="toru-feed-row" key={i}>
+            <span className={`toru-side ${r.side.toLowerCase()}`}>{r.side}</span>
+            <span className="toru-feed-asset">{r.amt} {r.asset}</span>
+            <span className="toru-feed-time">{r.t}</span>
+            <span className={`toru-feed-status${r.ok ? "" : " skip"}`}>{r.ok ? "Mirrored" : "Over limit"}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
+function VaultPanel() {
+  const limits = [
+    { label: "Max trade size", value: "$1,000" },
+    { label: "Daily loss limit", value: "$250" },
+    { label: "Allowed tokens", value: "ETH · MNT · USDC" },
+  ];
+  return (
+    <div className="toru-card">
+      <div className="toru-card-head">
+        <span className="toru-card-title">Your vault</span>
+        <span className="toru-pill-ghost">Non-custodial</span>
+      </div>
+      <div className="toru-vault-balance">
+        <span className="toru-vault-label">Vault balance</span>
+        <span className="toru-vault-value">$12,480<span className="toru-vault-cur"> aUSD</span></span>
+      </div>
+      <div className="toru-limits">
+        {limits.map((l) => (
+          <div className="toru-limit-row" key={l.label}>
+            <span className="toru-limit-label">{l.label}</span>
+            <span className="toru-limit-value">{l.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const TABS = [
+  {
+    heading: (
+      <>
+        Follow the best traders with <span className="text-color-green">one tap</span>
+      </>
+    ),
+    body: "Browse the live leaderboard, compare win rates and 24h volume, and start following a proven trader in seconds — no charts to watch.",
+    Panel: LeadersPanel,
+  },
+  {
+    heading: (
+      <>
+        Your agent trades <span className="text-color-green">24/7 on-chain</span>
+      </>
+    ),
+    body: "A keeper watches your leader's every move and mirrors it into your vault in real time — fully autonomous, every trade recorded on-chain.",
+    Panel: FeedPanel,
+  },
+  {
+    heading: (
+      <>
+        Your funds, <span className="text-color-green">always in your control</span>
+      </>
+    ),
+    body: "TORU never takes custody. Your capital lives in a smart-contract vault you own, and your agent can only act within the risk limits you set.",
+    Panel: VaultPanel,
+  },
+];
+
+// "Two-columns" section — feature cards that fade in, staggered.
+const CARDS = [
+  { title: "Copy the proven", sub: "Leaderboard", body: "Follow traders ranked by real on-chain win rate and 24h volume — not hype." },
+  { title: "Stay in control", sub: "Non-custodial", body: "Your capital never leaves your vault. TORU can only trade within the rules you set." },
+  { title: "Always on", sub: "Autonomous", body: "A keeper watches your leader 24/7 and mirrors every move, on-chain, in real time." },
+];
+
 export default function Home() {
+  const [active, setActive] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLAnchorElement>(null);
+  const anchorRef = useRef<HTMLSpanElement>(null);
+  const pLeftRef = useRef<SVGGElement>(null);
+  const pRightRef = useRef<SVGGElement>(null);
+  const heroBgRef = useRef<HTMLDivElement>(null);
+  const heroTextRef = useRef<HTMLDivElement>(null);
+  const revealRef = useRef<HTMLDivElement>(null);
+  const revealWordRef = useRef<HTMLHeadingElement>(null);
+  const revealKickRef = useRef<HTMLParagraphElement>(null);
+  const startRef = useRef({ cx: 0, cy: 0, size: 56 });
+
+  useEffect(() => {
+    // easeInOutCubic
+    const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+    // Capture the logo's resting position (the nav slot) in scroll-0 viewport
+    // coordinates, so we can interpolate from there to the centre.
+    const computeStart = () => {
+      const a = anchorRef.current;
+      if (!a) return;
+      const r = a.getBoundingClientRect();
+      startRef.current = {
+        cx: r.left + r.width / 2 + window.scrollX,
+        cy: r.top + r.height / 2 + window.scrollY,
+        size: r.width || 56,
+      };
+      if (logoRef.current) logoRef.current.style.width = `${startRef.current.size}px`;
+    };
+
+    const onScroll = () => {
+      // ── Scroll-driven tab switcher (no GSAP): map how far the tall track has
+      //    scrolled past the sticky viewport into an active index (0..2). ──
+      const el = trackRef.current;
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const total = el.offsetHeight - window.innerHeight;
+        const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
+        const ratio = scrolled / Math.max(total, 1);
+        const idx = Math.min(TABS.length - 1, Math.floor(ratio * TABS.length));
+        setActive((prev) => (prev === idx ? prev : idx));
+      }
+
+      // ── Eye logo: fly from the nav to the centre + shrink over the first
+      //    ~viewport of scroll, then hold centred for the rest of the page. ──
+      const logo = logoRef.current;
+      if (logo) {
+        const flyDist = window.innerHeight * 0.9;
+        const p = Math.min(Math.max(window.scrollY / flyDist, 0), 1);
+        const e = ease(p);
+        const { cx, cy, size } = startRef.current;
+        const dx = (1 - e) * (cx - window.innerWidth / 2);
+        const dy = (1 - e) * (cy - window.innerHeight / 2);
+        const endScale = size > 0 ? 42 / size : 0.75; // small in the centre
+        const scale = 1 + (endScale - 1) * e;
+        logo.style.transform = `translate3d(calc(-50% + ${dx}px), calc(-50% + ${dy}px), 0) scale(${scale})`;
+        logo.style.opacity = "1";
+      }
+
+      // ── Hero background: zoom out + blur + fade as you scroll (adapted from
+      //    the reference's background-size shrink → a robust transform scale). ──
+      const heroP = Math.min(Math.max(window.scrollY / (window.innerHeight * 0.8), 0), 1);
+      const hero = heroBgRef.current;
+      if (hero) {
+        // Slight zoom-in keeps it covering the hero (no edge gaps), then fade out.
+        hero.style.transform = `scale(${1 + 0.1 * heroP})`;
+        hero.style.opacity = `${Math.max(1 - heroP * 1.1, 0)}`;
+      }
+      // Hero headline: blur out + fade away on scroll (mirrors the image).
+      const heroText = heroTextRef.current;
+      if (heroText) {
+        heroText.style.filter = `blur(${heroP * 6}px)`;
+        heroText.style.opacity = `${Math.max(1 - heroP * 1.2, 0)}`;
+      }
+
+      // ── Pupils roll with scroll — the eye-scroll motion. ──
+      const rot = window.scrollY * 0.18;
+      if (pLeftRef.current) pLeftRef.current.style.transform = `rotate(${rot}deg)`;
+      if (pRightRef.current) pRightRef.current.style.transform = `rotate(${rot}deg)`;
+
+      // ── Brand reveal: the word scales up + fades as the section scrolls past
+      //    (masthead-style), the kicker fades out early. ──
+      const rv = revealRef.current;
+      if (rv) {
+        const rect = rv.getBoundingClientRect();
+        const total = Math.max(rv.offsetHeight - window.innerHeight, 1);
+        const p = Math.min(Math.max(-rect.top, 0), total) / total;
+        if (revealWordRef.current) {
+          revealWordRef.current.style.transform = `scale(${1 + p * 4})`;
+          revealWordRef.current.style.opacity = `${p < 0.65 ? 1 : Math.max(1 - (p - 0.65) / 0.35, 0)}`;
+        }
+        if (revealKickRef.current) {
+          revealKickRef.current.style.opacity = `${Math.max(1 - p / 0.4, 0)}`;
+        }
+      }
+    };
+
+    const onResize = () => {
+      computeStart();
+      onScroll();
+    };
+
+    computeStart();
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
 
   return (
     <>
-      {/* Aurora background — fixed behind the whole page. The wrapper is sized
-          explicitly (inset:0) since the app has no Tailwind, so Aurora's
-          internal `w-full h-full` resolves against a real size. */}
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 0,
-          pointerEvents: "none",
-          // Flip vertically so the aurora sits at the bottom, black at the top.
-          transform: "scaleY(-1)",
-        }}
-      >
-        <Aurora
-          colorStops={["#C9B8F3", "#9D7BE6", "#5B2BD6"]}
-          blend={0.5}
-          amplitude={1.6}
-          speed={0.5}
-        />
-      </div>
-
-      {/* Global Grain/Noise Overlay */}
-      <div className="noise-overlay" />
-
-      <section className="hero-section">
-
-      {/* Main Viewport Safe Zone */}
-      <main className="viewport-layout" id="main-viewport">
-        
-        {/* Header Row */}
-        <header className="header-row">
-          {/* Logo (Top-Left) */}
-          <div className="logo-container interactive-element" id="header-logo">
-            <svg
-              width="36"
-              height="28"
-              viewBox="0 0 520 400"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ color: "#ffffff" }}
-            >
-              <path
-                fill="currentColor"
-                fillRule="evenodd"
-                d="M 35 230 A 125 125 0 0 0 260 305 A 125 125 0 0 0 485 230 C 485 190 460 160 430 145 L 260 55 C 230 40 190 90 160 90 C 140 90 110 40 90 40 C 60 40 35 130 35 230 Z M 250 230 A 90 90 0 1 0 70 230 A 90 90 0 1 0 250 230 Z M 450 230 A 90 90 0 1 0 270 230 A 90 90 0 1 0 450 230 Z M 227 265 A 32 32 0 1 0 163 265 A 32 32 0 1 0 227 265 Z M 427 265 A 32 32 0 1 0 363 265 A 32 32 0 1 0 427 265 Z"
-              />
-            </svg>
-            <span className="logo-text">Aether</span>
-          </div>
-
-
-
-          {/* Primary CTA (Top-Right) */}
-          <a
-            href="https://aether-trader.vercel.app/"
-            className="cta-button interactive-element"
-            id="contact-button"
-            style={{ display: "inline-block", textDecoration: "none" }}
-          >
-            Try Demo
-          </a>
-        </header>
-
-        {/* Hero tagline — upper-right, mirrors the reference's placement/style */}
-        <div className="hero-wrapper">
-          <h1 className="hero-text">
-            For those who want to trade like the best
-            without ever watching the charts.
-          </h1>
-        </div>
-
-      </main>
-
-
-      {/* Footer Row — floats just above the AETHER stencil */}
-      <footer className="footer-row footer-above-stencil interactive-element">
-        <div className="footer-left" id="footer-left-status">
-          <SunAsteriskIcon />
-          <span className="live-time-wrapper">
-            <LocalTime />
-          </span>
-        </div>
-        <div className="footer-right interactive-element" id="scroll-indicator">
-          <span>Scroll to explore</span>
-          <DownArrowIcon />
-        </div>
-      </footer>
-
-      {/* Massive AETHER wordmark — a color-dodge stencil: the letters stay pure
-          black where the backdrop is dark, and bloom bright only where the aurora
-          light passes behind them (the MIDU reveal behaviour). */}
-      <div className="midu-stencil-container">
-        <svg
-          className="stencil-svg"
-          viewBox="0 0 1400 550"
-          preserveAspectRatio="xMidYMax slice"
-        >
-          <defs>
-            {/* Opaque grey fill drives the color-dodge: brighter grey = stronger
-                bloom where light hits. Heavier toward the baseline (where the
-                flipped aurora sits) so the bottoms of the letters light up. */}
-            <linearGradient id="aether-fill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#2c2c2c" />
-              <stop offset="100%" stopColor="#8a8a8a" />
-            </linearGradient>
-          </defs>
-
-          <text
-            x="50%"
-            y="525"
-            textAnchor="middle"
-            className="stencil-text"
-            fontSize="345"
-            fill="url(#aether-fill)"
-          >
-            AETHER
-          </text>
-        </svg>
-      </div>
-
-      </section>
-
-      {/* ───────────────────────── Below the hero (midu-style) ───────────────────────── */}
-
-      {/* Philosophy / About — large-type statement band */}
-      <section className="m-section m-about">
-        <span className="m-eyebrow">( About )</span>
-        <h2 className="m-statement">
-          Aether is built for people who want the returns of the best traders —{" "}
-          <span className="m-dim">without the screens, the stress, or the 3&nbsp;a.m. price checks.</span>{" "}
-          Your capital, your rules, an autonomous agent that does the watching for you.
-        </h2>
-      </section>
-
-      {/* How it works — numbered steps */}
-      <section className="m-section m-steps">
-        <div className="m-section-head">
-          <span className="m-eyebrow">( How it works )</span>
-          <h3 className="m-heading">Three steps from sign-in to on-chain copy-trading.</h3>
-        </div>
-        <div className="m-steps-grid">
-          <div className="m-step">
-            <span className="m-step-num">01</span>
-            <h4>Connect your wallet</h4>
-            <p>Sign in with email or wallet via Privy — fully non-custodial, deployed on the Mantle Sepolia Testnet.</p>
-          </div>
-          <div className="m-step">
-            <span className="m-step-num">02</span>
-            <h4>Pick a leader to copy</h4>
-            <p>Browse the leaderboard, compare win rates and 24h volume, and choose a trader to follow.</p>
-          </div>
-          <div className="m-step">
-            <span className="m-step-num">03</span>
-            <h4>Your agent trades on-chain</h4>
-            <p>Deposit aUSD into your vault and let your agent mirror the leader&apos;s trades in real time, within the risk limits you set.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats / social-proof band */}
-      <section className="m-section m-stats">
-        <div className="m-stats-grid">
-          <div className="m-stat">
-            <span className="m-stat-value">100%</span>
-            <span className="m-stat-label">Non-custodial</span>
-          </div>
-          <div className="m-stat">
-            <span className="m-stat-value">24/7</span>
-            <span className="m-stat-label">Autonomous execution</span>
-          </div>
-          <div className="m-stat">
-            <span className="m-stat-value">On-chain</span>
-            <span className="m-stat-label">Every trade & P&amp;L update</span>
-          </div>
-          <div className="m-stat">
-            <span className="m-stat-value">3 steps</span>
-            <span className="m-stat-label">From sign-in to copy-trading</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Aether — service/feature cards */}
-      <section className="m-section m-features">
-        <div className="m-section-head">
-          <span className="m-eyebrow">( Why Aether )</span>
-          <h3 className="m-heading">Built so your money never leaves your control.</h3>
-        </div>
-        <div className="m-features-grid">
-          <div className="m-feature">
-            <span className="m-feature-index">01</span>
-            <div>
-              <h4>Non-custodial vaults</h4>
-              <p>Your funds stay in a smart-contract vault you control — Aether never takes custody of your assets.</p>
-            </div>
-          </div>
-          <div className="m-feature">
-            <span className="m-feature-index">02</span>
-            <div>
-              <h4>Real-time execution</h4>
-              <p>A keeper watches leader trades and mirrors them to your vault on-chain, with execution latency tracked end-to-end.</p>
-            </div>
-          </div>
-          <div className="m-feature">
-            <span className="m-feature-index">03</span>
-            <div>
-              <h4>Configurable risk limits</h4>
-              <p>Set max trade size, daily loss limits, and allowed tokens per agent — your agent will never exceed them.</p>
-            </div>
-          </div>
-          <div className="m-feature">
-            <span className="m-feature-index">04</span>
-            <div>
-              <h4>Fully transparent</h4>
-              <p>Every trade, skip, and P&amp;L update is recorded on-chain and viewable in the live activity feed.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Built on — tech strip */}
-      <section className="m-section m-stack">
-        <span className="m-eyebrow">( Built on )</span>
-        <div className="m-stack-row">
-          <span>Mantle</span>
-          <span>FusionX</span>
-          <span>Privy</span>
-          <span>ERC-8004</span>
-          <span>aUSD</span>
-        </div>
-      </section>
-
-      {/* FAQ — accordion */}
-      <section className="m-section m-faq">
-        <div className="m-faq-head">
-          <span className="m-eyebrow">( FAQ )</span>
-          <h3 className="m-heading">Answers before you ask.</h3>
-        </div>
-        <div className="m-faq-list">
-          <FaqItem
-            question="Is Aether custodial?"
-            answer="No. Your funds stay in a smart-contract vault that only you control. Aether never takes custody of your assets — it can only execute trades within the risk limits you set."
-          />
-          <FaqItem
-            question="Which network does it run on?"
-            answer="Aether is deployed on the Mantle Sepolia Testnet. You trade with test aUSD, so no real funds are ever at risk during the demo."
-          />
-          <FaqItem
-            question="Can I limit how much my agent risks?"
-            answer="Yes. Set a maximum trade size, a daily loss limit, and the list of allowed tokens per agent. Your agent will never place a trade that exceeds them."
-          />
-          <FaqItem
-            question="How are leader trades executed?"
-            answer="A keeper watches the leader's on-chain activity and mirrors each trade into your vault via FusionX, with end-to-end execution latency tracked the whole way."
-          />
-          <FaqItem
-            question="Can I see everything my agent does?"
-            answer="Every trade, skip, and P&L update is recorded on-chain and streamed to the live activity feed — fully transparent, nothing hidden."
-          />
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="m-section m-cta">
-        <span className="m-eyebrow">( Get started )</span>
-        <h2 className="m-cta-title">Ready to put your aUSD to work?</h2>
-        <a
-          href="https://aether-trader.vercel.app/"
-          className="cta-button interactive-element"
-          style={{ display: "inline-block", textDecoration: "none" }}
-        >
-          Try Demo
+      {/* Minimal top bar — brand slot + primary CTA, floating over the light
+          intro. The visible logo is the fixed .eye-logo below; this anchor just
+          reserves its resting position + keeps the top-left link clickable. */}
+      <header className="toru-nav">
+        <a href={APP_URL} className="toru-brand" aria-label="TORU home">
+          <span className="eye-anchor" ref={anchorRef} />
         </a>
+        <a href={APP_URL} className="button is-green toru-nav-cta">
+          <span className="button-text">Try Demo</span>
+        </a>
+      </header>
+
+      {/* Eye logo — rests in the nav slot, flies to the centre on scroll and
+          rides along while its pupils roll (the eye-scroll effect). */}
+      <a href={APP_URL} className="eye-logo" ref={logoRef} aria-label="TORU home">
+        <EyeLogo pupilLeft={pLeftRef} pupilRight={pRightRef} />
+      </a>
+
+      {/* ── Intro — pinned statement on a light panel ─────────────────────── */}
+      <section className="intro-wrapper">
+        <div className="intro">
+          {/* Mountain background — fills the hero (cover) and recedes/fades on scroll */}
+          <div className="hero-bg" ref={heroBgRef} aria-hidden="true" />
+          {/* Split headline, stacked over several lines — green serif top-left,
+              black condensed bottom-right */}
+          <div className="hero-edit" ref={heroTextRef}>
+            <h1 className="hero-line-1">
+              Why<br />climb the<span className="hero-ink">mountain</span>
+            </h1>
+            <span className="hero-line-2">
+              when your<br />agent can?
+            </span>
+          </div>
+        </div>
       </section>
 
-      {/* Footer — multi-column */}
-      <footer className="m-footer">
-        <div className="m-footer-top">
-          <div className="m-footer-brand">
-            <div className="m-footer-logo">
-              <svg
-                width="32"
-                height="25"
-                viewBox="0 0 520 400"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ color: "#ffffff" }}
-              >
-                <path
-                  fill="currentColor"
-                  fillRule="evenodd"
-                  d="M 35 230 A 125 125 0 0 0 260 305 A 125 125 0 0 0 485 230 C 485 190 460 160 430 145 L 260 55 C 230 40 190 90 160 90 C 140 90 110 40 90 40 C 60 40 35 130 35 230 Z M 250 230 A 90 90 0 1 0 70 230 A 90 90 0 1 0 250 230 Z M 450 230 A 90 90 0 1 0 270 230 A 90 90 0 1 0 450 230 Z M 227 265 A 32 32 0 1 0 163 265 A 32 32 0 1 0 227 265 Z M 427 265 A 32 32 0 1 0 363 265 A 32 32 0 1 0 427 265 Z"
-                />
-              </svg>
-              <span>Aether</span>
-            </div>
-            <p>Trade like the best without ever watching the charts.</p>
+      {/* ── Brand reveal — "Introducing TORU" masthead-style scroll reveal ── */}
+      <section className="reveal" ref={revealRef}>
+        <div className="reveal-inner">
+          <div className="reveal-squares" aria-hidden="true">
+            <span className="reveal-square s1" />
+            <span className="reveal-square s2" />
+            <span className="reveal-square s3" />
           </div>
-          <div className="m-footer-cols">
-            <div className="m-footer-col">
-              <span className="m-footer-col-title">Product</span>
-              <a href="https://aether-agent.vercel.app/">Launch App</a>
-              <a href="https://aether-agent.vercel.app/traders">Leaderboard</a>
-              <a href="https://aether-agent.vercel.app/watcher">Live Activity</a>
+          <div className="reveal-stack">
+            <p className="reveal-kicker" ref={revealKickRef}>Introducing</p>
+            <h2 className="reveal-word" ref={revealWordRef}>TORU</h2>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Scroll-driven story sections (tiles · text · columns · subscribe) ── */}
+      <div className="sd">
+        {/* Tiles — animated grid transition */}
+        <section className="sd-section sd-tiles" style={{ "--name": "--tiles-s" } as React.CSSProperties}>
+          <div className="tile-section">
+            <div className="tile-container">
+              {Array.from({ length: 20 }).map((_, i) => (
+                <span className="tile" key={i} />
+              ))}
             </div>
-            <div className="m-footer-col">
-              <span className="m-footer-col-title">Built on</span>
-              <a href="https://www.mantle.xyz/" target="_blank" rel="noreferrer">Mantle</a>
-              <a href="https://www.privy.io/" target="_blank" rel="noreferrer">Privy</a>
-              <span className="m-footer-static">ERC-8004 Identity</span>
+          </div>
+        </section>
+
+        {/* Two columns — cards + a preview image that slides in from the right */}
+        <section className="sd-section sd-two" style={{ "--name": "--two-columns-s" } as React.CSSProperties}>
+          <div className="two-columns">
+            <h2>Why beginners choose TORU</h2>
+            <div className="content">
+              <div className="cards">
+                {CARDS.map((c, i) => (
+                  <div className="card" key={i}>
+                    <h3 className="title">{c.title}</h3>
+                    <div className="subtitle">{c.sub}</div>
+                    <p>{c.body}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="preview">
+                <div className="img" />
+              </div>
             </div>
-            <div className="m-footer-col">
-              <span className="m-footer-col-title">Get started</span>
-              <a href="https://aether-trader.vercel.app/">Try Demo</a>
+          </div>
+        </section>
+
+        {/* Subscribe — the form scales up into view */}
+        <section className="sd-section sd-subscribe" style={{ "--name": "--subscribe-s" } as React.CSSProperties}>
+          <div className="subscribe">
+            <h2>Ready to skip the climb?</h2>
+            <p>Get early access to TORU and let an agent trade like the best — while you watch the summit from the couch.</p>
+            <form onSubmit={(e) => e.preventDefault()}>
+              <input type="email" placeholder="Enter your email" aria-label="Email" />
+              <button className="sd-btn" type="submit"><span>Get early access</span></button>
+            </form>
+          </div>
+        </section>
+      </div>
+
+      {/* ── Tabs — dark sticky scroll story ──────────────────────────────── */}
+      <section className="section_tabs">
+        <div className="padding-section-large">
+          <div className="tabs_height" ref={trackRef}>
+            <div className="tabs_sticky-wrapper">
+              <div className="tabs_container">
+                <div className="tabs_component">
+                  {/* Left: rotating copy + CTA */}
+                  <div className="tabs_left">
+                    <div className="tabs_left-top">
+                      {TABS.map((tab, i) => (
+                        <div className={`tabs_let-content${i === active ? " is-active" : ""}`} key={i}>
+                          <h2 className="heading-style-h4 text-color-gray100">{tab.heading}</h2>
+                          <div className="tabs_line" />
+                          <p className="text-size-small text-color-gray400">{tab.body}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="tabs_left-bottom">
+                      <a href={APP_URL} className="button is-green is-secondary">
+                        <div className="button-text">Try Demo</div>
+                        <div className="button-circle-wrapper">
+                          <div className="button-icon _1"><ArrowIcon /></div>
+                          <div className="button-icon _2"><ArrowIcon /></div>
+                        </div>
+                        <div className="button-circlee" />
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Right: rotating media panels */}
+                  <div className="tabs_right">
+                    {TABS.map((tab, i) => {
+                      const Panel = tab.Panel;
+                      return (
+                        <div className={`tabs_video${i === active ? " is-active" : ""}`} key={i}>
+                          <Panel />
+                        </div>
+                      );
+                    })}
+                    {/* Step indicator */}
+                    <div className="tabs_progress">
+                      {TABS.map((_, i) => (
+                        <span className={`tabs_dot${i === active ? " is-active" : ""}`} key={i} />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="m-footer-bottom">
-          <span>© 2026 Aether · Built on Mantle Sepolia Testnet</span>
-          <span>Testnet demo — no real funds at risk.</span>
-        </div>
-      </footer>
+
+        {/* Closing strip */}
+        <footer className="toru-foot">
+          <a href={APP_URL} className="toru-brand">
+            <span className="toru-brand-mark"><ToruMark size={22} /></span>
+            <span className="toru-brand-text">TORU</span>
+          </a>
+          <span className="toru-foot-note">Autonomous on-chain copy-trading · Testnet demo</span>
+          <a href={APP_URL} className="button is-green toru-nav-cta">
+            <span className="button-text">Try Demo</span>
+          </a>
+        </footer>
+      </section>
     </>
   );
 }
