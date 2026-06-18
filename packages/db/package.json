@@ -54,6 +54,26 @@
     "./services/position-builder": {
       "types": "./dist/services/position-builder.d.ts",
       "import": "./dist/services/position-builder.js"
+    },
+    "./schema/smart-money-signals": {
+      "types": "./dist/schema/smart-money-signals.d.ts",
+      "import": "./dist/schema/smart-money-signals.js"
+    },
+    "./repositories/smart-money-signals-repository": {
+      "types": "./dist/repositories/smart-money-signals-repository.d.ts",
+      "import": "./dist/repositories/smart-money-signals-repository.js"
+    },
+    "./services/smart-money-signals-service": {
+      "types": "./dist/services/smart-money-signals-service.d.ts",
+      "import": "./dist/services/smart-money-signals-service.js"
+    },
+    "./schema/token-intel-snapshots": {
+      "types": "./dist/schema/token-intel-snapshots.d.ts",
+      "import": "./dist/schema/token-intel-snapshots.js"
+    },
+    "./services/snapshot-service": {
+      "types": "./dist/services/snapshot-service.d.ts",
+      "import": "./dist/services/snapshot-service.js"
     }
   },
   "scripts": {

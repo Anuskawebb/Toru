@@ -26,6 +26,12 @@ import * as walletPositionsSchema from './schema/wallet-positions.js';
 import * as walletMetricsSchema from './schema/wallet-metrics.js';
 import * as walletScoresSchema from './schema/wallet-scores.js';
 import * as tokenMetricsSchema from './schema/token-metrics.js';
+import * as smartMoneySignalsSchema from './schema/smart-money-signals.js';
+import * as tokenIntelSnapshotsSchema from './schema/token-intel-snapshots.js';
+import * as priceObservationsSchema from './schema/price-observations.js';
+import * as tokenPricesSchema from './schema/token-prices.js';
+import * as portfolioSnapshotsSchema from './schema/portfolio-snapshots.js';
+import * as portfolioStateSchema from './schema/portfolio-state.js';
 
 const schema = {
   ...tradesSchema,
@@ -36,6 +42,12 @@ const schema = {
   ...walletMetricsSchema,
   ...walletScoresSchema,
   ...tokenMetricsSchema,
+  ...smartMoneySignalsSchema,
+  ...tokenIntelSnapshotsSchema,
+  ...priceObservationsSchema,
+  ...tokenPricesSchema,
+  ...portfolioSnapshotsSchema,
+  ...portfolioStateSchema,
 };
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -80,4 +92,14 @@ export * from './services/position-builder.js';
 export * from './services/wallet-metrics-service.js';
 export * from './services/wallet-scores-service.js';
 export * from './services/token-metrics-service.js';
+export * from './schema/smart-money-signals.js';
+export * from './repositories/smart-money-signals-repository.js';
+export * from './services/smart-money-signals-service.js';
+export * from './schema/token-intel-snapshots.js';
+export * from './services/snapshot-service.js';
+export * from './schema/price-observations.js';
+export * from './schema/token-prices.js';
+export * from './schema/portfolio-snapshots.js';
+export * from './schema/portfolio-state.js';
 export { queryClient };
+export { eq, and, or, inArray, desc, gte, lt, isNotNull } from 'drizzle-orm';
