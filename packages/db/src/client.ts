@@ -23,6 +23,7 @@ import * as tokensSchema from './schema/tokens.js';
 import * as indexerStateSchema from './schema/indexer-state.js';
 import * as tokenDiscoveryQueueSchema from './schema/token-discovery-queue.js';
 import * as walletPositionsSchema from './schema/wallet-positions.js';
+import * as walletMetricsSchema from './schema/wallet-metrics.js';
 
 const schema = {
   ...tradesSchema,
@@ -30,6 +31,7 @@ const schema = {
   ...indexerStateSchema,
   ...tokenDiscoveryQueueSchema,
   ...walletPositionsSchema,
+  ...walletMetricsSchema,
 };
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -63,6 +65,9 @@ export * from './repositories/token-repository.js';
 export * from './repositories/indexer-state-repository.js';
 export * from './repositories/token-discovery-queue-repository.js';
 export * from './repositories/position-repository.js';
+export * from './repositories/wallet-metrics-repository.js';
+export * from './schema/wallet-metrics.js';
 export * from './services/token-metadata.js';
 export * from './services/position-builder.js';
+export * from './services/wallet-metrics-service.js';
 export { queryClient };

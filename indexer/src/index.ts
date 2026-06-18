@@ -14,6 +14,7 @@ import {
   TokenDiscoveryQueueRepository,
   IndexerStateRepository,
   PositionRepository,
+  WalletMetricsRepository,
 } from '@aether/db';
 
 // ── Process lifecycle ─────────────────────────────────────────────────────────
@@ -270,17 +271,25 @@ async function handleBlock(block: IndexedBlock, trades: NormalizedTrade[]): Prom
   await PositionRepository.applyTrades(newTradeInputs);
   const positionUpdateMs = Date.now() - tPos0;
 
-  // 3. Token registry — one bulk roundtrip
+  // 3. Wallet metrics — rebuild metrics for wallets that had new trades.
+  // Runs after applyTrades so currentOpenPositions reads the updated state.
+  // Derives from full trade history (not deltas) — idempotent on replay.
+  const affectedWallets = [...new Set(newTradeInputs.map((t) => t.wallet))];
+  const tMetrics0 = Date.now();
+  await WalletMetricsRepository.rebuildWallets(affectedWallets);
+  const metricsUpdateMs = Date.now() - tMetrics0;
+
+  // 5. Token registry — one bulk roundtrip
   const tTokens0 = Date.now();
   await TokenRepository.upsertTokens(tokenRows);
   const tokenUpsertMs = Date.now() - tTokens0;
 
-  // 4. Discovery queue — one bulk roundtrip
+  // 6. Discovery queue — one bulk roundtrip
   const tQueue0 = Date.now();
   await TokenDiscoveryQueueRepository.enqueueTokens(tokenAddresses);
   const queueInsertMs = Date.now() - tQueue0;
 
-  // 5. DB checkpoint — saved last so it reflects a fully committed block
+  // 7. DB checkpoint — saved last so it reflects a fully committed block
   const tChk0 = Date.now();
   await IndexerStateRepository.saveCheckpoint('bsc', block.number);
   const checkpointMs = Date.now() - tChk0;
@@ -305,10 +314,11 @@ async function handleBlock(block: IndexedBlock, trades: NormalizedTrade[]): Prom
     metadataMs,
     tradeInsertMs,
     positionUpdateMs,
+    metricsUpdateMs,
     tokenUpsertMs,
     queueInsertMs,
     checkpointMs,
-    dbTotalMs:         tradeInsertMs + positionUpdateMs + tokenUpsertMs + queueInsertMs + checkpointMs,
+    dbTotalMs:         tradeInsertMs + positionUpdateMs + metricsUpdateMs + tokenUpsertMs + queueInsertMs + checkpointMs,
     totalMs,
   });
 }
