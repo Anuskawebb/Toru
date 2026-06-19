@@ -1,0 +1,2 @@
+ALTER TABLE "price_observations" ADD COLUMN IF NOT EXISTS "source_pool_address" varchar(42);--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "price_observations_source_pool_address_idx" ON "price_observations" USING btree ("source_pool_address");

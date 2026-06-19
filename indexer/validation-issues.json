@@ -1,0 +1,508 @@
+[
+  {
+    "txHash": "0x256995cf7fe24b81bbd80193384b51dd28456df27ddbfabe42de83c981912311",
+    "trade": {
+      "txHash": "0x256995cf7fe24b81bbd80193384b51dd28456df27ddbfabe42de83c981912311",
+      "block": "104740183",
+      "timestamp": "2026-06-17T10:13:14.000Z",
+      "wallet": "0x0c43f0e32cc0a8b9e208b61305a6e70d029c1ccb",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "148223821035650",
+      "amountInHuman": "0.000148",
+      "tokenOut": "0xdbB64Ec2a453a612D0CC5001B6F15B0200000000",
+      "tokenOutSym": "杀零狗",
+      "amountOut": "5463030085738497314338754",
+      "amountOutHuman": "5463030085738497314338754",
+      "bscscan": "https://bscscan.com/tx/0x256995cf7fe24b81bbd80193384b51dd28456df27ddbfabe42de83c981912311",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0xf602df4477a6c2e87d44b7d317db569c5f13f71d88cb901fc1c11965cbc67e6a",
+    "trade": {
+      "txHash": "0xf602df4477a6c2e87d44b7d317db569c5f13f71d88cb901fc1c11965cbc67e6a",
+      "block": "104740189",
+      "timestamp": "2026-06-17T10:13:16.000Z",
+      "wallet": "0xc04467dc3464e4a2562d1daf7cf08de8196e95c8",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenInSym": "USDT",
+      "amountIn": "311211513433556806",
+      "amountInHuman": "0.311211",
+      "tokenOut": "0xB7C0CA135849927e78bDA1044f6a7B1A05c42ec9",
+      "tokenOutSym": "BabyMoco",
+      "amountOut": "182290485650991349484746841830",
+      "amountOutHuman": "18229048565099134948474684183",
+      "bscscan": "https://bscscan.com/tx/0xf602df4477a6c2e87d44b7d317db569c5f13f71d88cb901fc1c11965cbc67e6a",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0x9d1ebf7d40ccfc52370a280c8a4d4fbaee40d23560f810ec0ea225628fa6af26",
+    "trade": {
+      "txHash": "0x9d1ebf7d40ccfc52370a280c8a4d4fbaee40d23560f810ec0ea225628fa6af26",
+      "block": "104740190",
+      "timestamp": "2026-06-17T10:13:17.000Z",
+      "wallet": "0x2567663c57bb11cdbc2186d14ef603a874b8a0f5",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "5069910000000000",
+      "amountInHuman": "0.005069",
+      "tokenOut": "0xA63A2eda022EaD6a62a84aB0AB8CdfB002580000",
+      "tokenOutSym": "清零狗",
+      "amountOut": "265604809935771477139019161483",
+      "amountOutHuman": "265604809935771477139019161483",
+      "bscscan": "https://bscscan.com/tx/0x9d1ebf7d40ccfc52370a280c8a4d4fbaee40d23560f810ec0ea225628fa6af26",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0x157e10ec5ea944fb05741a6ae498560d72507dd408974e570cb6cbde7420a628",
+    "trade": {
+      "txHash": "0x157e10ec5ea944fb05741a6ae498560d72507dd408974e570cb6cbde7420a628",
+      "block": "104740191",
+      "timestamp": "2026-06-17T10:13:17.000Z",
+      "wallet": "0x938eb140e610147afab85ae578f1d0a5b5528217",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x46D502Fac9aEA7c5bC7B13C8Ec9D02378C33D36F",
+      "tokenInSym": "WSPP",
+      "amountIn": "9640424799",
+      "amountInHuman": "9640424799",
+      "tokenOut": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenOutSym": "WBNB",
+      "amountOut": "3051369344160683",
+      "amountOutHuman": "0.003051",
+      "bscscan": "https://bscscan.com/tx/0x157e10ec5ea944fb05741a6ae498560d72507dd408974e570cb6cbde7420a628",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0x9cc82db421d37ed2b0cdeebd7ba97ff16905f29bc8853fd6ca2b0ccf403ec3ee",
+    "trade": {
+      "txHash": "0x9cc82db421d37ed2b0cdeebd7ba97ff16905f29bc8853fd6ca2b0ccf403ec3ee",
+      "block": "104740201",
+      "timestamp": "2026-06-17T10:13:22.000Z",
+      "wallet": "0x7e3a5cdfb1f094374a56002f2ab49c82c006a422",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "270000000000",
+      "amountInHuman": "0",
+      "tokenOut": "0xA63A2eda022EaD6a62a84aB0AB8CdfB002580000",
+      "tokenOutSym": "清零狗",
+      "amountOut": "14131171081265809486343863",
+      "amountOutHuman": "14131171081265809486343863",
+      "bscscan": "https://bscscan.com/tx/0x9cc82db421d37ed2b0cdeebd7ba97ff16905f29bc8853fd6ca2b0ccf403ec3ee",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0x54520bc0bb794f0244f2bf3dbfe3a103d644fa1774e45cb33dcb24c311974a68",
+    "trade": {
+      "txHash": "0x54520bc0bb794f0244f2bf3dbfe3a103d644fa1774e45cb33dcb24c311974a68",
+      "block": "104740207",
+      "timestamp": "2026-06-17T10:13:24.000Z",
+      "wallet": "0x0f2e22d100694195bd9d46b0b65c9b69b9e6a213",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "99700000000000",
+      "amountInHuman": "0.000099",
+      "tokenOut": "0x1B7B32a4bE00513b03beec5D4EB9213E7aeFaaAA",
+      "tokenOutSym": "杀零屎",
+      "amountOut": "4967597187340211254855461831",
+      "amountOutHuman": "4967597187340211254855461831",
+      "bscscan": "https://bscscan.com/tx/0x54520bc0bb794f0244f2bf3dbfe3a103d644fa1774e45cb33dcb24c311974a68",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0x0e948f46de1a65d5d839b714285c52bc3827ff1fab04cbc5b08acb260436d1f1",
+    "trade": {
+      "txHash": "0x0e948f46de1a65d5d839b714285c52bc3827ff1fab04cbc5b08acb260436d1f1",
+      "block": "104740208",
+      "timestamp": "2026-06-17T10:13:25.000Z",
+      "wallet": "0xbee8c1a9f6c9c24b3091c582899a2e98c2109ada",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x1B7B32a4bE00513b03beec5D4EB9213E7aeFaaAA",
+      "tokenInSym": "杀零屎",
+      "amountIn": "140220365807052143090805118",
+      "amountInHuman": "140220365807052143090805118",
+      "tokenOut": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenOutSym": "WBNB",
+      "amountOut": "2802891621280",
+      "amountOutHuman": "0.000002",
+      "bscscan": "https://bscscan.com/tx/0x0e948f46de1a65d5d839b714285c52bc3827ff1fab04cbc5b08acb260436d1f1",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0x0e948f46de1a65d5d839b714285c52bc3827ff1fab04cbc5b08acb260436d1f1",
+    "trade": {
+      "txHash": "0x0e948f46de1a65d5d839b714285c52bc3827ff1fab04cbc5b08acb260436d1f1",
+      "block": "104740208",
+      "timestamp": "2026-06-17T10:13:25.000Z",
+      "wallet": "0xbee8c1a9f6c9c24b3091c582899a2e98c2109ada",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x1B7B32a4bE00513b03beec5D4EB9213E7aeFaaAA",
+      "tokenInSym": "杀零屎",
+      "amountIn": "242475750000000000000000000000",
+      "amountInHuman": "242475750000000000000000000000",
+      "tokenOut": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenOutSym": "WBNB",
+      "amountOut": "4622913509972898",
+      "amountOutHuman": "0.004622",
+      "bscscan": "https://bscscan.com/tx/0x0e948f46de1a65d5d839b714285c52bc3827ff1fab04cbc5b08acb260436d1f1",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0x95974b048b760908d97585d8ce3551b4c623908b3289a1e86bd8edf264d5b974",
+    "trade": {
+      "txHash": "0x95974b048b760908d97585d8ce3551b4c623908b3289a1e86bd8edf264d5b974",
+      "block": "104740208",
+      "timestamp": "2026-06-17T10:13:25.000Z",
+      "wallet": "0x75d3581f8a5a5154de15032eb46c4170c6fc4b15",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x1B7B32a4bE00513b03beec5D4EB9213E7aeFaaAA",
+      "tokenInSym": "杀零屎",
+      "amountIn": "7060166803754727333006869668",
+      "amountInHuman": "7060166803754727333006869668",
+      "tokenOut": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenOutSym": "WBNB",
+      "amountOut": "128201477102459",
+      "amountOutHuman": "0.000128",
+      "bscscan": "https://bscscan.com/tx/0x95974b048b760908d97585d8ce3551b4c623908b3289a1e86bd8edf264d5b974",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0x95974b048b760908d97585d8ce3551b4c623908b3289a1e86bd8edf264d5b974",
+    "trade": {
+      "txHash": "0x95974b048b760908d97585d8ce3551b4c623908b3289a1e86bd8edf264d5b974",
+      "block": "104740208",
+      "timestamp": "2026-06-17T10:13:25.000Z",
+      "wallet": "0x75d3581f8a5a5154de15032eb46c4170c6fc4b15",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x1B7B32a4bE00513b03beec5D4EB9213E7aeFaaAA",
+      "tokenInSym": "杀零屎",
+      "amountIn": "242475750000000000000000000000",
+      "amountInHuman": "242475750000000000000000000000",
+      "tokenOut": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenOutSym": "WBNB",
+      "amountOut": "4203215038530413",
+      "amountOutHuman": "0.004203",
+      "bscscan": "https://bscscan.com/tx/0x95974b048b760908d97585d8ce3551b4c623908b3289a1e86bd8edf264d5b974",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0xe0a2fdf0c1648c3c667c48cefcedc57ac26cef163d7a4c50e0acbe974daa953e",
+    "trade": {
+      "txHash": "0xe0a2fdf0c1648c3c667c48cefcedc57ac26cef163d7a4c50e0acbe974daa953e",
+      "block": "104740232",
+      "timestamp": "2026-06-17T10:13:36.000Z",
+      "wallet": "0xe9bec5066aceb5a8e7881641948eb120f90fe093",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "198400000000000000",
+      "amountInHuman": "0.1984",
+      "tokenOut": "0x3348a84ba66cd5F9b36C2c3fD7aD1C31DD583333",
+      "tokenOutSym": "零号病毒",
+      "amountOut": "273146537496053265148655708087",
+      "amountOutHuman": "273146537496053265148655708087",
+      "bscscan": "https://bscscan.com/tx/0xe0a2fdf0c1648c3c667c48cefcedc57ac26cef163d7a4c50e0acbe974daa953e",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0x1b8090c943bec13095b76a669de8e512b7d8c7a3f5bda257480d8d7b05fea5c9",
+    "trade": {
+      "txHash": "0x1b8090c943bec13095b76a669de8e512b7d8c7a3f5bda257480d8d7b05fea5c9",
+      "block": "104740235",
+      "timestamp": "2026-06-17T10:13:37.000Z",
+      "wallet": "0xd26e30a14835e9396ee34c96527e981e5a906406",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
+      "tokenInSym": "BTCB",
+      "amountIn": "473561772555",
+      "amountInHuman": "0",
+      "tokenOut": "0xDBCdc3f6bB0Abef34884159e73c0DA922114F235",
+      "tokenOutSym": "PETOLD",
+      "amountOut": "40794019011979941811164499778",
+      "amountOutHuman": "40794019011.979941",
+      "bscscan": "https://bscscan.com/tx/0x1b8090c943bec13095b76a669de8e512b7d8c7a3f5bda257480d8d7b05fea5c9",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0x1b8090c943bec13095b76a669de8e512b7d8c7a3f5bda257480d8d7b05fea5c9",
+    "trade": {
+      "txHash": "0x1b8090c943bec13095b76a669de8e512b7d8c7a3f5bda257480d8d7b05fea5c9",
+      "block": "104740235",
+      "timestamp": "2026-06-17T10:13:37.000Z",
+      "wallet": "0xd26e30a14835e9396ee34c96527e981e5a906406",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xDBCdc3f6bB0Abef34884159e73c0DA922114F235",
+      "tokenInSym": "PETOLD",
+      "amountIn": "40794019011979941811164499778",
+      "amountInHuman": "40794019011.979941",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "30974715371028668",
+      "amountOutHuman": "0.030974",
+      "bscscan": "https://bscscan.com/tx/0x1b8090c943bec13095b76a669de8e512b7d8c7a3f5bda257480d8d7b05fea5c9",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0x2e512df187eabc8f6be26d28fb6a65a47cfb2f350af8de6bea082e12ed41f461",
+    "trade": {
+      "txHash": "0x2e512df187eabc8f6be26d28fb6a65a47cfb2f350af8de6bea082e12ed41f461",
+      "block": "104740246",
+      "timestamp": "2026-06-17T10:13:42.000Z",
+      "wallet": "0x6b7e44f67375b2d78fc7aa3f14615bfac42f5082",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbff56E7Ca327d50097D1430b10B98574f4B6bD76",
+      "tokenInSym": "DankDoge",
+      "amountIn": "22094234193800",
+      "amountInHuman": "220942341938",
+      "tokenOut": "0x55d398326f99059fF775485246999027B3197955",
+      "tokenOutSym": "USDT",
+      "amountOut": "67380756891387535",
+      "amountOutHuman": "0.06738",
+      "bscscan": "https://bscscan.com/tx/0x2e512df187eabc8f6be26d28fb6a65a47cfb2f350af8de6bea082e12ed41f461",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0xee77acfe5b292073155e6bbbd244d277425312d4b46636b49bfd375c7118f903",
+    "trade": {
+      "txHash": "0xee77acfe5b292073155e6bbbd244d277425312d4b46636b49bfd375c7118f903",
+      "block": "104740250",
+      "timestamp": "2026-06-17T10:13:44.000Z",
+      "wallet": "0xb5a29bb7684768f2cbb9759dfa4f32d56dc95347",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x3348a84ba66cd5F9b36C2c3fD7aD1C31DD583333",
+      "tokenInSym": "零号病毒",
+      "amountIn": "19544280915827195822849936254",
+      "amountInHuman": "19544280915827195822849936254",
+      "tokenOut": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenOutSym": "WBNB",
+      "amountOut": "14214974098019383",
+      "amountOutHuman": "0.014214",
+      "bscscan": "https://bscscan.com/tx/0xee77acfe5b292073155e6bbbd244d277425312d4b46636b49bfd375c7118f903",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0xee77acfe5b292073155e6bbbd244d277425312d4b46636b49bfd375c7118f903",
+    "trade": {
+      "txHash": "0xee77acfe5b292073155e6bbbd244d277425312d4b46636b49bfd375c7118f903",
+      "block": "104740250",
+      "timestamp": "2026-06-17T10:13:44.000Z",
+      "wallet": "0xb5a29bb7684768f2cbb9759dfa4f32d56dc95347",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x3348a84ba66cd5F9b36C2c3fD7aD1C31DD583333",
+      "tokenInSym": "零号病毒",
+      "amountIn": "37373757346977644549125527562",
+      "amountInHuman": "37373757346977644549125527562",
+      "tokenOut": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenOutSym": "WBNB",
+      "amountOut": "27144126903536442",
+      "amountOutHuman": "0.027144",
+      "bscscan": "https://bscscan.com/tx/0xee77acfe5b292073155e6bbbd244d277425312d4b46636b49bfd375c7118f903",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0x38078e915708ae8d9b241d4c3dfeecff8feab62f4c909d6edf5c759407b1a6f3",
+    "trade": {
+      "txHash": "0x38078e915708ae8d9b241d4c3dfeecff8feab62f4c909d6edf5c759407b1a6f3",
+      "block": "104740250",
+      "timestamp": "2026-06-17T10:13:44.000Z",
+      "wallet": "0x9bbbf3e9ee0812ee1cca3f4ee9525739f59ca6e1",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "1000000000000",
+      "amountInHuman": "0.000001",
+      "tokenOut": "0x1662D3435d7d2104839EaFAbd45E6b53f55A2eAB",
+      "tokenOutSym": "SNDKB",
+      "amountOut": "67960912916874540958",
+      "amountOutHuman": "679609129168.745409",
+      "bscscan": "https://bscscan.com/tx/0x38078e915708ae8d9b241d4c3dfeecff8feab62f4c909d6edf5c759407b1a6f3",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0xfa2098ba9e1eccf00f1e7cad2a07b22c55516ddd898b8931cd9c0dad2c5e8a87",
+    "trade": {
+      "txHash": "0xfa2098ba9e1eccf00f1e7cad2a07b22c55516ddd898b8931cd9c0dad2c5e8a87",
+      "block": "104740254",
+      "timestamp": "2026-06-17T10:13:46.000Z",
+      "wallet": "0xb235ccf168de82b5168ca698f206ed988db31ddf",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "6878100000000000",
+      "amountInHuman": "0.006878",
+      "tokenOut": "0xA63A2eda022EaD6a62a84aB0AB8CdfB002580000",
+      "tokenOutSym": "清零狗",
+      "amountOut": "359512016734613663525279081190",
+      "amountOutHuman": "359512016734613663525279081190",
+      "bscscan": "https://bscscan.com/tx/0xfa2098ba9e1eccf00f1e7cad2a07b22c55516ddd898b8931cd9c0dad2c5e8a87",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0xcc9bb715da77f08eee8ea8b6132aaf596944a6e4b6566e53f52b90d68ad4b7c8",
+    "trade": {
+      "txHash": "0xcc9bb715da77f08eee8ea8b6132aaf596944a6e4b6566e53f52b90d68ad4b7c8",
+      "block": "104740257",
+      "timestamp": "2026-06-17T10:13:47.000Z",
+      "wallet": "0xe9bec5066aceb5a8e7881641948eb120f90fe093",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "198400000000000000",
+      "amountInHuman": "0.1984",
+      "tokenOut": "0x3348a84ba66cd5F9b36C2c3fD7aD1C31DD583333",
+      "tokenOutSym": "零号病毒",
+      "amountOut": "270222228544847880783157294727",
+      "amountOutHuman": "270222228544847880783157294727",
+      "bscscan": "https://bscscan.com/tx/0xcc9bb715da77f08eee8ea8b6132aaf596944a6e4b6566e53f52b90d68ad4b7c8",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0xc81e4f2700d8fd6410743982604ff1a2a05ded02a491708432371ed723d6bd05",
+    "trade": {
+      "txHash": "0xc81e4f2700d8fd6410743982604ff1a2a05ded02a491708432371ed723d6bd05",
+      "block": "104740259",
+      "timestamp": "2026-06-17T10:13:48.000Z",
+      "wallet": "0x3df5ffd4b0ad4a40302c1109079bddfd4076d377",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "9940000000000000",
+      "amountInHuman": "0.00994",
+      "tokenOut": "0xdbB64Ec2a453a612D0CC5001B6F15B0200000000",
+      "tokenOutSym": "杀零狗",
+      "amountOut": "366058678413778019187730760",
+      "amountOutHuman": "366058678413778019187730760",
+      "bscscan": "https://bscscan.com/tx/0xc81e4f2700d8fd6410743982604ff1a2a05ded02a491708432371ed723d6bd05",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0x36a6d6ead7f939cb79c9652a3d78f964f2cc25c8b2dd78592ccc8fb4d9e117bd",
+    "trade": {
+      "txHash": "0x36a6d6ead7f939cb79c9652a3d78f964f2cc25c8b2dd78592ccc8fb4d9e117bd",
+      "block": "104740262",
+      "timestamp": "2026-06-17T10:13:49.000Z",
+      "wallet": "0x068688e7dcc6a749954a8f3a09a6d21a7b39fa9b",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenInSym": "WBNB",
+      "amountIn": "220000000000",
+      "amountInHuman": "0",
+      "tokenOut": "0xA63A2eda022EaD6a62a84aB0AB8CdfB002580000",
+      "tokenOutSym": "清零狗",
+      "amountOut": "11484093504848679185679128",
+      "amountOutHuman": "11484093504848679185679128",
+      "bscscan": "https://bscscan.com/tx/0x36a6d6ead7f939cb79c9652a3d78f964f2cc25c8b2dd78592ccc8fb4d9e117bd",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  },
+  {
+    "txHash": "0xda6211728e0842fa1fe752b4d386adbd09b23edacb1cffefe54ccf3eb47f7bf3",
+    "trade": {
+      "txHash": "0xda6211728e0842fa1fe752b4d386adbd09b23edacb1cffefe54ccf3eb47f7bf3",
+      "block": "104740266",
+      "timestamp": "2026-06-17T10:13:51.000Z",
+      "wallet": "0xfcec17cffadba875ca82a972280acc8697c570c8",
+      "dex": "pancakeswap-v2",
+      "tokenIn": "0x85241765d5C9b9ADB0602209984c45921Bc8F273",
+      "tokenInSym": "PitBurn",
+      "amountIn": "150000000000000000000",
+      "amountInHuman": "150000000000",
+      "tokenOut": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "tokenOutSym": "WBNB",
+      "amountOut": "20048130363248593",
+      "amountOutHuman": "0.020048",
+      "bscscan": "https://bscscan.com/tx/0xda6211728e0842fa1fe752b4d386adbd09b23edacb1cffefe54ccf3eb47f7bf3",
+      "flags": [
+        "EXTREME_PRICE_RATIO"
+      ]
+    },
+    "assertion": "EXTREME_PRICE_RATIO"
+  }
+]

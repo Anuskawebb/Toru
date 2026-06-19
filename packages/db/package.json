@@ -1,0 +1,102 @@
+{
+  "name": "@aether/db",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.js"
+    },
+    "./schema/trades": {
+      "types": "./dist/schema/trades.d.ts",
+      "import": "./dist/schema/trades.js"
+    },
+    "./schema/tokens": {
+      "types": "./dist/schema/tokens.d.ts",
+      "import": "./dist/schema/tokens.js"
+    },
+    "./schema/indexer-state": {
+      "types": "./dist/schema/indexer-state.d.ts",
+      "import": "./dist/schema/indexer-state.js"
+    },
+    "./schema/token-discovery-queue": {
+      "types": "./dist/schema/token-discovery-queue.d.ts",
+      "import": "./dist/schema/token-discovery-queue.js"
+    },
+    "./repositories/trade-repository": {
+      "types": "./dist/repositories/trade-repository.d.ts",
+      "import": "./dist/repositories/trade-repository.js"
+    },
+    "./repositories/token-repository": {
+      "types": "./dist/repositories/token-repository.d.ts",
+      "import": "./dist/repositories/token-repository.js"
+    },
+    "./repositories/indexer-state-repository": {
+      "types": "./dist/repositories/indexer-state-repository.d.ts",
+      "import": "./dist/repositories/indexer-state-repository.js"
+    },
+    "./repositories/token-discovery-queue-repository": {
+      "types": "./dist/repositories/token-discovery-queue-repository.d.ts",
+      "import": "./dist/repositories/token-discovery-queue-repository.js"
+    },
+    "./services/token-metadata": {
+      "types": "./dist/services/token-metadata.d.ts",
+      "import": "./dist/services/token-metadata.js"
+    },
+    "./schema/wallet-positions": {
+      "types": "./dist/schema/wallet-positions.d.ts",
+      "import": "./dist/schema/wallet-positions.js"
+    },
+    "./repositories/position-repository": {
+      "types": "./dist/repositories/position-repository.d.ts",
+      "import": "./dist/repositories/position-repository.js"
+    },
+    "./services/position-builder": {
+      "types": "./dist/services/position-builder.d.ts",
+      "import": "./dist/services/position-builder.js"
+    },
+    "./schema/smart-money-signals": {
+      "types": "./dist/schema/smart-money-signals.d.ts",
+      "import": "./dist/schema/smart-money-signals.js"
+    },
+    "./repositories/smart-money-signals-repository": {
+      "types": "./dist/repositories/smart-money-signals-repository.d.ts",
+      "import": "./dist/repositories/smart-money-signals-repository.js"
+    },
+    "./services/smart-money-signals-service": {
+      "types": "./dist/services/smart-money-signals-service.d.ts",
+      "import": "./dist/services/smart-money-signals-service.js"
+    },
+    "./schema/token-intel-snapshots": {
+      "types": "./dist/schema/token-intel-snapshots.d.ts",
+      "import": "./dist/schema/token-intel-snapshots.js"
+    },
+    "./services/snapshot-service": {
+      "types": "./dist/services/snapshot-service.d.ts",
+      "import": "./dist/services/snapshot-service.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:migrate": "tsx src/migrate.ts",
+    "db:reset": "tsx scripts/db-reset.ts",
+    "db:studio": "drizzle-kit studio",
+    "worker": "tsx src/services/metadata-worker.ts",
+    "test:insert": "tsx scripts/test-insert.ts",
+    "test:query": "tsx scripts/test-query.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.31.2",
+    "postgres": "^3.4.4",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "drizzle-kit": "^0.22.7",
+    "tsx": "^4.15.0",
+    "typescript": "^5.4.0"
+  }
+}
