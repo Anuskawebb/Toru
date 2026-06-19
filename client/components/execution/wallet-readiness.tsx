@@ -13,8 +13,9 @@ import {
 } from '@/lib/api'
 import {
   Check, X, Copy, Wallet, TrendingUp, Activity,
-  AlertTriangle, Zap, RefreshCw, CircleDot, Play,
+  AlertTriangle, Zap, RefreshCw, CircleDot, Play, Plus, Loader2,
 } from 'lucide-react'
+import { ensureAgentWallet } from '@/lib/api'
 
 const POLL_INTERVAL = 15_000
 
@@ -57,6 +58,8 @@ export default function WalletReadiness({ agentId }: Props) {
   const [loading,     setLoading]     = useState(true)
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null)
   const [copied,      setCopied]      = useState(false)
+  const [provisioning, setProvisioning] = useState(false)
+  const [provisionErr, setProvisionErr] = useState<string | null>(null)
 
   const refresh = useCallback(async () => {
     const [a, b, p, r] = await Promise.all([
@@ -78,6 +81,23 @@ export default function WalletReadiness({ agentId }: Props) {
     const id = setInterval(refresh, POLL_INTERVAL)
     return () => clearInterval(id)
   }, [refresh])
+
+  const handleProvisionWallet = async () => {
+    setProvisioning(true)
+    setProvisionErr(null)
+    try {
+      const { account } = await ensureAgentWallet(agentId)
+      if (!account) {
+        setProvisionErr('TWAK sidecar is not reachable. Start it at http://127.0.0.1:3000 then try again.')
+      } else {
+        await refresh()
+      }
+    } catch {
+      setProvisionErr('Failed to connect. Make sure TWAK sidecar is running.')
+    } finally {
+      setProvisioning(false)
+    }
+  }
 
   const handleCopy = (text: string) => {
     copyText(text)
@@ -110,7 +130,7 @@ export default function WalletReadiness({ agentId }: Props) {
             ? <><Zap size={14} className="text-green-positive" /><span className="font-semibold text-green-positive">Ready For Trading</span></>
             : hasWallet
               ? <><AlertTriangle size={14} className="text-orange-accent" /><span className="font-semibold text-orange-accent">Awaiting Funds</span><span className="text-muted-foreground hidden sm:inline">— fund your agent wallet with BNB to activate autonomous trading</span></>
-              : <><CircleDot size={14} className="text-muted-foreground" /><span className="text-muted-foreground">Awaiting Wallet Setup</span></>
+              : <><CircleDot size={14} className="text-muted-foreground" /><span className="text-muted-foreground">Awaiting Wallet Setup</span><span className="text-muted-foreground/60 hidden sm:inline">— start TWAK sidecar at 127.0.0.1:3000, then click Set Up Agent Wallet below</span></>
           }
         </div>
         <button onClick={refresh} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
@@ -159,12 +179,36 @@ export default function WalletReadiness({ agentId }: Props) {
             </div>
           ) : (
             /* Empty state — no wallet */
-            <div className="py-4 text-center">
-              <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center mx-auto mb-3">
-                <Wallet size={16} className="text-muted-foreground" />
+            <div className="py-3 space-y-4">
+              <div className="text-center">
+                <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center mx-auto mb-3">
+                  <Wallet size={16} className="text-muted-foreground" />
+                </div>
+                <p className="text-sm text-foreground font-medium mb-1">No wallet provisioned</p>
+                <p className="text-xs text-muted-foreground">
+                  TWAK sidecar must be running at <span className="font-mono">127.0.0.1:3000</span> to generate a wallet address.
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground mb-1">No wallet yet</p>
-              <p className="text-xs text-muted-foreground/60">Create your first trading agent to get started.</p>
+
+              {provisionErr && (
+                <div className="p-2.5 bg-red-negative/10 border border-red-negative/20 rounded-lg text-xs text-red-negative">
+                  {provisionErr}
+                </div>
+              )}
+
+              <button
+                onClick={handleProvisionWallet}
+                disabled={provisioning}
+                style={!provisioning ? { backgroundColor: 'var(--orange-accent)' } : undefined}
+                className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-semibold text-white transition-opacity ${
+                  provisioning ? 'bg-secondary text-muted-foreground cursor-not-allowed' : 'hover:opacity-90'
+                }`}
+              >
+                {provisioning
+                  ? <><Loader2 size={12} className="animate-spin" /> Connecting to TWAK…</>
+                  : <><Plus size={12} /> Set Up Agent Wallet</>
+                }
+              </button>
             </div>
           )}
         </div>
