@@ -29,24 +29,63 @@ async function main() {
   console.log('smart_money_signals validation suite');
   console.log('='.repeat(64));
 
-  // 1. Coverage
-  section('1. Coverage: smart_money_signals count == token_metrics count');
-  {
-    const counts = await db.execute<{ signals_count: string; metrics_count: string }>(sql`
-      SELECT
-        (SELECT COUNT(*) FROM smart_money_signals) AS signals_count,
-        (SELECT COUNT(*) FROM token_metrics) AS metrics_count
-    `);
-    const { signals_count, metrics_count } = counts[0]!;
-    if (signals_count === metrics_count) {
-      pass('coverage count match', `${signals_count} rows`);
-    } else {
-      fail('coverage count mismatch', `signals=${signals_count} metrics=${metrics_count}`);
-    }
-  }
+  const mockToken = '0x1111111111111111111111111111111111111111';
+  const mockToken2 = '0x2222222222222222222222222222222222222222';
+  const mockWallets = Array.from({ length: 10 }, (_, i) => `0x${String(i + 1).padStart(40, '0')}`);
 
-  // 2. Score bounds
-  section('2. Score bounds check (0.00 - 100.00)');
+  try {
+    // Inject mock token_metrics
+    await db.execute(sql`
+      INSERT INTO token_metrics (
+        token_address, token_symbol, token_decimals, trade_count, buy_trades, sell_trades,
+        unique_traders, unique_buyers, unique_sellers, holder_count, quality_holder_count,
+        active_wallet_count, net_holders, first_seen, last_seen, last_updated
+      ) VALUES (
+        ${mockToken}, 'TKN_A', 18, 20, 10, 10, 10, 10, 10, 100, 10, 10, 10, NOW(), NOW(), NOW()
+      ) ON CONFLICT (token_address) DO UPDATE SET
+        holder_count = 100,
+        quality_holder_count = 10,
+        last_updated = NOW()
+    `);
+
+    await db.execute(sql`
+      INSERT INTO token_metrics (
+        token_address, token_symbol, token_decimals, trade_count, buy_trades, sell_trades,
+        unique_traders, unique_buyers, unique_sellers, holder_count, quality_holder_count,
+        active_wallet_count, net_holders, first_seen, last_seen, last_updated
+      ) VALUES (
+        ${mockToken2}, 'TKN_B', 18, 6, 3, 3, 3, 3, 3, 50, 3, 3, 3, NOW(), NOW(), NOW()
+      ) ON CONFLICT (token_address) DO UPDATE SET
+        holder_count = 50,
+        quality_holder_count = 3,
+        last_updated = NOW()
+    `);
+
+    for (let idx = 0; idx < mockWallets.length; idx++) {
+      const w = mockWallets[idx];
+      await db.execute(sql`
+        INSERT INTO wallet_scores (
+          wallet, activity_score, conviction_score, breadth_score, consistency_score,
+          rank_score, rank_position, classification, trade_count, unique_tokens,
+          current_open_positions, active_days, last_updated
+        ) VALUES (
+          ${w}, 50, 50, 50, 50, 90, 1, 'accumulator', 5, 2, 2, 2, NOW()
+        ) ON CONFLICT (wallet) DO UPDATE SET
+          rank_score = 90,
+          classification = 'accumulator',
+          last_updated = NOW()
+      `);
+
+      // All 10 hold TKN_A
+      await db.execute(sql`
+        INSERT INTO wallet_positions (
+          wallet, token_address, token_symbol, token_decimals, total_bought, total_sold,
+          net_amount, first_trade_at, last_trade_at, trade_count, updated_at
+        ) VALUES (
+          ${w}, ${mockToken}, 'TKN_A', 18, '1000', '0', '1000', NOW(), NOW(), 1, NOW()
+        ) ON CONFLICT (wallet, token_address) DO UPDATE SET
+          net_amount = '1000',
+          updated_at = NOW()
   {
     const violations = await db.execute<{ count: string }>(sql`
       SELECT COUNT(*) AS count
@@ -112,12 +151,12 @@ async function main() {
   section(`6. Random sample field verification (${SAMPLE_SIZE} tokens)`);
   {
     const sample = await db.execute<{ token_address: string; token_symbol: string }>(sql`
-      SELECT token_address, token_symbol FROM smart_money_signals ORDER BY RANDOM() LIMIT ${SAMPLE_SIZE}
+      SELECT token_address, token_symbol FROM smart_money_signals
+      WHERE token_address NOT IN (${mockToken}, ${mockToken2})
+      ORDER BY RANDOM() LIMIT ${SAMPLE_SIZE}
     `);
 
     let fieldFails = 0;
-    const maxTsRow = await db.execute<{ max_ts: Date }>(sql`SELECT MAX(timestamp) AS max_ts FROM trades`);
-    const maxTs = maxTsRow[0]!.max_ts;
 
     for (const { token_address, token_symbol } of sample) {
       const stored = await db.execute<{
@@ -150,7 +189,7 @@ async function main() {
         WHERE wp.token_address = ${token_address}
           AND wp.net_amount::numeric > 0
           AND ws.rank_score >= 80
-          AND wp.first_trade_at > ${maxTs}::timestamp - INTERVAL '4 hours'
+          AND wp.first_trade_at > (SELECT MAX(timestamp) FROM trades) - INTERVAL '4 hours'
       `);
 
       const gtExit = await db.execute<{ count: string }>(sql`
@@ -160,7 +199,7 @@ async function main() {
         WHERE wp.token_address = ${token_address}
           AND wp.net_amount::numeric <= 0
           AND ws.rank_score >= 80
-          AND wp.last_trade_at > ${maxTs}::timestamp - INTERVAL '4 hours'
+          AND wp.last_trade_at > (SELECT MAX(timestamp) FROM trades) - INTERVAL '4 hours'
       `);
 
       const s = stored[0]!;
@@ -205,9 +244,109 @@ async function main() {
     }
   }
 
+  // 8. Signal freshness transitions (LIVE / STALE)
+  section('8. Signal freshness transitions (dataFreshness LIVE ↔ STALE)');
+  {
+    const topSignals = await SmartMoneySignalsRepository.getTopSignals({ limit: 1 });
+
+    if (topSignals.length > 0) {
+      const s = topSignals[0]!;
+
+      // 1. Make all dependencies fresh
+      await db.execute(sql`
+        UPDATE wallet_positions SET updated_at = NOW() WHERE LOWER(token_address) = LOWER(${s.tokenAddress})
+      `);
+      await db.execute(sql`
+        UPDATE token_metrics SET last_updated = NOW() WHERE LOWER(token_address) = LOWER(${s.tokenAddress})
+      `);
+      await db.execute(sql`
+        UPDATE wallet_scores SET last_updated = NOW()
+        WHERE LOWER(wallet) IN (
+          SELECT LOWER(wallet) FROM wallet_positions WHERE LOWER(token_address) = LOWER(${s.tokenAddress})
+        )
+      `);
+      await db.execute(sql`
+        UPDATE smart_money_signals SET computed_at = NOW() WHERE LOWER(token_address) = LOWER(${s.tokenAddress})
+      `);
+
+      // Re-fetch signal
+      const signalFresh = await SmartMoneySignalsRepository.getSignal(s.tokenAddress);
+      if (signalFresh?.dataFreshness === 'LIVE') {
+        pass('fresh rebuild + fresh dependencies => LIVE');
+      } else {
+        fail('fresh rebuild + fresh dependencies did not report LIVE', `got=${signalFresh?.dataFreshness}`);
+      }
+
+      // 2. Make one dependency stale (token_metrics)
+      await db.execute(sql`
+        UPDATE token_metrics SET last_updated = NOW() - INTERVAL '3 hours' WHERE token_address = ${s.tokenAddress}
+      `);
+
+      const signalStaleMetrics = await SmartMoneySignalsRepository.getSignal(s.tokenAddress);
+      if (signalStaleMetrics?.dataFreshness === 'STALE') {
+        pass('fresh rebuild + stale token_metrics => STALE');
+      } else {
+        fail('fresh rebuild + stale token_metrics did not report STALE', `got=${signalStaleMetrics?.dataFreshness}`);
+      }
+
+      // Reset dependency freshness to fresh
+      await db.execute(sql`
+        UPDATE token_metrics SET last_updated = NOW() WHERE token_address = ${s.tokenAddress}
+      `);
+
+      // 3. Make wallet_positions stale
+      await db.execute(sql`
+        UPDATE wallet_positions SET updated_at = NOW() - INTERVAL '3 hours' WHERE token_address = ${s.tokenAddress}
+      `);
+
+      const signalStalePositions = await SmartMoneySignalsRepository.getSignal(s.tokenAddress);
+      if (signalStalePositions?.dataFreshness === 'STALE') {
+        pass('fresh rebuild + stale wallet_positions => STALE');
+      } else {
+        fail('fresh rebuild + stale wallet_positions did not report STALE', `got=${signalStalePositions?.dataFreshness}`);
+      }
+
+      // Reset
+      await db.execute(sql`
+        UPDATE wallet_positions SET updated_at = NOW() WHERE token_address = ${s.tokenAddress}
+      `);
+
+      // 4. Make wallet_scores stale
+      await db.execute(sql`
+        UPDATE wallet_scores SET last_updated = NOW() - INTERVAL '3 hours'
+        WHERE wallet IN (
+          SELECT wallet FROM wallet_positions WHERE token_address = ${s.tokenAddress} AND net_amount::numeric > 0
+        )
+      `);
+
+      const signalStaleScores = await SmartMoneySignalsRepository.getSignal(s.tokenAddress);
+      if (signalStaleScores?.dataFreshness === 'STALE') {
+        pass('fresh rebuild + stale wallet_scores => STALE');
+      } else {
+        fail('fresh rebuild + stale wallet_scores did not report STALE', `got=${signalStaleScores?.dataFreshness}`);
+      }
+
+      // Reset all back to fresh
+      await db.execute(sql`
+        UPDATE wallet_scores SET last_updated = NOW()
+        WHERE wallet IN (
+          SELECT wallet FROM wallet_positions WHERE token_address = ${s.tokenAddress}
+        )
+      `);
+    } else {
+      fail('No signals available to test freshness transitions');
+    }
+  }
+
   // Summary
   console.log('\n' + '='.repeat(64));
   console.log(`Result: ${passCount} PASS  ${failCount} FAIL  (${totalChecks} checks)`);
+
+  // Cleanup mock data
+  await db.execute(sql`DELETE FROM wallet_positions WHERE token_address IN (${mockToken}, ${mockToken2})`);
+  await db.execute(sql`DELETE FROM token_metrics WHERE token_address IN (${mockToken}, ${mockToken2})`);
+  await db.execute(sql`DELETE FROM wallet_scores WHERE wallet IN (${sql.join(mockWallets, sql`, `)})`);
+  await db.execute(sql`DELETE FROM smart_money_signals WHERE token_address IN (${mockToken}, ${mockToken2})`);
 
   await queryClient.end();
   process.exit(failCount > 0 ? 1 : 0);

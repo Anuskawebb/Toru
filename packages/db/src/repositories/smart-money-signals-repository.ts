@@ -7,28 +7,27 @@ import {
 } from '../schema/smart-money-signals.js';
 import { tokenIntelSnapshots } from '../schema/token-intel-snapshots.js';
 import { and, eq, gt, inArray, lte, notInArray, sql } from 'drizzle-orm';
-import { QUALITY_HOLDER_THRESHOLD } from '../schema/token-metrics.js';
+import { QUALITY_HOLDER_THRESHOLD, tokenMetrics } from '../schema/token-metrics.js';
 
 // ── Rebuild SQL ───────────────────────────────────────────────────────────────
 //
 // Single CTE-chain INSERT … ON CONFLICT that computes every signal from source
 // truth (wallet_positions, wallet_scores, token_metrics) in one pass.
 //
-// Score formula (Phase 5A — static signals only):
-//   accumulation_score = concentration_pct_rank * 45
-//                      + avg_quality_rank_rank   * 30
-//                      + accumulator_count_rank   * 25
+// Score formula (Phase 5B — temporal signals active):
+//   accumulation_score = PERCENT_RANK(quality_entry_count_4h) * 25
+//                      + PERCENT_RANK(quality_concentration_pct) * 20
+//                      + PERCENT_RANK(avg_quality_rank)          * 20
+//                      + PERCENT_RANK(net_accumulation_flow)     * 35
 //
 // PERCENT_RANK is computed only over tokens that pass the noise floor
 // (quality_holder_count >= 3 AND holder_count >= 10). All other tokens receive
 // accumulation_score = 0 and signal_tier = 'NOISE'.
 //
-// Entry/exit signals (quality_entry_count_4h, net_accumulation_flow) are stored
-// for completeness but are NOT included in the score formula in Phase 5A.
-// Reason: with single-day indexed data, first_trade_at for every position falls
-// within the 4h window, making the entry count indistinguishable from the
-// current quality_holder_count. These signals become reliable in Phase 5B once
-// the dataset spans multiple days.
+// net_accumulation_flow (35%) is the dominant dimension because it captures
+// the real-time balance of smart-money entries vs exits over 4h.
+// quality_entry_count_4h (25%) rewards absolute entry velocity.
+// concentration and avg_quality_rank (20% each) reward signal quality / conviction.
 //
 // PERCENT_RANK() returns double precision; cast to ::numeric before ROUND() —
 // PostgreSQL does not have round(double precision, integer).
@@ -322,7 +321,45 @@ async function enrichSignalsWithHistory(rows: SmartMoneySignal[]): Promise<Token
     }
   }
 
+  // 2c. Fetch freshness metadata for all target tokens in a single batch
+  const freshnessMap = new Map<string, {
+    tokenMetricsLastUpdated: Date;
+    minPositionUpdatedAt: Date | null;
+    minWalletScoreLastUpdated: Date | null;
+  }>();
+
+  if (tokenAddresses.length > 0) {
+    const freshnessData = await db
+      .select({
+        tokenAddress: tokenMetrics.tokenAddress,
+        tokenMetricsLastUpdated: tokenMetrics.lastUpdated,
+        minPositionUpdatedAt: sql<Date | null>`(
+          SELECT MIN(wp.updated_at)
+          FROM wallet_positions wp
+          WHERE wp.token_address = ${tokenMetrics.tokenAddress}
+        )`,
+        minWalletScoreLastUpdated: sql<Date | null>`(
+          SELECT MIN(ws.last_updated)
+          FROM wallet_positions wp
+          JOIN wallet_scores ws ON ws.wallet = wp.wallet
+          WHERE wp.token_address = ${tokenMetrics.tokenAddress} AND ws.rank_score >= 80
+        )`
+      })
+      .from(tokenMetrics)
+      .where(inArray(tokenMetrics.tokenAddress, tokenAddresses));
+
+    for (const item of freshnessData) {
+      freshnessMap.set(item.tokenAddress.toLowerCase(), {
+        tokenMetricsLastUpdated: item.tokenMetricsLastUpdated,
+        minPositionUpdatedAt: parseUtcDate(item.minPositionUpdatedAt) ?? null,
+        minWalletScoreLastUpdated: parseUtcDate(item.minWalletScoreLastUpdated) ?? null,
+      });
+    }
+  }
+
   // 3. Process, compute deltas, classify trends, and pre-render plain text narratives
+  const nowMs = Date.now();
+  const STALE_THRESHOLD_MS = 2 * 60 * 60 * 1000; // 2 hours
   return rows.map((row) => {
     const qh = row.qualityHolderCount;
 
@@ -374,12 +411,14 @@ async function enrichSignalsWithHistory(rows: SmartMoneySignal[]): Promise<Token
       }
     }
 
-    // Derived 24h metrics from snapshots
-    const derived24h = snapshot24hSums.get(row.tokenAddress.toLowerCase()) ?? { entries24h: 0, exits24h: 0 };
-    // Fallback: if we don't have historical snapshots but we have current 4h data, use 4h metrics as baseline
-    const qualityEntries24h = derived24h.entries24h > 0 ? derived24h.entries24h : row.qualityEntryCount4h;
-    const qualityExits24h = derived24h.exits24h > 0 ? derived24h.exits24h : row.qualityExitCount4h;
-    const netAccumulationFlow24h = qualityEntries24h - qualityExits24h;
+    // Derived 24h metrics from snapshots (no fallback to 4h metrics)
+    const hasSnapshots24h = snapshot24hSums.has(row.tokenAddress.toLowerCase());
+    const derived24h = snapshot24hSums.get(row.tokenAddress.toLowerCase());
+    const qualityEntries24h = hasSnapshots24h ? derived24h!.entries24h : null;
+    const qualityExits24h = hasSnapshots24h ? derived24h!.exits24h : null;
+    const netAccumulationFlow24h = (qualityEntries24h !== null && qualityExits24h !== null)
+      ? qualityEntries24h - qualityExits24h
+      : null;
 
     const concentrationScore = Math.round(concCurrent);
 
@@ -428,7 +467,12 @@ async function enrichSignalsWithHistory(rows: SmartMoneySignal[]): Promise<Token
     if (scoreCurrent >= 75) signalReasons.push('high_accumulation');
     if (qualityHolderChange24h !== null && qualityHolderChange24h >= 2) signalReasons.push('quality_holder_growth');
     if (trendDirection === 'INCREASING') signalReasons.push('increasing_trend');
-    if (netAccumulationFlow24h >= 2 || qualityEntries24h >= 3) signalReasons.push('strong_participation');
+    if (
+      (netAccumulationFlow24h !== null && netAccumulationFlow24h >= 2) ||
+      (qualityEntries24h !== null && qualityEntries24h >= 3)
+    ) {
+      signalReasons.push('strong_participation');
+    }
 
     const riskFlags: string[] = [];
     if (qh < 5) riskFlags.push('low_holder_count');
@@ -458,6 +502,22 @@ async function enrichSignalsWithHistory(rows: SmartMoneySignal[]): Promise<Token
       narrative = `${symbol} shows ${signalTier.toLowerCase()} smart-money signals. In the last 24h, it ${growthText}. Trend remains ${trendDirection}. Opportunity Score: ${opportunityScore} (Confidence: ${confidence}%).`;
     }
 
+    // Freshness calculation from batched dependencies
+    const freshness = freshnessMap.get(row.tokenAddress.toLowerCase());
+    const timestamps = [
+      row.computedAt,
+      freshness?.tokenMetricsLastUpdated,
+      freshness?.minPositionUpdatedAt,
+      freshness?.minWalletScoreLastUpdated,
+    ].filter((t): t is Date => t !== null && t !== undefined);
+
+    const oldestTimestamp = timestamps.length > 0
+      ? new Date(Math.min(...timestamps.map(t => t.getTime())))
+      : row.computedAt;
+
+    const sourceDataAgeMs = Math.max(0, nowMs - oldestTimestamp.getTime());
+    const dataFreshness = sourceDataAgeMs <= STALE_THRESHOLD_MS ? 'LIVE' : 'STALE';
+
     return {
       tokenAddress:            row.tokenAddress,
       tokenSymbol:             symbol,
@@ -482,11 +542,13 @@ async function enrichSignalsWithHistory(rows: SmartMoneySignal[]): Promise<Token
       riskFlags,
       qualityHolderChange24h,
       narrative,
-      dataFreshness:           'LIVE',
+      dataFreshness,
       minimumHolders:          meetsMin,
       computedAt:              row.computedAt,
+      sourceDataAgeMs,
     };
   });
+
 }
 
 // ── Repository ────────────────────────────────────────────────────────────────

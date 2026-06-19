@@ -32,6 +32,8 @@ import * as priceObservationsSchema from './schema/price-observations.js';
 import * as tokenPricesSchema from './schema/token-prices.js';
 import * as portfolioSnapshotsSchema from './schema/portfolio-snapshots.js';
 import * as portfolioStateSchema from './schema/portfolio-state.js';
+import * as tradeRecommendationsSchema from './schema/trade-recommendations.js';
+import * as agentPositionsSchema from './schema/agent-positions.js';
 
 const schema = {
   ...tradesSchema,
@@ -48,6 +50,8 @@ const schema = {
   ...tokenPricesSchema,
   ...portfolioSnapshotsSchema,
   ...portfolioStateSchema,
+  ...tradeRecommendationsSchema,
+  ...agentPositionsSchema,
 };
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -101,5 +105,8 @@ export * from './schema/price-observations.js';
 export * from './schema/token-prices.js';
 export * from './schema/portfolio-snapshots.js';
 export * from './schema/portfolio-state.js';
+export * from './schema/trade-recommendations.js';
+export * from './schema/agent-positions.js';
+export * from './repositories/trade-recommendations-repository.js';
 export { queryClient };
-export { eq, and, or, inArray, desc, gte, lt, isNotNull } from 'drizzle-orm';
+export { eq, and, or, inArray, asc, desc, gte, lte, lt, isNotNull, sql, gt, notInArray } from 'drizzle-orm';

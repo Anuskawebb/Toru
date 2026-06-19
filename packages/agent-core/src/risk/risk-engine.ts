@@ -53,6 +53,10 @@ export class RiskEngine {
     const warnings: string[] = [];
     const reasons: string[] = [];
 
+    if (!portfolio) {
+      blockers.push('missing_portfolio_state');
+    }
+
     // 1. Determine Risk Tier
     let riskTier: RiskTier = 'SPECULATIVE';
     if (signal.qualityHolderCount >= 20 && poolLiquidityUsd >= 100000) {
@@ -152,7 +156,7 @@ export class RiskEngine {
     } else if (signal.trend === 'DECREASING') {
       // Check VVR rules
       const velocityRatio = signal.qualityEntries4h / Math.max(1, signal.qualityExits4h);
-      const hasFlowDivergence = signal.netAccumulationFlow > 0 && signal.netAccumulationFlow24h > 0;
+      const hasFlowDivergence = signal.netAccumulationFlow > 0 && signal.netAccumulationFlow24h !== null && signal.netAccumulationFlow24h > 0;
       
       VVR_approved = 
         velocityRatio >= 1.5 && 

@@ -280,34 +280,30 @@ async function main() {
   }
 
   // ── 10. Idempotency ──────────────────────────────────────────────────────────
-  section('10. Idempotency: rebuildAll() twice → identical top-5');
+  section('10. Idempotency: rebuildToken() twice → identical metrics');
   {
-    const before = await db.execute<{ token_address: string; trade_count: string }>(sql`
+    const picks = await db.execute<{ token_address: string; trade_count: number }>(sql`
       SELECT token_address, trade_count
       FROM token_metrics
-      ORDER BY quality_holder_count DESC
-      LIMIT 5
-    `);
-
-    await TokenMetricsRepository.rebuildAll();
-
-    const after = await db.execute<{ token_address: string; trade_count: string }>(sql`
-      SELECT token_address, trade_count
-      FROM token_metrics
-      ORDER BY quality_holder_count DESC
-      LIMIT 5
+      ORDER BY RANDOM()
+      LIMIT 3
     `);
 
     let changed = 0;
-    for (let i = 0; i < before.length; i++) {
-      const b = before[i]!;
-      const a = after[i]!;
-      if (b.token_address !== a.token_address || b.trade_count !== a.trade_count) changed++;
+    for (const { token_address, trade_count: beforeTradeCount } of picks) {
+      await TokenMetricsRepository.rebuildToken(token_address);
+      const after = await db.execute<{ trade_count: number }>(sql`
+        SELECT trade_count FROM token_metrics WHERE token_address = ${token_address}
+      `);
+      if (after[0] && after[0].trade_count !== beforeTradeCount) {
+        changed++;
+      }
     }
+
     if (changed === 0) {
-      pass('two consecutive rebuilds produce identical top-5');
+      pass('two consecutive rebuilds produce identical metrics');
     } else {
-      fail('top-5 changed after second rebuild', `${changed} rows differ`);
+      fail('metrics changed after second rebuild', `${changed} rows differ`);
     }
   }
 

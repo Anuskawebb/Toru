@@ -50,6 +50,34 @@
       "when": 1781774882075,
       "tag": "0006_far_hobgoblin",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1750262400000,
+      "tag": "0007_perf_indexes",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1750348800000,
+      "tag": "0008_decision_engine",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1750435200000,
+      "tag": "0009_agent_positions_open_unique",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1750521600000,
+      "tag": "0010_trade_recs_pending_buy_unique",
+      "breakpoints": true
     }
   ]
 }

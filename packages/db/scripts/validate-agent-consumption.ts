@@ -25,14 +25,8 @@ function section(title: string) {
 
 const parseUtcDate = (val: string | Date | null | undefined): Date | undefined => {
   if (!val) return undefined;
-  let str = '';
-  if (val instanceof Date) {
-    if (isNaN(val.getTime())) return undefined;
-    const pad = (n: number) => String(n).padStart(2, '0');
-    str = `${val.getUTCFullYear()}-${pad(val.getUTCMonth() + 1)}-${pad(val.getUTCDate())} ${pad(val.getUTCHours())}:${pad(val.getUTCMinutes())}:${pad(val.getUTCSeconds())}`;
-  } else {
-    str = String(val).trim();
-  }
+  if (val instanceof Date) return val;
+  let str = String(val).trim();
   if (!str) return undefined;
   
   let isoStr = str.replace(' ', 'T');
@@ -57,8 +51,22 @@ async function main() {
   console.log('Phase 5C — Signal Consumption & Agent Interface Validation');
   console.log('='.repeat(64));
 
-  // Clean and Capture initial state
-  await db.execute(sql`DELETE FROM token_intel_snapshots`);
+  // Get current dataset watermark so we scope all test writes to it.
+  // Historical snapshots at OTHER timestamps are never touched.
+  const watermarkBeforeCapture = await db.execute<{ max_ts: string | Date }>(
+    sql`SELECT COALESCE(MAX(timestamp), NOW()) AS max_ts FROM trades`
+  );
+  const captureTs = parseUtcDate(watermarkBeforeCapture[0]!.max_ts)!;
+
+  // Record historical snapshot count for the post-test safety assertion.
+  const [historicalBefore] = await db.execute<{ cnt: string }>(sql`
+    SELECT COUNT(*) AS cnt FROM token_intel_snapshots
+    WHERE snapshot_at != ${captureTs.toISOString()}
+  `);
+  const historicalCountBefore = parseInt(historicalBefore!.cnt);
+
+  // Remove only snapshots at the current watermark (from previous runs), then recapture.
+  await db.execute(sql`DELETE FROM token_intel_snapshots WHERE snapshot_at = ${captureTs.toISOString()}`);
   await SnapshotService.capture();
 
   // Find a target token meeting minimum holders
@@ -238,9 +246,6 @@ async function main() {
   // 5. Emerging Signals validation (first-class alpha)
   section('5. Emerging Signals & Repository read APIs');
   {
-    // Clean snapshots and populate mock signals to test getEmergingSignals
-    await db.execute(sql`DELETE FROM token_intel_snapshots`);
-
     // Let's create an emerging token scenario:
     // A token with low holder count (< 15) and positive growth.
     // Let's find one row from smart_money_signals with qualityHolderCount < 15 and meetsMinimumHolders = true.
@@ -255,6 +260,12 @@ async function main() {
       const ec = emergingCandidate[0]!;
       const ts24h = new Date(maxTs.getTime() - 24 * 60 * 60 * 1000);
       const ts24hStr = formatUtcTimestamp(ts24h);
+
+      // Clean old mock snapshot for this token/timestamp if it exists
+      await db.execute(sql`
+        DELETE FROM token_intel_snapshots 
+        WHERE token_address = ${ec.token_address} AND snapshot_at = ${ts24hStr}::timestamptz
+      `);
 
       // Mock snapshot representing past state with lower quality holders (so positive growth)
       const pastQh = Math.max(3, ec.quality_holder_count - 2); // growth of +2
@@ -323,6 +334,26 @@ async function main() {
       }
     } else {
       fail('Failed to load enriched signal for narrative check');
+    }
+  }
+
+  // ── Production-Safety Verification ───────────────────────────────────────────
+  section('7. Production Safety: historical snapshots preserved');
+  {
+    // Remove the capture snapshot at current watermark (inserted at the start of this test).
+    // Mock snapshots for specific tokens were already cleaned up in their respective tests.
+    await db.execute(sql`DELETE FROM token_intel_snapshots WHERE snapshot_at = ${captureTs.toISOString()}`);
+
+    const [historicalAfter] = await db.execute<{ cnt: string }>(sql`
+      SELECT COUNT(*) AS cnt FROM token_intel_snapshots
+      WHERE snapshot_at != ${captureTs.toISOString()}
+    `);
+    const historicalCountAfter = parseInt(historicalAfter!.cnt);
+
+    if (historicalCountAfter === historicalCountBefore) {
+      pass('Historical snapshot count unchanged after test cleanup', `before=${historicalCountBefore} after=${historicalCountAfter}`);
+    } else {
+      fail('Historical snapshots were inadvertently modified', `before=${historicalCountBefore} after=${historicalCountAfter}`);
     }
   }
 

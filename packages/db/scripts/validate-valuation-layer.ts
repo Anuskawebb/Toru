@@ -1,4 +1,4 @@
-import { db, priceObservations, tokenPrices, trades, eq } from '../src/client.js';
+import { db, priceObservations, tokenPrices, tokenMetrics, trades, eq, inArray } from '../src/client.js';
 import {
   PriceObservationService,
   PriceAggregator,
@@ -25,12 +25,36 @@ function assert(condition: boolean, message: string) {
 }
 
 async function runValidation() {
+  const TEST_TOKENS = [
+    '0x1111111111111111111111111111111111111111',
+    '0x2222222222222222222222222222222222222222',
+    '0x3333333333333333333333333333333333333333',
+    '0x4444444444444444444444444444444444444444',
+    '0x5555555555555555555555555555555555555555',
+  ];
+
+  // Test tx hashes — scoped cleanup to avoid touching production trades that might
+  // coincidentally share token addresses with our fabricated test token addresses.
+  const TEST_TX_HASHES = [
+    '0xabc1230000000000000000000000000000000000000000000000000000000001', // TKN_A trade
+    '0xabc1230000000000000000000000000000000000000000000000000000000002', // TKN_B trade
+    '0xabc1230000000000000000000000000000000000000000000000000000000003', // TKN_C trade
+    '0xabc1230000000000000000000000000000000000000000000000000000000004', // TKN_D trade
+  ];
+
+  const doCleanup = async () => {
+    console.log('Cleaning test tables (scoped to test tokens)...');
+    await db.delete(priceObservations).where(inArray(priceObservations.tokenAddress, TEST_TOKENS));
+    await db.delete(tokenPrices).where(inArray(tokenPrices.tokenAddress, TEST_TOKENS));
+    // Scope trade cleanup to known test txHashes only — prevents accidental deletion
+    // of production trades if real BSC trades ever reference these token addresses.
+    await db.delete(trades).where(inArray(trades.txHash, TEST_TX_HASHES));
+    // Remove orphaned token_metrics rows for test tokens (no corresponding trades remain)
+    await db.delete(tokenMetrics).where(inArray(tokenMetrics.tokenAddress, TEST_TOKENS));
+  };
+
   try {
-    // 0. Clean database state for testing
-    console.log('Cleaning test tables...');
-    await db.delete(priceObservations);
-    await db.delete(tokenPrices);
-    await db.delete(trades);
+    await doCleanup();
 
     const now = new Date();
     const USDT_ADDRESS = '0x55d398326f99059ff775485246999027b3197955';
@@ -334,6 +358,8 @@ async function runValidation() {
     console.log('\n================================================================');
     console.log(`Validation Results: ${passCount} PASS  ${failCount} FAIL`);
 
+    await doCleanup();
+
     if (failCount > 0) {
       process.exit(1);
     } else {
@@ -342,6 +368,11 @@ async function runValidation() {
 
   } catch (err) {
     console.error('Unhandled validation exception:', err);
+    try {
+      await doCleanup();
+    } catch (cleanErr) {
+      console.error('Cleanup failed after error:', cleanErr);
+    }
     process.exit(1);
   }
 }

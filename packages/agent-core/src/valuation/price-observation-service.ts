@@ -4,11 +4,11 @@ export const BSC_STABLES = new Set([
   '0x55d398326f99059ff775485246999027b3197955', // USDT
   '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d', // USDC
   '0xe9e7cea3dedca5984780bafc599bd69add087d56', // BUSD
-  '0xc5f0f7b031485c54a5441364ff8964d30e3271df'  // FDUSD
+  '0xc5f0f7b031485c54a5441364ff8964d30e3271df', // FDUSD
+  '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3', // DAI
 ]);
 
 export const WBNB_ADDRESS = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c';
-export const DEFAULT_WBNB_PRICE = 600.0; // Fail-safe default price for WBNB in USD
 
 export interface SwapInput {
   tokenIn: string;
@@ -21,11 +21,15 @@ export interface SwapInput {
   observedAt?: Date;
 }
 
+const WBNB_CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes — evict if BNB price could have drifted materially
+
 export class PriceObservationService {
   /**
    * Tracks the latest WBNB price in memory to avoid redundant DB reads on every swap.
+   * Evicted after WBNB_CACHE_TTL_MS to prevent stale BNB price from mispricing WBNB-routed tokens.
    */
   private static cachedWbnbPrice: number | null = null;
+  private static cachedWbnbPriceAt: number | null = null;
 
   /**
    * Processes a raw swap event, computes USD spot price/volume,
@@ -70,14 +74,20 @@ export class PriceObservationService {
         }
       }
 
-      // If the stablecoin swap updated WBNB directly, cache the WBNB price
+      // If the stablecoin swap updated WBNB directly, refresh the cache with a timestamp
       if (targetTokenAddress === WBNB_ADDRESS && priceUsd > 0) {
         this.cachedWbnbPrice = priceUsd;
+        this.cachedWbnbPriceAt = Date.now();
       }
     }
     // ── Scenario B: WBNB Route Swaps (Multi-Hop Price Feeds) ──────────────────
     else if (isWbnbIn || isWbnbOut) {
       const wbnbPrice = await this.resolveWbnbPrice();
+      if (wbnbPrice === null) {
+        // No WBNB price available and no hardcoded default — skip rather than record a wrong price.
+        console.warn(`[PriceObservationService] WBNB price unresolvable — skipping observation for ${tokenIn}/${tokenOut}`);
+        return;
+      }
 
       if (isWbnbOut && !isWbnbIn) {
         // Token In -> WBNB Out
@@ -121,9 +131,16 @@ export class PriceObservationService {
 
   /**
    * Resolves the latest WBNB spot price from cache or database lookup.
+   * Returns null if no price is available — callers must skip WBNB-routed
+   * observations rather than fall back to a hardcoded default.
    */
-  public static async resolveWbnbPrice(): Promise<number> {
-    if (this.cachedWbnbPrice !== null) {
+  public static async resolveWbnbPrice(): Promise<number | null> {
+    const now = Date.now();
+    if (
+      this.cachedWbnbPrice !== null &&
+      this.cachedWbnbPriceAt !== null &&
+      now - this.cachedWbnbPriceAt <= WBNB_CACHE_TTL_MS
+    ) {
       return this.cachedWbnbPrice;
     }
 
@@ -136,19 +153,30 @@ export class PriceObservationService {
 
       if (row[0]) {
         this.cachedWbnbPrice = row[0].priceUsd;
+        this.cachedWbnbPriceAt = Date.now();
         return row[0].priceUsd;
       }
     } catch {
-      // ignore read errors on unbootstrapped table
+      // DB unavailable — fail closed below
     }
 
-    return DEFAULT_WBNB_PRICE;
+    return null;
   }
 
   /**
-   * Explicitly updates the cached WBNB price (useful for tests and initialization).
+   * Explicitly sets the cached WBNB price (used during initialization and tests).
    */
   public static setCachedWbnbPrice(price: number): void {
     this.cachedWbnbPrice = price;
+    this.cachedWbnbPriceAt = Date.now();
+  }
+
+  /**
+   * Resets the WBNB price cache to unset state. Used in tests to exercise
+   * cold-start and cache-expiry paths without waiting for TTL expiry.
+   */
+  public static resetWbnbCache(): void {
+    this.cachedWbnbPrice = null;
+    this.cachedWbnbPriceAt = null;
   }
 }

@@ -5,6 +5,7 @@ import {
   portfolioState,
   eq,
   and,
+  asc,
   gte,
   lt,
   type WalletPosition,
@@ -82,23 +83,27 @@ export class PortfolioStateService {
       now
     );
 
-    // 4. Resolve persisted peak (restart-safe)
-    const storedPeak = await this.resolveStoredPeak();
+    // 4. Resolve persisted peak (restart-safe) + bootstrap detection
+    const { storedPeak, isBootstrap } = await this.resolveStoredPeakAndBootstrap();
     const peakPortfolioUsd = Math.max(storedPeak, valuation.portfolioUsd);
 
-    // 5. Drawdown calculation
-    const drawdownPct = this.computeDrawdown(valuation.portfolioUsd, peakPortfolioUsd);
+    // 5. Drawdown (suppressed to 0% on first-ever run to prevent empty-wallet blocking)
+    const drawdownPct = isBootstrap
+      ? 0
+      : this.computeDrawdown(valuation.portfolioUsd, peakPortfolioUsd);
 
-    // 6. Rolling 24h loss
-    const rollingLossPct24h = await this.computeRollingLoss(
-      valuation.portfolioUsd,
-      now
-    );
+    // 6. Rolling 24h loss (suppressed on bootstrap; no 24h baseline snapshot exists yet)
+    const rollingLossPct24h = isBootstrap
+      ? 0
+      : await this.computeRollingLoss(valuation.portfolioUsd, now);
 
-    // 7. Derive percentage metrics relative to starting capital
-    const base = Math.max(this.startingCapitalUsd, 0.01); // prevent division by zero
-    const cashReservePct   = (valuation.stablecoinUsd  / base) * 100;
-    const totalExposurePct = (valuation.tokenExposureUsd / base) * 100;
+    // 7. Percentage metrics relative to CURRENT portfolio value.
+    //    Using startingCapitalUsd as denominator produces values > 100% after gains
+    //    and understates risk after losses — both corrupt the Risk Engine's exposure checks.
+    //    When portfolio is empty (bootstrap), both metrics are 0.
+    const portfolioBase    = valuation.portfolioUsd > 0 ? valuation.portfolioUsd : 1;
+    const cashReservePct   = valuation.portfolioUsd > 0 ? (valuation.stablecoinUsd   / portfolioBase) * 100 : 0;
+    const totalExposurePct = valuation.portfolioUsd > 0 ? (valuation.tokenExposureUsd / portfolioBase) * 100 : 0;
     // Phase 6B.2 placeholder — replaced in Phase 8 with actual per-position stop tracking
     const openRiskPct = totalExposurePct * 0.05;
 
@@ -113,9 +118,67 @@ export class PortfolioStateService {
       openRiskPct:         Math.round(openRiskPct * 100) / 100,
     };
 
-    // 8. Persist state and snapshot
-    await this.persistState(snapshot, now);
-    await this.insertSnapshot(snapshot, now);
+    // 8. Persist state and snapshot atomically.
+    //    A single transaction prevents portfolio_state / portfolio_snapshots divergence
+    //    if the process is killed between the two writes.
+    await db.transaction(async (tx) => {
+      await tx
+        .insert(portfolioState)
+        .values({
+          agentWallet:         this.agentWallet,
+          portfolioUsd:        snapshot.portfolioUsd,
+          stablecoinUsd:       snapshot.stablecoinUsd,
+          tokenExposureUsd:    snapshot.tokenExposureUsd,
+          buyingPowerUsd:      snapshot.buyingPowerUsd,
+          startingCapitalUsd:  snapshot.startingCapitalUsd,
+          peakPortfolioUsd:    snapshot.peakPortfolioUsd,
+          drawdownPct:         snapshot.drawdownPct,
+          rollingLossPct24h:   snapshot.rollingLossPct24h,
+          cashReservePct:      snapshot.cashReservePct,
+          totalExposurePct:    snapshot.totalExposurePct,
+          openRiskPct:         snapshot.openRiskPct,
+          openPositions:       snapshot.openPositions,
+          unpricedPositions:   snapshot.unpricedPositions,
+          valuationConfidence: snapshot.valuationConfidence,
+          lastValuationAt:     now,
+          updatedAt:           now,
+        })
+        .onConflictDoUpdate({
+          target: portfolioState.agentWallet,
+          set: {
+            portfolioUsd:        snapshot.portfolioUsd,
+            stablecoinUsd:       snapshot.stablecoinUsd,
+            tokenExposureUsd:    snapshot.tokenExposureUsd,
+            buyingPowerUsd:      snapshot.buyingPowerUsd,
+            // startingCapitalUsd omitted — written once on INSERT, never overwritten
+            peakPortfolioUsd:    snapshot.peakPortfolioUsd,
+            drawdownPct:         snapshot.drawdownPct,
+            rollingLossPct24h:   snapshot.rollingLossPct24h,
+            cashReservePct:      snapshot.cashReservePct,
+            totalExposurePct:    snapshot.totalExposurePct,
+            openRiskPct:         snapshot.openRiskPct,
+            openPositions:       snapshot.openPositions,
+            unpricedPositions:   snapshot.unpricedPositions,
+            valuationConfidence: snapshot.valuationConfidence,
+            lastValuationAt:     now,
+            updatedAt:           now,
+          },
+        });
+
+      await tx.insert(portfolioSnapshots).values({
+        agentWallet:         this.agentWallet,
+        snapshotAt:          now,
+        portfolioUsd:        snapshot.portfolioUsd,
+        stablecoinUsd:       snapshot.stablecoinUsd,
+        tokenExposureUsd:    snapshot.tokenExposureUsd,
+        openPositions:       snapshot.openPositions,
+        unpricedPositions:   snapshot.unpricedPositions,
+        peakPortfolioUsd:    snapshot.peakPortfolioUsd,
+        drawdownPct:         snapshot.drawdownPct,
+        rollingLossPct24h:   snapshot.rollingLossPct24h,
+        valuationConfidence: snapshot.valuationConfidence,
+      });
+    });
 
     // 9. Return the projection for the Risk Engine
     const riskState = toRiskPortfolioState(snapshot);
@@ -204,17 +267,26 @@ export class PortfolioStateService {
   }
 
   /**
-   * Resolves the stored peak portfolio value from portfolio_state.
-   * On first run (no row), uses startingCapitalUsd as the initial peak.
+   * Resolves the stored peak portfolio value and whether this is a bootstrap run.
+   *
+   * Bootstrap = no portfolio_state row has ever been written for this wallet.
+   * On bootstrap, drawdown and rolling loss are suppressed to 0% so the agent
+   * is not blocked before it has placed its first trade.
+   *
+   * On first real run with stablecoins loaded, portfolioUsd > 0, and
+   * Math.max(startingCapitalUsd, portfolioUsd) correctly establishes peak.
    */
-  private async resolveStoredPeak(): Promise<number> {
+  private async resolveStoredPeakAndBootstrap(): Promise<{ storedPeak: number; isBootstrap: boolean }> {
     const rows = await db
       .select({ peakPortfolioUsd: portfolioState.peakPortfolioUsd })
       .from(portfolioState)
       .where(eq(portfolioState.agentWallet, this.agentWallet))
       .limit(1);
 
-    return rows[0]?.peakPortfolioUsd ?? this.startingCapitalUsd;
+    if (rows.length === 0) {
+      return { storedPeak: this.startingCapitalUsd, isBootstrap: true };
+    }
+    return { storedPeak: rows[0]!.peakPortfolioUsd, isBootstrap: false };
   }
 
   /**
@@ -245,6 +317,7 @@ export class PortfolioStateService {
           gte(portfolioSnapshots.snapshotAt, cutoff)
         )
       )
+      .orderBy(asc(portfolioSnapshots.snapshotAt))
       .limit(1);
 
     const baseUsd = windowRows[0]?.portfolioUsd ?? this.startingCapitalUsd;
@@ -254,70 +327,4 @@ export class PortfolioStateService {
     return Math.round(Math.max(0, loss) * 10000) / 10000;
   }
 
-  /**
-   * Upserts the live portfolio_state row.
-   */
-  private async persistState(snapshot: PortfolioStateSnapshot, now: Date): Promise<void> {
-    await db
-      .insert(portfolioState)
-      .values({
-        agentWallet:         this.agentWallet,
-        portfolioUsd:        snapshot.portfolioUsd,
-        stablecoinUsd:       snapshot.stablecoinUsd,
-        tokenExposureUsd:    snapshot.tokenExposureUsd,
-        buyingPowerUsd:      snapshot.buyingPowerUsd,
-        startingCapitalUsd:  snapshot.startingCapitalUsd,
-        peakPortfolioUsd:    snapshot.peakPortfolioUsd,
-        drawdownPct:         snapshot.drawdownPct,
-        rollingLossPct24h:   snapshot.rollingLossPct24h,
-        cashReservePct:      snapshot.cashReservePct,
-        totalExposurePct:    snapshot.totalExposurePct,
-        openRiskPct:         snapshot.openRiskPct,
-        openPositions:       snapshot.openPositions,
-        unpricedPositions:   snapshot.unpricedPositions,
-        valuationConfidence: snapshot.valuationConfidence,
-        lastValuationAt:     now,
-        updatedAt:           now,
-      })
-      .onConflictDoUpdate({
-        target: portfolioState.agentWallet,
-        set: {
-          portfolioUsd:        snapshot.portfolioUsd,
-          stablecoinUsd:       snapshot.stablecoinUsd,
-          tokenExposureUsd:    snapshot.tokenExposureUsd,
-          buyingPowerUsd:      snapshot.buyingPowerUsd,
-          startingCapitalUsd:  snapshot.startingCapitalUsd,
-          peakPortfolioUsd:    snapshot.peakPortfolioUsd,
-          drawdownPct:         snapshot.drawdownPct,
-          rollingLossPct24h:   snapshot.rollingLossPct24h,
-          cashReservePct:      snapshot.cashReservePct,
-          totalExposurePct:    snapshot.totalExposurePct,
-          openRiskPct:         snapshot.openRiskPct,
-          openPositions:       snapshot.openPositions,
-          unpricedPositions:   snapshot.unpricedPositions,
-          valuationConfidence: snapshot.valuationConfidence,
-          lastValuationAt:     now,
-          updatedAt:           now,
-        },
-      });
-  }
-
-  /**
-   * Inserts one row into portfolio_snapshots.
-   */
-  private async insertSnapshot(snapshot: PortfolioStateSnapshot, now: Date): Promise<void> {
-    await db.insert(portfolioSnapshots).values({
-      agentWallet:         this.agentWallet,
-      snapshotAt:          now,
-      portfolioUsd:        snapshot.portfolioUsd,
-      stablecoinUsd:       snapshot.stablecoinUsd,
-      tokenExposureUsd:    snapshot.tokenExposureUsd,
-      openPositions:       snapshot.openPositions,
-      unpricedPositions:   snapshot.unpricedPositions,
-      peakPortfolioUsd:    snapshot.peakPortfolioUsd,
-      drawdownPct:         snapshot.drawdownPct,
-      rollingLossPct24h:   snapshot.rollingLossPct24h,
-      valuationConfidence: snapshot.valuationConfidence,
-    });
-  }
 }

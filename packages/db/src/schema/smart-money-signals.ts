@@ -116,9 +116,9 @@ export interface TokenSignalBundle {
   qualityEntries4h:       number;
   qualityExits4h:         number;
   netAccumulationFlow:    number;
-  qualityEntries24h:      number;
-  qualityExits24h:        number;
-  netAccumulationFlow24h: number;
+  qualityEntries24h:      number | null;
+  qualityExits24h:        number | null;
+  netAccumulationFlow24h: number | null;
 
   // Classification breakdown, sorted by count descending, zeros omitted
   topClassifications: Array<{
@@ -139,5 +139,7 @@ export interface TokenSignalBundle {
   dataFreshness:  'LIVE' | 'STALE';
   minimumHolders: boolean;
   computedAt:     Date;
+  sourceDataAgeMs: number; // age of the oldest dependency in milliseconds
 }
+
 

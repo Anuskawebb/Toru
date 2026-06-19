@@ -44,3 +44,42 @@ export {
   type PortfolioStateConfig
 } from './portfolio/portfolio-state-service.js';
 
+// ── Phase 7: Decision Engine ──────────────────────────────────────────────
+
+export {
+  type TradeRecommendation,
+  type AgentPosition,
+  type RankedOpportunity,
+  type CapitalAllocation,
+  type ExecutionPlan,
+  type SkippedSignal,
+  type RecommendationAction,
+  type RecommendationStatus,
+  type PositionStatus,
+  type CloseReason,
+} from './decision/trade-recommendation-types.js';
+
+export {
+  rankOpportunities,
+  type RankInput,
+} from './decision/decision-ranking.js';
+
+export {
+  allocateCapital,
+} from './decision/capital-allocator.js';
+
+export {
+  buildExecutionPlan,
+  buildExecutionPlans,
+} from './decision/execution-planner.js';
+
+export {
+  DecisionEngine,
+  type DecisionEngineConfig,
+  type DecisionCycleResult,
+} from './decision/decision-engine.js';
+
+export {
+  PositionRegistryService,
+} from './position/position-registry-service.js';
+

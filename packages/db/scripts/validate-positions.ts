@@ -13,12 +13,9 @@ const __dirname = path.dirname(__filename);
 async function main() {
   console.log('=== Position Engine V1 Validation ===');
 
-  // Step 1: Rebuild all positions globally to ensure state is clean and up to date
-  console.log('Rebuilding all positions...');
-  const t0 = Date.now();
-  await PositionBuilderService.rebuildAllPositions();
-  const rebuildDuration = Date.now() - t0;
-  console.log(`Rebuild complete in ${rebuildDuration}ms.\n`);
+  // Step 1: Validate existing positions (rebuildAllPositions omitted to preserve production data)
+  console.log('Validating existing positions...');
+  const rebuildDuration = 0;
 
   // Step 2: Fetch all wallets that have positions
   const allPositions = await db.select({ wallet: walletPositions.wallet }).from(walletPositions);

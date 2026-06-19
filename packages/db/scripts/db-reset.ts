@@ -30,6 +30,16 @@ async function main() {
     DROP TABLE IF EXISTS tokens CASCADE;
     DROP TABLE IF EXISTS indexer_state CASCADE;
     DROP TABLE IF EXISTS token_discovery_queue CASCADE;
+    DROP TABLE IF EXISTS wallet_positions CASCADE;
+    DROP TABLE IF EXISTS wallet_metrics CASCADE;
+    DROP TABLE IF EXISTS wallet_scores CASCADE;
+    DROP TABLE IF EXISTS token_metrics CASCADE;
+    DROP TABLE IF EXISTS smart_money_signals CASCADE;
+    DROP TABLE IF EXISTS token_intel_snapshots CASCADE;
+    DROP TABLE IF EXISTS price_observations CASCADE;
+    DROP TABLE IF EXISTS token_prices CASCADE;
+    DROP TABLE IF EXISTS portfolio_snapshots CASCADE;
+    DROP TABLE IF EXISTS portfolio_state CASCADE;
     DROP SCHEMA IF EXISTS drizzle CASCADE;
   `);
   

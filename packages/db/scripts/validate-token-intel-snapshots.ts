@@ -25,14 +25,8 @@ function section(title: string) {
 
 const parseUtcDate = (val: string | Date | null | undefined): Date | undefined => {
   if (!val) return undefined;
-  let str = '';
-  if (val instanceof Date) {
-    if (isNaN(val.getTime())) return undefined;
-    const pad = (n: number) => String(n).padStart(2, '0');
-    str = `${val.getUTCFullYear()}-${pad(val.getUTCMonth() + 1)}-${pad(val.getUTCDate())} ${pad(val.getUTCHours())}:${pad(val.getUTCMinutes())}:${pad(val.getUTCSeconds())}`;
-  } else {
-    str = String(val).trim();
-  }
+  if (val instanceof Date) return val;
+  let str = String(val).trim();
   if (!str) return undefined;
   
   let isoStr = str.replace(' ', 'T');
@@ -57,22 +51,40 @@ async function main() {
   console.log('token_intel_snapshots & temporal intelligence validation suite');
   console.log('='.repeat(64));
 
+  // Determine current dataset watermark — all test data is scoped to this timestamp.
+  // Historical snapshots at OTHER timestamps are never touched by this test suite.
+  const watermarkRow = await db.execute<{ max_ts: string | Date }>(sql`
+    SELECT COALESCE(MAX(timestamp), NOW()) AS max_ts FROM trades
+  `);
+  const captureTs    = parseUtcDate(watermarkRow[0]!.max_ts)!;
+
+  // Snapshot historical count so we can verify it is preserved after the test.
+  const [historicalCountRow] = await db.execute<{ cnt: string }>(sql`
+    SELECT COUNT(*) AS cnt FROM token_intel_snapshots
+    WHERE snapshot_at != ${captureTs.toISOString()}
+  `);
+  const historicalCountBefore = parseInt(historicalCountRow!.cnt);
+
   // 1. Initial Capture
   section('1. Snapshot Capture: smart_money_signals -> token_intel_snapshots');
   {
-    await db.execute(sql`DELETE FROM token_intel_snapshots`); // clean start
+    // Remove only snapshots at the current watermark (from previous test runs or stale state).
+    // Snapshots at ALL other timestamps are left intact.
+    await db.execute(sql`DELETE FROM token_intel_snapshots WHERE snapshot_at = ${captureTs.toISOString()}`);
 
     const t0 = Date.now();
     await SnapshotService.capture();
     const elapsed = Date.now() - t0;
 
-    const snapCount = await db.execute<{ count: string }>(sql`SELECT COUNT(*) FROM token_intel_snapshots`);
+    const snapCountAtWatermark = await db.execute<{ count: string }>(sql`
+      SELECT COUNT(*) FROM token_intel_snapshots WHERE snapshot_at = ${captureTs.toISOString()}
+    `);
     const signalCount = await db.execute<{ count: string }>(sql`SELECT COUNT(*) FROM smart_money_signals`);
 
-    if (snapCount[0]!.count === signalCount[0]!.count && Number(snapCount[0]!.count) > 0) {
-      pass('captured initial snapshot', `${snapCount[0]!.count} rows saved in ${elapsed}ms`);
+    if (snapCountAtWatermark[0]!.count === signalCount[0]!.count && Number(snapCountAtWatermark[0]!.count) > 0) {
+      pass('captured initial snapshot', `${snapCountAtWatermark[0]!.count} rows saved in ${elapsed}ms`);
     } else {
-      fail('snapshot count mismatch', `snapshots=${snapCount[0]!.count} signals=${signalCount[0]!.count}`);
+      fail('snapshot count mismatch', `snapshots=${snapCountAtWatermark[0]!.count} signals=${signalCount[0]!.count}`);
     }
   }
 
@@ -90,10 +102,33 @@ async function main() {
   // 3. Dynamic Deltas with No Baseline (1 snapshot only)
   section('3. Temporal Deltas: Single Snapshot Baseline (deltas = null, trend = UNKNOWN)');
   {
-    // Fetch signals with dynamic enrichment
-    const topSignals = await SmartMoneySignalsRepository.getTopSignals({ limit: 1 });
-    if (topSignals.length > 0) {
-      const s = topSignals[0]!;
+    const mockToken = '0x9999999999999999999999999999999999999999';
+    // Insert mock signal row
+    await db.execute(sql`
+      INSERT INTO smart_money_signals (
+        token_address, token_symbol, meets_minimum_holders, accumulation_score, signal_tier, computed_at
+      ) VALUES (
+        ${mockToken}, 'MOCK_NO_BASE', true, 80, 'STRONG', NOW()
+      ) ON CONFLICT (token_address) DO UPDATE SET
+        meets_minimum_holders = true,
+        accumulation_score = 80,
+        signal_tier = 'STRONG',
+        computed_at = NOW()
+    `);
+    
+    // Also need a mock row in token_metrics so getSignal freshness join doesn't fail or return null
+    await db.execute(sql`
+      INSERT INTO token_metrics (
+        token_address, token_symbol, token_decimals, last_updated
+      ) VALUES (
+        ${mockToken}, 'MOCK_NO_BASE', 18, NOW()
+      ) ON CONFLICT (token_address) DO UPDATE SET
+        last_updated = NOW()
+    `);
+
+    // Fetch signal with dynamic enrichment
+    const s = await SmartMoneySignalsRepository.getSignal(mockToken);
+    if (s) {
       if (
         s.qualityHolderChange24h === null &&
         s.trend === 'UNKNOWN'
@@ -106,8 +141,12 @@ async function main() {
         }));
       }
     } else {
-      fail('no signals returned to check');
+      fail('no signal returned to check');
     }
+
+    // Cleanup mock signal and metrics
+    await db.execute(sql`DELETE FROM smart_money_signals WHERE token_address = ${mockToken}`);
+    await db.execute(sql`DELETE FROM token_metrics WHERE token_address = ${mockToken}`);
   }
 
   // 4. Dynamic Deltas with Mock Historical Baseline
@@ -189,6 +228,25 @@ async function main() {
       `);
     } else {
       fail('no eligible tokens found to verify baseline');
+    }
+  }
+
+  // ── Cleanup & Production-Safety Verification ─────────────────────────────────
+  section('5. Production Safety: historical snapshots preserved');
+  {
+    // Delete only the snapshots inserted at the current watermark by this test run.
+    await db.execute(sql`DELETE FROM token_intel_snapshots WHERE snapshot_at = ${captureTs.toISOString()}`);
+
+    const [afterRow] = await db.execute<{ cnt: string }>(sql`
+      SELECT COUNT(*) AS cnt FROM token_intel_snapshots
+      WHERE snapshot_at != ${captureTs.toISOString()}
+    `);
+    const historicalCountAfter = parseInt(afterRow!.cnt);
+
+    if (historicalCountAfter === historicalCountBefore) {
+      pass('Historical snapshot count unchanged after test cleanup', `before=${historicalCountBefore} after=${historicalCountAfter}`);
+    } else {
+      fail('Historical snapshots were inadvertently modified', `before=${historicalCountBefore} after=${historicalCountAfter}`);
     }
   }
 

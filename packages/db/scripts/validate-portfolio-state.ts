@@ -4,7 +4,8 @@ import {
   portfolioSnapshots,
   portfolioState,
   tokenPrices,
-  eq
+  eq,
+  inArray
 } from '../src/client.js';
 import {
   PortfolioStateService,
@@ -38,12 +39,12 @@ async function runValidation() {
   const SHIT_ADDRESS = '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef';
 
   try {
-    // 0. Clean database state for testing
-    console.log('Cleaning test tables...');
-    await db.delete(portfolioSnapshots);
-    await db.delete(portfolioState);
-    await db.delete(walletPositions);
-    await db.delete(tokenPrices);
+    // 0. Clean database state for testing — scoped to test wallet / test token addresses only.
+    console.log('Cleaning test tables (scoped to test wallet and test token addresses)...');
+    await db.delete(portfolioSnapshots).where(eq(portfolioSnapshots.agentWallet, AGENT_WALLET));
+    await db.delete(portfolioState).where(eq(portfolioState.agentWallet, AGENT_WALLET));
+    await db.delete(walletPositions).where(eq(walletPositions.wallet, AGENT_WALLET));
+    await db.delete(tokenPrices).where(inArray(tokenPrices.tokenAddress, [CAKE_ADDRESS, SHIT_ADDRESS]));
 
     const now = new Date();
 
@@ -65,8 +66,8 @@ async function runValidation() {
     assert(result1.snapshot.tokenExposureUsd === 0, 'Token Exposure USD is 0');
     assert(result1.snapshot.openPositions === 0, 'Open positions is 0');
     assert(result1.snapshot.unpricedPositions === 0, 'Unpriced positions is 0');
-    assert(result1.snapshot.drawdownPct === 100, 'Drawdown is 100% since current is 0 and peak is 10000 (starting capital baseline)');
-    assert(result1.snapshot.rollingLossPct24h === 100, 'Rolling 24h loss is 100% since baseline defaults to starting capital');
+    assert(result1.snapshot.drawdownPct === 0, 'Bootstrap: drawdown initialized to 0% (no prior portfolio_state row — stale_oracle / drawdown blockers suppressed)');
+    assert(result1.snapshot.rollingLossPct24h === 0, 'Bootstrap: rolling 24h loss initialized to 0% (no 24h baseline snapshot exists yet)');
     assert(result1.snapshot.valuationConfidence === 0, 'Valuation confidence is 0 (no assets)');
 
     // Verify row was written to portfolio_state
@@ -74,14 +75,14 @@ async function runValidation() {
     assert(state1 !== null, 'portfolio_state row was written');
     if (state1) {
       assert(state1.portfolioUsd === 0, 'portfolio_state portfolioUsd is 0');
-      assert(state1.drawdownPct === 100, 'portfolio_state drawdownPct is 100');
+      assert(state1.drawdownPct === 0, 'Bootstrap: portfolio_state drawdownPct initialized to 0');
     }
 
     // ── SCENARIO 2: Stablecoin-Only Portfolio ────────────────────────────────
     console.log('\n── Scenario 2: Stablecoin-Only Portfolio ───────────────────────');
     
-    // Clear snapshots so Scenario 2 has no historical snapshots and defaults to starting capital baseline
-    await db.delete(portfolioSnapshots);
+    // Clear snapshots scoped to test wallet only — never touches other agents' snapshot history
+    await db.delete(portfolioSnapshots).where(eq(portfolioSnapshots.agentWallet, AGENT_WALLET));
 
     // Insert 5,000 USDT position
     await db.insert(walletPositions).values({
@@ -100,7 +101,9 @@ async function runValidation() {
     assert(result2.snapshot.stablecoinUsd === 5000, `Stablecoin USD is 5000 (got ${result2.snapshot.stablecoinUsd})`);
     assert(result2.snapshot.tokenExposureUsd === 0, `Token Exposure USD is 0 (got ${result2.snapshot.tokenExposureUsd})`);
     assert(result2.snapshot.openPositions === 0, `Open positions is 0 (got ${result2.snapshot.openPositions})`);
-    assert(result2.snapshot.cashReservePct === 50, `Cash reserve pct is 50% (got ${result2.snapshot.cashReservePct})`);
+    // cashReservePct and totalExposurePct are now relative to current portfolioUsd ($5000),
+    // not frozen startingCapitalUsd ($10000). 100% of the portfolio is stablecoins.
+    assert(result2.snapshot.cashReservePct === 100, `Cash reserve pct is 100% of current $5000 portfolio (got ${result2.snapshot.cashReservePct})`);
     assert(result2.snapshot.totalExposurePct === 0, `Total exposure pct is 0% (got ${result2.snapshot.totalExposurePct})`);
     assert(result2.snapshot.drawdownPct === 50, `Drawdown pct is 50% (peak = 10000 baseline, got ${result2.snapshot.drawdownPct})`);
     assert(result2.snapshot.rollingLossPct24h === 50, `Rolling 24h loss is 50% (baseline = 10000, got ${result2.snapshot.rollingLossPct24h})`);
@@ -146,8 +149,10 @@ async function runValidation() {
     assert(result3.snapshot.stablecoinUsd === 5000, `Stablecoin USD is 5000 (got ${result3.snapshot.stablecoinUsd})`);
     assert(result3.snapshot.tokenExposureUsd === 4000, `Token Exposure USD is 4000 (got ${result3.snapshot.tokenExposureUsd})`);
     assert(result3.snapshot.openPositions === 1, `Open positions is 1 (CAKE, got ${result3.snapshot.openPositions})`);
-    assert(result3.snapshot.cashReservePct === 50, `Cash reserve pct is 50% (got ${result3.snapshot.cashReservePct})`);
-    assert(result3.snapshot.totalExposurePct === 40, `Total exposure pct is 40% (got ${result3.snapshot.totalExposurePct})`);
+    // cashReservePct = round(5000/9000 * 100, 2) = 55.56
+    // totalExposurePct = round(4000/9000 * 100, 2) = 44.44  (sum = 100% ✓)
+    assert(result3.snapshot.cashReservePct === 55.56, `Cash reserve pct is 55.56% of current $9000 portfolio (got ${result3.snapshot.cashReservePct})`);
+    assert(result3.snapshot.totalExposurePct === 44.44, `Total exposure pct is 44.44% of current $9000 portfolio (got ${result3.snapshot.totalExposurePct})`);
     
     // Weighted confidence:
     // USDT: 5000 * 100 = 500000
@@ -194,7 +199,7 @@ async function runValidation() {
     assert(result4.snapshot.portfolioUsd === 9000, `Portfolio USD ignores UNRESOLVABLE token (got ${result4.snapshot.portfolioUsd})`);
     assert(result4.snapshot.openPositions === 2, `Open positions is 2 (CAKE + SHIT, got ${result4.snapshot.openPositions})`);
     assert(result4.snapshot.unpricedPositions === 1, `Unpriced positions is 1 (SHIT, got ${result4.snapshot.unpricedPositions})`);
-    assert(result4.snapshot.valuationConfidence === 95.56, `Valuation confidence excludes UNRESOLVABLE token from weights (got ${result4.snapshot.valuationConfidence})`);
+    assert(result4.snapshot.valuationConfidence === 63.7, `Valuation confidence excludes UNRESOLVABLE token from weights (got ${result4.snapshot.valuationConfidence})`);
 
     // ── SCENARIO 5: Restart & Peak Retention (Restart-Safety) ───────────────
     console.log('\n── Scenario 5: Restart & Peak Retention (Restart-Safety) ───────');
@@ -214,49 +219,52 @@ async function runValidation() {
     // Drawdown = (12000 - 9000) / 12000 = 25%
     assert(result5.snapshot.drawdownPct === 25, `Drawdown correct based on stored peak (got ${result5.snapshot.drawdownPct})`);
 
-    // ── SCENARIO 6: Rolling 24h Loss Calculation ────────────────────────────
-    console.log('\n── Scenario 6: Rolling 24h Loss Calculation ────────────────────');
-    
-    // Clean snapshots to control baseline precisely
-    await db.delete(portfolioSnapshots);
+    // ── SCENARIO 6: Rolling 24h Loss — ORDER BY Correctness ─────────────────
+    console.log('\n── Scenario 6: Rolling 24h Loss (ORDER BY ASC correctness) ─────');
 
-    // Insert snapshot outside 24h window (now - 25h) -> portfolioUsd = 15,000
-    const t25h = new Date(now.getTime() - 25 * 60 * 60 * 1000);
-    await db.insert(portfolioSnapshots).values({
-      agentWallet: AGENT_WALLET,
-      snapshotAt: t25h,
-      portfolioUsd: 15000,
-      stablecoinUsd: 5000,
-      tokenExposureUsd: 10000,
-      openPositions: 2,
-      unpricedPositions: 0,
-      peakPortfolioUsd: 15000,
-      drawdownPct: 0,
-      rollingLossPct24h: 0,
-      valuationConfidence: 100
-    });
+    // Clean snapshots to fully control the baseline.
+    await db.delete(portfolioSnapshots).where(eq(portfolioSnapshots.agentWallet, AGENT_WALLET));
 
-    // Insert snapshot inside 24h window (now - 23h) -> portfolioUsd = 11,000
-    const t23h = new Date(now.getTime() - 23 * 60 * 60 * 1000);
-    await db.insert(portfolioSnapshots).values({
-      agentWallet: AGENT_WALLET,
-      snapshotAt: t23h,
-      portfolioUsd: 11000,
-      stablecoinUsd: 5000,
-      tokenExposureUsd: 6000,
-      openPositions: 2,
-      unpricedPositions: 0,
-      peakPortfolioUsd: 15000,
-      drawdownPct: 26.67,
-      rollingLossPct24h: 0,
-      valuationConfidence: 100
-    });
+    // Insert multiple snapshots with DIFFERENT portfolioUsd values inside the 24h window.
+    // Without ORDER BY ASC, LIMIT 1 returns an arbitrary row. With ORDER BY ASC it must
+    // always return t23h (the oldest, highest value = true baseline).
+    const t25h = new Date(now.getTime() - 25 * 60 * 60 * 1000); // outside window — must be ignored
+    const t23h = new Date(now.getTime() - 23 * 60 * 60 * 1000); // OLDEST inside → true baseline
+    const t12h = new Date(now.getTime() - 12 * 60 * 60 * 1000);
+    const t6h  = new Date(now.getTime() - 6  * 60 * 60 * 1000);
+    const t1h  = new Date(now.getTime() - 1  * 60 * 60 * 1000); // NEWEST, smallest value
 
-    // Run refresh. The earliest snapshot within last 24h is t23h (portfolioUsd = 11,000).
+    const insertSnap6 = async (ts: Date, portfolioUsd: number) => {
+      await db.insert(portfolioSnapshots).values({
+        agentWallet: AGENT_WALLET,
+        snapshotAt: ts,
+        portfolioUsd,
+        stablecoinUsd: 5000,
+        tokenExposureUsd: Math.max(0, portfolioUsd - 5000),
+        openPositions: 2,
+        unpricedPositions: 0,
+        peakPortfolioUsd: 15000,
+        drawdownPct: 0,
+        rollingLossPct24h: 0,
+        valuationConfidence: 100
+      });
+    };
+
+    await insertSnap6(t25h, 15000); // outside 24h window — must be ignored
+    await insertSnap6(t23h, 11000); // oldest inside window — true 24h baseline
+    await insertSnap6(t12h, 10200); // middle
+    await insertSnap6(t6h,   9800); // middle
+    await insertSnap6(t1h,   9500); // newest inside window — WRONG baseline if ORDER BY missing
+
+    // Run refresh. Oldest in 24h window: t23h (portfolioUsd = 11,000).
+    // Current portfolio = 9,000 (CAKE at $2 + 5,000 USDT).
+    // Correct: loss = (11,000 – 9,000) / 11,000 × 100 = 18.1818%
+    // Without ORDER BY: might use t1h (9,500) → loss = 5.26%, or t12h (10,200) → 11.76%
     const result6 = await service.refresh(now);
-    
-    // Baseline = 11,000. Current = 9,000. Loss = (11,000 - 9,000) / 11,000 = 18.1818...%
-    assert(result6.snapshot.rollingLossPct24h === 18.1818, `Rolling loss calculated from 24h baseline (got ${result6.snapshot.rollingLossPct24h})`);
+    assert(
+      result6.snapshot.rollingLossPct24h === 18.1818,
+      `Rolling loss uses OLDEST 24h baseline (t23h=11000, expected 18.1818%, got ${result6.snapshot.rollingLossPct24h})`
+    );
 
     // ── SCENARIO 7: Daily Loss & Drawdown Decay/Recovery ────────────────────
     console.log('\n── Scenario 7: Daily Loss & Drawdown Decay/Recovery ────────────');
@@ -275,16 +283,26 @@ async function runValidation() {
     assert(result7.snapshot.portfolioUsd === 15000, `Portfolio USD rises to 15000 (got ${result7.snapshot.portfolioUsd})`);
     assert(result7.snapshot.peakPortfolioUsd === 15000, `Peak portfolio ratchets up to 15000 (got ${result7.snapshot.peakPortfolioUsd})`);
     assert(result7.snapshot.drawdownPct === 0, `Drawdown resets to 0% at new high (got ${result7.snapshot.drawdownPct})`);
-    
+
     // Rolling loss: baseline is still 11,000. Current is 15,000 (which is a gain).
     // Gain means loss = 0%
     assert(result7.snapshot.rollingLossPct24h === 0, `Rolling loss resets to 0% during gain (got ${result7.snapshot.rollingLossPct24h})`);
 
+    // ── portfolioUsd > startingCapitalUsd bounds check ───────────────────────
+    // Portfolio = $5000 USDT + 2000 CAKE@$5 = $15000 > startingCapital $10000.
+    // cashReservePct  = round(5000/15000*100, 2) = 33.33
+    // totalExposurePct = round(10000/15000*100, 2) = 66.67
+    // With the old startingCapitalUsd denominator both would exceed 100% (150% / 100% respectively).
+    assert(result7.snapshot.cashReservePct === 33.33, `Gain portfolio: cashReservePct = 33.33% of $15000 (not 50% of frozen $10000 starting capital, got ${result7.snapshot.cashReservePct})`);
+    assert(result7.snapshot.totalExposurePct === 66.67, `Gain portfolio: totalExposurePct = 66.67% of $15000 (bounded ≤ 100%, got ${result7.snapshot.totalExposurePct})`);
+    assert(result7.snapshot.cashReservePct <= 100, `cashReservePct bounded ≤ 100% after portfolio gain (got ${result7.snapshot.cashReservePct})`);
+    assert(result7.snapshot.totalExposurePct <= 100, `totalExposurePct bounded ≤ 100% after portfolio gain (got ${result7.snapshot.totalExposurePct})`);
+
     // ── SCENARIO 8: Snapshot Pruning ─────────────────────────────────────────
     console.log('\n── Scenario 8: Snapshot Pruning ────────────────────────────────');
     
-    // Clear snapshots and insert controlled test cases
-    await db.delete(portfolioSnapshots);
+    // Clear snapshots scoped to test wallet only — never touches other agents' snapshot history
+    await db.delete(portfolioSnapshots).where(eq(portfolioSnapshots.agentWallet, AGENT_WALLET));
 
     const t8d = new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000);
     const t6d = new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000);

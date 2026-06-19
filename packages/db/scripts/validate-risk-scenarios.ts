@@ -17,6 +17,15 @@ function assert(condition: boolean, message: string) {
   }
 }
 
+const defaultPortfolio = {
+  currentDrawdownPct: 0.0,
+  dailyLossPct: 0.0,
+  cashReservePct: 50.0,
+  totalExposurePct: 10.0,
+  openRiskPct: 2.0,
+  openPositions: 1
+};
+
 // Helper mock bundle factory
 function createMockBundle(overrides: Partial<TokenSignalBundle>): TokenSignalBundle {
   return {
@@ -67,6 +76,7 @@ const input1: RiskInput = {
   smartMoneyVWAP: 1.00, // Premium = 5%
   poolLiquidityUsd: 150000,
   simulatedValueRetentionPct: 99.0, // Meets Low Risk Honeypot threshold (>=98%)
+  portfolio: defaultPortfolio,
   currentTime: now
 };
 
@@ -92,6 +102,7 @@ const input2: RiskInput = {
   smartMoneyVWAP: 1.00, // Premium = 60% (> Medium Cap of 25%)
   poolLiquidityUsd: 60000,
   simulatedValueRetentionPct: 96.0,
+  portfolio: defaultPortfolio,
   currentTime: now
 };
 
@@ -116,6 +127,7 @@ const input3: RiskInput = {
   smartMoneyVWAP: 1.00,
   poolLiquidityUsd: 20000,
   simulatedValueRetentionPct: 92.0,
+  portfolio: defaultPortfolio,
   currentTime: now
 };
 
@@ -140,6 +152,7 @@ const input4: RiskInput = {
   smartMoneyVWAP: 1.00,
   poolLiquidityUsd: 30000,
   simulatedValueRetentionPct: 93.0,
+  portfolio: defaultPortfolio,
   currentTime: now
 };
 
@@ -167,6 +180,7 @@ const input5: RiskInput = {
   smartMoneyVWAP: 1.00,
   poolLiquidityUsd: 10000, // Below VVR threshold of $25,000
   simulatedValueRetentionPct: 91.0,
+  portfolio: defaultPortfolio,
   currentTime: now
 };
 
@@ -194,6 +208,7 @@ const input6: RiskInput = {
   smartMoneyVWAP: 1.00,
   poolLiquidityUsd: 50000, // Meets $25,000 floor
   simulatedValueRetentionPct: 96.0,
+  portfolio: defaultPortfolio,
   currentTime: now
 };
 
@@ -268,6 +283,7 @@ const inputAdd3: RiskInput = {
   smartMoneyVWAP: 1.00,
   poolLiquidityUsd: 150000,
   simulatedValueRetentionPct: 99.0,
+  portfolio: defaultPortfolio,
   currentTime: now
 };
 
@@ -282,6 +298,7 @@ const inputAdd4: RiskInput = {
   smartMoneyVWAP: 1.00,
   poolLiquidityUsd: 150000,
   simulatedValueRetentionPct: 99.0,
+  portfolio: defaultPortfolio,
   currentTime: now
 };
 
@@ -289,6 +306,69 @@ const decisionAdd4 = RiskEngine.evaluate(inputAdd4);
 // Sizing: 20.25 * F_trend (1.2) * F_chase (0.40 for 30% premium) = 9.72%
 assert(decisionAdd4.allowed === true, '30% premium chasing is allowed but heavily downscaled');
 assert(decisionAdd4.positionSizePct === 9.72, `Correctly scaled sizing (Expected: 9.72, Got: ${decisionAdd4.positionSizePct})`);
+
+// ── SCENARIO 7: Stale Oracle Blocker (dataFreshness = STALE) ─────────────────
+console.log('\n── Scenario 7: Stale Oracle Blocker (dataFreshness = STALE) ────');
+const bundle7 = createMockBundle({
+  opportunityScore: 90,
+  confidence: 80,
+  qualityHolderCount: 25,
+  trend: 'INCREASING',
+  dataFreshness: 'STALE',
+  // computedAt = 5 min ago so signal_ancient_exceeds_12h does NOT co-fire
+  computedAt: new Date(now.getTime() - 5 * 60 * 1000)
+});
+
+const input7: RiskInput = {
+  signal: bundle7,
+  marketPrice: 1.00,
+  smartMoneyVWAP: 1.00,
+  poolLiquidityUsd: 150000,
+  simulatedValueRetentionPct: 99.0,
+  portfolio: defaultPortfolio,
+  currentTime: now
+};
+
+const decision7 = RiskEngine.evaluate(input7);
+assert(decision7.allowed === false, 'STALE dataFreshness triggers stale_oracle rejection');
+assert(decision7.blockers.includes('stale_oracle'), 'stale_oracle is present in blockers');
+assert(decision7.positionSizePct === 0.0, 'Position size is 0 when stale_oracle fires');
+
+// ── SCENARIO 8: Missing Portfolio State Blocker ───────────────────────────────
+console.log('\n── Scenario 8: Missing Portfolio State Blocker ──────────────────');
+const input8: RiskInput = {
+  signal: bundle1,
+  marketPrice: 1.05,
+  smartMoneyVWAP: 1.00,
+  poolLiquidityUsd: 150000,
+  simulatedValueRetentionPct: 99.0,
+  currentTime: now
+};
+const decision8 = RiskEngine.evaluate(input8);
+assert(decision8.allowed === false, 'Decision without portfolio is rejected');
+assert(decision8.blockers.includes('missing_portfolio_state'), 'missing_portfolio_state is present in blockers');
+assert(decision8.positionSizePct === 0.0, 'Position size is 0 when portfolio state is missing');
+
+// ── SCENARIO 9: HIGH Risk Tier Classification ───────────────────────────────
+console.log('\n── Scenario 9: HIGH Risk Tier Classification ────────────────────');
+const bundle9 = createMockBundle({
+  qualityHolderCount: 7, // Meets HIGH tier floor of 5 (but not MEDIUM tier floor of 10)
+  trend: 'INCREASING',
+  computedAt: new Date(now.getTime() - 5 * 60 * 1000)
+});
+const input9: RiskInput = {
+  signal: bundle9,
+  marketPrice: 1.00,
+  smartMoneyVWAP: 1.00,
+  poolLiquidityUsd: 30000, // Meets HIGH tier floor of $25,000 (but not MEDIUM floor of $50,000)
+  simulatedValueRetentionPct: 92.0, // Meets HIGH tier floor (>=90%)
+  portfolio: defaultPortfolio,
+  currentTime: now
+};
+const decision9 = RiskEngine.evaluate(input9);
+assert(decision9.allowed === true, 'HIGH risk signal is allowed');
+assert(decision9.riskTier === 'HIGH', 'Correctly classified as HIGH risk');
+assert(decision9.positionSizePct === 6.0, `Correctly allocated max position size for HIGH risk (Expected: 6.0, Got: ${decision9.positionSizePct})`);
 
 console.log('================================================================');
 console.log(`Validation Results: ${passCount} PASS  ${failCount} FAIL`);

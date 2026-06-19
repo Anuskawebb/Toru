@@ -44,6 +44,7 @@ export class PortfolioValuationEngine {
     let tokenExposureUsd = 0;
     let openPositions = 0;
     let unpricedPositions = 0;
+    let pricedPositionsCount = 0;
 
     // Weighted average confidence accumulators
     let confidenceWeightedSum = 0;
@@ -82,6 +83,7 @@ export class PortfolioValuationEngine {
         // Stablecoins contribute full confidence
         confidenceWeightedSum += 100 * markToMarketUsd;
         confidenceWeightTotal += markToMarketUsd;
+        pricedPositionsCount++;
         continue;
       }
 
@@ -126,13 +128,25 @@ export class PortfolioValuationEngine {
       // Weight this position's confidence by its USD value
       confidenceWeightedSum += bundle.priceConfidence * markToMarketUsd;
       confidenceWeightTotal += markToMarketUsd;
+      pricedPositionsCount++;
     }
 
     // Value-weighted average confidence (0–100)
     // If all positions are unpriced, confidence is 0
-    const valuationConfidence = confidenceWeightTotal > 0
-      ? Math.round((confidenceWeightedSum / confidenceWeightTotal) * 100) / 100
-      : 0;
+    // If there are unpriced positions, estimate a proxy unpriced value
+    // based on the average value of the priced positions.
+    let valuationConfidence = 0;
+    if (confidenceWeightTotal > 0) {
+      const confidenceOfPriced = confidenceWeightedSum / confidenceWeightTotal;
+      if (unpricedPositions > 0) {
+        const averagePricedPositionValue = confidenceWeightTotal / pricedPositionsCount;
+        const unpricedValue = unpricedPositions * averagePricedPositionValue;
+        const totalWeight = confidenceWeightTotal + unpricedValue;
+        valuationConfidence = Math.round(((confidenceOfPriced * confidenceWeightTotal) / totalWeight) * 100) / 100;
+      } else {
+        valuationConfidence = Math.round(confidenceOfPriced * 100) / 100;
+      }
+    }
 
     return {
       agentWallet:     agentWallet.toLowerCase(),
