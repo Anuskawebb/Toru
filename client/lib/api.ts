@@ -299,3 +299,82 @@ export async function fetchToken(address: string): Promise<{ token: TokenData | 
     return { token: null }
   }
 }
+
+// ---------------------------------------------------------------------------
+// Agent Wallet (Phase 8B.2)
+// ---------------------------------------------------------------------------
+
+export interface AgentWallet {
+  agentId:       string
+  walletAddress: string
+  status:        string
+  accountType:   string
+  createdAt:     string | null
+}
+
+export interface WalletBalance {
+  nativeBalance: string
+  nativeSymbol:  string
+  usdValue:      string | null
+  tokens:        unknown[]
+  funded:        boolean
+}
+
+export interface WalletAsset {
+  symbol:   string
+  balance:  string
+  usdValue: string
+}
+
+export interface WalletPortfolio {
+  totalValueUsd: string
+  assets:        WalletAsset[]
+}
+
+export async function fetchAgentWallet(agentId: string): Promise<{ account: AgentWallet | null }> {
+  try {
+    const res = await fetch(`${base()}/api/agents/${agentId}/wallet`, { cache: 'no-store' })
+    if (res.status === 404) return { account: null }
+    if (!res.ok) return { account: null }
+    const data = await res.json()
+    return { account: data }
+  } catch {
+    return { account: null }
+  }
+}
+
+export async function ensureAgentWallet(agentId: string): Promise<{ account: AgentWallet | null }> {
+  try {
+    const res = await fetch(`${base()}/api/agents/${agentId}/wallet`, {
+      method: 'POST',
+      cache:  'no-store',
+    })
+    if (!res.ok) return { account: null }
+    const data = await res.json()
+    return { account: data }
+  } catch {
+    return { account: null }
+  }
+}
+
+export async function fetchWalletBalance(agentId: string): Promise<WalletBalance> {
+  const empty: WalletBalance = { nativeBalance: '0', nativeSymbol: 'BNB', usdValue: null, tokens: [], funded: false }
+  try {
+    const res = await fetch(`${base()}/api/agents/${agentId}/wallet/balance`, { cache: 'no-store' })
+    if (!res.ok) return empty
+    return await res.json()
+  } catch {
+    return empty
+  }
+}
+
+export async function fetchWalletPortfolio(agentId: string): Promise<WalletPortfolio> {
+  const empty: WalletPortfolio = { totalValueUsd: '0', assets: [] }
+  try {
+    const res = await fetch(`${base()}/api/agents/${agentId}/wallet/portfolio`, { cache: 'no-store' })
+    if (!res.ok) return empty
+    return await res.json()
+  } catch {
+    return empty
+  }
+}

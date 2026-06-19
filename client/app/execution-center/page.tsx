@@ -1,11 +1,18 @@
 import TopNavigation from '@/components/navigation/top-nav'
-import { fetchExecutionCenter } from '@/lib/api'
-import { Check, Clock, AlertCircle, X, Activity } from 'lucide-react'
+import { fetchExecutionCenter, fetchAgentWallet, fetchWalletBalance, fetchWalletPortfolio } from '@/lib/api'
+import { Check, Clock, AlertCircle, X, Activity, Copy, Wallet, TrendingUp } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
+const AGENT_ID = process.env.TORO_AGENT_ID ?? 'toro-agent-001'
+
 export default async function ExecutionCenterPage() {
-  const { stats, queue } = await fetchExecutionCenter()
+  const [{ stats, queue }, { account }, balance, portfolio] = await Promise.all([
+    fetchExecutionCenter(),
+    fetchAgentWallet(AGENT_ID),
+    fetchWalletBalance(AGENT_ID),
+    fetchWalletPortfolio(AGENT_ID),
+  ])
 
   return (
     <>
@@ -138,6 +145,131 @@ export default async function ExecutionCenterPage() {
                     </div>
                   ))}
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Agent Wallet Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+
+            {/* Wallet Card */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Wallet size={18} className="text-orange-accent" />
+                <h3 className="font-bold text-foreground">Agent Wallet</h3>
+              </div>
+              {account ? (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">Status</span>
+                    <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                      account.status === 'ACTIVE'
+                        ? 'bg-green-positive/10 text-green-positive'
+                        : 'bg-orange-accent/10 text-orange-accent'
+                    }`}>
+                      {account.status}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">Type</span>
+                    <span className="text-xs text-foreground font-mono">{account.accountType}</span>
+                  </div>
+                  <div>
+                    <div className="text-xs text-muted-foreground mb-1">Wallet Address</div>
+                    <div className="flex items-center gap-2 bg-secondary rounded p-2">
+                      <span className="text-xs font-mono text-foreground truncate flex-1">
+                        {account.walletAddress}
+                      </span>
+                      <button
+                        onClick={undefined}
+                        className="shrink-0 text-muted-foreground hover:text-foreground transition-colors"
+                        title="Copy address"
+                      >
+                        <Copy size={14} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-sm text-muted-foreground">
+                  No wallet configured.
+                  <br />
+                  <span className="text-xs">Ensure TWAK sidecar is running.</span>
+                </div>
+              )}
+            </div>
+
+            {/* Balance Card */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <TrendingUp size={18} className="text-orange-accent" />
+                <h3 className="font-bold text-foreground">Balance</h3>
+              </div>
+              {balance.funded ? (
+                <div className="space-y-3">
+                  <div>
+                    <div className="text-2xl font-bold text-foreground">
+                      {parseFloat(balance.nativeBalance).toFixed(4)} {balance.nativeSymbol}
+                    </div>
+                    {balance.usdValue && (
+                      <div className="text-sm text-muted-foreground mt-1">
+                        ≈ ${parseFloat(balance.usdValue).toLocaleString()} USD
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 mt-4 p-2 bg-green-positive/10 border border-green-positive/20 rounded">
+                    <Check size={14} className="text-green-positive" />
+                    <span className="text-xs text-green-positive font-medium">Ready For Trading</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="text-2xl font-bold text-foreground">0 BNB</div>
+                  <div className="p-3 bg-orange-accent/10 border border-orange-accent/20 rounded">
+                    <div className="text-xs font-medium text-orange-accent mb-2">Fund Wallet to Start Trading</div>
+                    {account && (
+                      <div className="flex items-center gap-2 bg-background/50 rounded p-2 mt-2">
+                        <span className="text-xs font-mono text-muted-foreground truncate flex-1">
+                          {account.walletAddress}
+                        </span>
+                        <Copy size={12} className="shrink-0 text-muted-foreground" />
+                      </div>
+                    )}
+                    <div className="text-xs text-muted-foreground mt-2">
+                      Send BNB to the address above to enable trading.
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Portfolio Card */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Activity size={18} className="text-orange-accent" />
+                <h3 className="font-bold text-foreground">Portfolio</h3>
+              </div>
+              <div className="space-y-3">
+                <div>
+                  <div className="text-xs text-muted-foreground mb-1">Total Value</div>
+                  <div className="text-2xl font-bold text-foreground">
+                    ${parseFloat(portfolio.totalValueUsd || '0').toLocaleString()}
+                  </div>
+                </div>
+                {portfolio.assets.length > 0 ? (
+                  <div className="space-y-2 mt-2">
+                    {portfolio.assets.slice(0, 4).map((asset: any, i: number) => (
+                      <div key={i} className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">{asset.symbol ?? asset.chain ?? '—'}</span>
+                        <span className="text-foreground font-mono text-xs">
+                          {parseFloat(asset.balance ?? asset.amount ?? '0').toFixed(4)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-xs text-muted-foreground mt-2">No token holdings</div>
+                )}
               </div>
             </div>
           </div>
