@@ -1,96 +1,61 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Zap, ShieldCheck, Clock } from 'lucide-react'
+
+const features = [
+  { icon: Zap,         title: '24/7 Autonomous Trading', desc: 'Your agent executes while you sleep' },
+  { icon: ShieldCheck, title: 'Built-in Risk Management', desc: 'Stop-loss and position sizing enforced automatically' },
+  { icon: Clock,       title: 'Takes 2 minutes to set up', desc: 'Name, strategy, mode — done' },
+]
 
 export default function OnboardingPage() {
   const router = useRouter()
 
-  const steps = [
-    { number: 1, title: 'Connect Wallet', description: 'Link your personal crypto wallet' },
-    { number: 2, title: 'Create Agent Wallet', description: 'Toro creates a dedicated sub-wallet' },
-    { number: 3, title: 'Fund Wallet', description: 'Transfer USDC to your agent' },
-    { number: 4, title: 'Select Trading Mode', description: 'Choose autonomous, assisted, or manual' },
-    { number: 5, title: 'Configure Strategy', description: 'Pick trading strategies and risk level' },
-    { number: 6, title: 'Activate Agent', description: 'Review and activate your trading agent' },
-  ]
-
-  const handleStart = () => {
-    router.push('/onboarding/step-1')
-  }
-
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      {/* Header */}
-      <div className="max-w-2xl mx-auto px-6 py-12 text-center">
-        <div className="w-12 h-12 bg-gray-950 rounded flex items-center justify-center mx-auto mb-6">
-          <span className="text-white text-lg font-bold">Ⓣ</span>
+    <div className="space-y-10">
+      {/* Hero */}
+      <div>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-accent/10 border border-orange-accent/20 mb-6">
+          <div className="w-1.5 h-1.5 rounded-full bg-orange-accent animate-pulse" />
+          <span className="text-xs text-orange-accent font-medium">Powered by Smart Money Intelligence</span>
         </div>
-        <h1 className="text-4xl font-bold text-gray-950 mb-3">Welcome to Toro</h1>
-        <p className="text-lg text-gray-600 mb-2">Your autonomous crypto trading agent</p>
-        <p className="text-sm text-gray-600 max-w-md mx-auto">
-          Set up your trading agent in 6 easy steps. Complete automation with full control over risk.
+        <h1 className="text-4xl font-bold text-foreground tracking-tight mb-3">
+          Welcome to Toro
+        </h1>
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          Create your first autonomous trading agent.<br />
+          Set your risk level. Let it trade.
         </p>
       </div>
 
-      {/* Steps Overview */}
-      <div className="max-w-2xl mx-auto px-6 py-12 flex-1">
-        <div className="space-y-4 mb-12">
-          {steps.map((step, index) => (
-            <div key={step.number} className="flex gap-4">
-              <div className="flex flex-col items-center flex-shrink-0">
-                <div className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold">
-                  {step.number}
-                </div>
-                {index !== steps.length - 1 && (
-                  <div className="w-0.5 h-8 bg-orange-200 my-2" />
-                )}
-              </div>
-              <div className="pt-1.5">
-                <h3 className="font-semibold text-gray-950">{step.title}</h3>
-                <p className="text-sm text-gray-600 mt-1">{step.description}</p>
-              </div>
+      {/* What you get */}
+      <div className="space-y-3">
+        {features.map(({ icon: Icon, title, desc }) => (
+          <div key={title} className="flex items-start gap-4 p-4 bg-card border border-border rounded-xl">
+            <div className="w-9 h-9 rounded-lg bg-orange-accent/10 flex items-center justify-center shrink-0">
+              <Icon size={16} className="text-orange-accent" />
             </div>
-          ))}
-        </div>
-
-        {/* Key Features */}
-        <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-8">
-          <h3 className="font-semibold text-gray-950 mb-4">What You Get</h3>
-          <div className="space-y-3">
-            <div className="flex gap-3">
-              <span className="text-orange-600">✓</span>
-              <div>
-                <p className="text-sm font-medium text-gray-950">Non-Custodial</p>
-                <p className="text-xs text-gray-600">You always control your funds</p>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <span className="text-orange-600">✓</span>
-              <div>
-                <p className="text-sm font-medium text-gray-950">24/7 Trading</p>
-                <p className="text-xs text-gray-600">Your agent never sleeps</p>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <span className="text-orange-600">✓</span>
-              <div>
-                <p className="text-sm font-medium text-gray-950">Risk Management</p>
-                <p className="text-xs text-gray-600">Built-in stop-loss and position sizing</p>
-              </div>
+            <div>
+              <div className="text-sm font-semibold text-foreground">{title}</div>
+              <div className="text-xs text-muted-foreground mt-0.5">{desc}</div>
             </div>
           </div>
-        </div>
-
-        {/* CTA */}
-        <button
-          onClick={handleStart}
-          className="w-full px-8 py-3 bg-gray-950 text-white rounded-lg font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 group"
-        >
-          Get Started
-          <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-        </button>
+        ))}
       </div>
+
+      {/* CTA */}
+      <button
+        onClick={() => router.push('/onboarding/step-1')}
+        className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-orange-accent text-white rounded-xl font-semibold text-sm hover:bg-orange-accent/90 transition-all shadow-sm group"
+      >
+        Create Your First Agent
+        <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+      </button>
+
+      <p className="text-center text-xs text-muted-foreground">
+        4 quick steps · No code required
+      </p>
     </div>
   )
 }

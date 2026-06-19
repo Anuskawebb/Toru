@@ -4,51 +4,28 @@ import React, { createContext, useContext, useState } from 'react'
 
 export interface OnboardingState {
   currentStep: number
-  walletType: 'metamask' | 'walletconnect' | 'coinbase' | 'ledger' | 'trezor' | null
-  walletAddress: string | null
-  agentWalletAddress: string | null
-  fundingAmount: number | null
-  tradingMode: 'autonomous' | 'assisted' | 'manual' | null
-  selectedStrategies: string[]
+  agentName: string
   riskLevel: 'conservative' | 'balanced' | 'aggressive' | null
-  advancedSettings: {
-    maxPositionSize: number
-    stopLossPercentage: number
-    takeProfitPercentage: number
-    rebalanceFrequency: string
-    notificationsEnabled: boolean
-  }
+  tradingMode: 'autonomous' | 'assisted' | null
+  agentWalletAddress: string | null
 }
 
 interface OnboardingContextType {
   state: OnboardingState
   updateStep: (step: number) => void
-  updateWallet: (walletType: string, address: string) => void
-  updateAgentWallet: (address: string) => void
-  updateFunding: (amount: number) => void
-  updateTradingMode: (mode: 'autonomous' | 'assisted' | 'manual') => void
-  updateStrategies: (strategies: string[]) => void
+  updateAgentName: (name: string) => void
   updateRiskLevel: (level: 'conservative' | 'balanced' | 'aggressive') => void
-  updateAdvancedSettings: (settings: Partial<OnboardingState['advancedSettings']>) => void
+  updateTradingMode: (mode: 'autonomous' | 'assisted') => void
+  updateAgentWallet: (address: string) => void
   reset: () => void
 }
 
 const initialState: OnboardingState = {
   currentStep: 1,
-  walletType: null,
-  walletAddress: null,
-  agentWalletAddress: null,
-  fundingAmount: null,
-  tradingMode: null,
-  selectedStrategies: [],
+  agentName: '',
   riskLevel: null,
-  advancedSettings: {
-    maxPositionSize: 10,
-    stopLossPercentage: 5,
-    takeProfitPercentage: 15,
-    rebalanceFrequency: 'daily',
-    notificationsEnabled: true,
-  },
+  tradingMode: null,
+  agentWalletAddress: null,
 }
 
 const OnboardingContext = createContext<OnboardingContextType | undefined>(undefined)
@@ -56,87 +33,25 @@ const OnboardingContext = createContext<OnboardingContextType | undefined>(undef
 export function OnboardingProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<OnboardingState>(initialState)
 
-  const updateStep = (step: number) => {
-    setState((prev) => ({ ...prev, currentStep: step }))
-  }
+  const updateStep        = (step: number)                                              => setState((p) => ({ ...p, currentStep: step }))
+  const updateAgentName   = (name: string)                                              => setState((p) => ({ ...p, agentName: name }))
+  const updateRiskLevel   = (level: 'conservative' | 'balanced' | 'aggressive')        => setState((p) => ({ ...p, riskLevel: level }))
+  const updateTradingMode = (mode: 'autonomous' | 'assisted')                          => setState((p) => ({ ...p, tradingMode: mode }))
+  const updateAgentWallet = (address: string)                                           => setState((p) => ({ ...p, agentWalletAddress: address }))
+  const reset             = ()                                                          => setState(initialState)
 
-  const updateWallet = (walletType: string, address: string) => {
-    setState((prev) => ({
-      ...prev,
-      walletType: walletType as any,
-      walletAddress: address,
-    }))
-  }
-
-  const updateAgentWallet = (address: string) => {
-    setState((prev) => ({
-      ...prev,
-      agentWalletAddress: address,
-    }))
-  }
-
-  const updateFunding = (amount: number) => {
-    setState((prev) => ({
-      ...prev,
-      fundingAmount: amount,
-    }))
-  }
-
-  const updateTradingMode = (mode: 'autonomous' | 'assisted' | 'manual') => {
-    setState((prev) => ({
-      ...prev,
-      tradingMode: mode,
-    }))
-  }
-
-  const updateStrategies = (strategies: string[]) => {
-    setState((prev) => ({
-      ...prev,
-      selectedStrategies: strategies,
-    }))
-  }
-
-  const updateRiskLevel = (level: 'conservative' | 'balanced' | 'aggressive') => {
-    setState((prev) => ({
-      ...prev,
-      riskLevel: level,
-    }))
-  }
-
-  const updateAdvancedSettings = (settings: Partial<OnboardingState['advancedSettings']>) => {
-    setState((prev) => ({
-      ...prev,
-      advancedSettings: {
-        ...prev.advancedSettings,
-        ...settings,
-      },
-    }))
-  }
-
-  const reset = () => {
-    setState(initialState)
-  }
-
-  const value: OnboardingContextType = {
-    state,
-    updateStep,
-    updateWallet,
-    updateAgentWallet,
-    updateFunding,
-    updateTradingMode,
-    updateStrategies,
-    updateRiskLevel,
-    updateAdvancedSettings,
-    reset,
-  }
-
-  return <OnboardingContext.Provider value={value}>{children}</OnboardingContext.Provider>
+  return (
+    <OnboardingContext.Provider value={{
+      state, updateStep, updateAgentName, updateRiskLevel,
+      updateTradingMode, updateAgentWallet, reset,
+    }}>
+      {children}
+    </OnboardingContext.Provider>
+  )
 }
 
 export function useOnboarding() {
-  const context = useContext(OnboardingContext)
-  if (context === undefined) {
-    throw new Error('useOnboarding must be used within OnboardingProvider')
-  }
-  return context
+  const ctx = useContext(OnboardingContext)
+  if (!ctx) throw new Error('useOnboarding must be inside OnboardingProvider')
+  return ctx
 }
