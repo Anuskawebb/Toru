@@ -25,10 +25,10 @@ export default function OnboardingWelcomePage() {
           <span className="text-xs text-orange-accent font-medium">Let&apos;s get you set up</span>
         </div>
         <h1 className="text-4xl font-bold text-foreground tracking-tight mb-3">
-          {firstName ? `Welcome, ${firstName}.` : 'Welcome to Toro.'}
+          {firstName ? `Welcome, ${firstName}.` : 'Welcome to Toru.'}
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Answer 5 quick questions so Toro can build a profile that matches your goals and risk tolerance.
+          Answer 5 quick questions so Toru can build a profile that matches your goals and risk tolerance.
         </p>
       </div>
 

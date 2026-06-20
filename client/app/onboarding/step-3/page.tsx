@@ -58,7 +58,7 @@ export default function Step3Page() {
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-foreground mb-2">What&apos;s your goal?</h2>
         <p className="text-sm text-muted-foreground">
-          This shapes the strategies Toro recommends for your agents.
+          This shapes the strategies Toru recommends for your agents.
         </p>
       </div>
 

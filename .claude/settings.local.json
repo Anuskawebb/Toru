@@ -3,7 +3,14 @@
     "allow": [
       "Bash(timeout 10 npx next build)",
       "Bash(gh pr *)",
-      "Bash(git pull *)"
+      "Bash(git pull *)",
+      "Bash(git -C /Users/manobendramandal/Desktop/code/projects/Aether-mantle ls-tree -r origin/main --name-only)",
+      "Bash(git -C /Users/manobendramandal/Desktop/code/projects/Aether-mantle checkout origin/main -- landing/app/)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(git *)",
+      "Bash(pnpm install *)",
+      "Bash(grep -rn \"Lorem\\\\|Coming soon\\\\|Placeholder\\\\|John Doe\\\\|demo@\\\\|user@example\\\\|TODO\\\\|TEMP\\\\|\\\\$[0-9]\" /Users/manobendramandal/Desktop/code/projects/Aether-mantle/client/app --include=\"*.ts\" --include=\"*.tsx\")",
+      "Bash(perl -pi -e 's/\"name\": \"toro\"/\"name\": \"toru\"/' /Users/manobendramandal/Desktop/code/projects/Aether-mantle/package.json)"
     ]
   }
 }

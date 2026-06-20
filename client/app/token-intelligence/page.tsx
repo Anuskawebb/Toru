@@ -42,9 +42,9 @@ export default function TokenIntelligencePage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            {/* Left Column - Toro Score & Breakdown */}
+            {/* Left Column - Toru Score & Breakdown */}
             <div className="lg:col-span-1 space-y-6">
-              {/* Toro Score */}
+              {/* Toru Score */}
               <div className="bg-card border border-border rounded-lg p-6">
                 <div className="text-center mb-6">
                   <div className="text-sm text-muted-foreground mb-2">TORO SCORE</div>

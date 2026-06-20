@@ -1,7 +1,7 @@
 import { RiskEngine, type RiskInput } from '../../agent-core/src/risk/risk-engine.js';
 import { type TokenSignalBundle } from '../src/schema/smart-money-signals.js';
 
-console.log('Toro Risk Engine Scenario Validation Suite');
+console.log('Toru Risk Engine Scenario Validation Suite');
 console.log('================================================================');
 
 let passCount = 0;

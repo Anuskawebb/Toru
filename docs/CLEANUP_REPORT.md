@@ -1,4 +1,4 @@
-# Toro Repository Cleanup Report
+# Toru Repository Cleanup Report
 
 > Date: 2026-06-20. Full read-only audit followed by targeted changes.
 > No features added. No architecture modified. No functionality changed.
@@ -7,17 +7,17 @@
 
 ## 1. Cleanup Report — What Was Changed
 
-### Phase 1 — Naming (Aether → Toro)
+### Phase 1 — Naming (Aether → Toru)
 
 | File | Before | After |
 |------|--------|-------|
 | `client/package.json` | `"name": "my-project"` | `"name": "toro"` |
 | `render.yaml` | `name: aether-watcher` | `name: toro-watcher` |
-| `client/app/agent/page.tsx:41` | `"Aether Agent"` | `"Toro Agent"` |
-| `client/app/news/page.tsx:49` | `"Aether AI identifies..."` | `"Toro AI identifies..."` |
-| `client/app/news/page.tsx:50` | `source: 'Aether Intelligence'` | `source: 'Toro Intelligence'` |
-| `client/app/token/[symbol]/page.tsx:161` | `"Aether Recommendation"` | `"Toro Recommendation"` |
-| `client/lib/mock-data.ts:287` | `source: 'Aether Intelligence'` | `source: 'Toro Intelligence'` |
+| `client/app/agent/page.tsx:41` | `"Aether Agent"` | `"Toru Agent"` |
+| `client/app/news/page.tsx:49` | `"Aether AI identifies..."` | `"Toru AI identifies..."` |
+| `client/app/news/page.tsx:50` | `source: 'Aether Intelligence'` | `source: 'Toru Intelligence'` |
+| `client/app/token/[symbol]/page.tsx:161` | `"Aether Recommendation"` | `"Toru Recommendation"` |
+| `client/lib/mock-data.ts:287` | `source: 'Aether Intelligence'` | `source: 'Toru Intelligence'` |
 | `indexer/package.json:10` | `/tmp/aether-validator.json` | `/tmp/toro-validator.json` |
 
 **Zero remaining `Aether`/`aether` references in source code (`.ts`, `.tsx`, `.json`).**
@@ -160,11 +160,11 @@ Based only on current code state. No future visions.
 
 | Name | Status | Meaning |
 |------|--------|---------|
-| **Toro** | ✅ Active product name | The platform, brand, agents |
+| **Toru** | ✅ Active product name | The platform, brand, agents |
 | **Mantle** | ✅ Active L2 network | The blockchain where contracts live |
 | **BSC** | ✅ Active indexer chain | The chain the indexer watches |
 | **TWAK** | ✅ Active wallet SDK | Custodial execution sidecar |
 | Aether | ❌ Legacy codename | Old project name — fully removed from source |
 | aether-mantle | ❌ Legacy repo path | Old repo directory name — still in filesystem path only |
 | aether-watcher | ❌ Legacy service | Renamed to toro-watcher in render.yaml |
-| Aether Intelligence | ❌ Legacy data source label | Replaced with Toro Intelligence |
+| Aether Intelligence | ❌ Legacy data source label | Replaced with Toru Intelligence |

@@ -56,7 +56,7 @@ function WelcomeState({ profile }: { profile: Profile | null }) {
       {/* Greeting */}
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-foreground mb-1">
-          {firstName ? `Welcome back, ${firstName}.` : 'Welcome to Toro.'}
+          {firstName ? `Welcome back, ${firstName}.` : 'Welcome to Toru.'}
         </h2>
         <p className="text-sm text-muted-foreground">Your trading platform is ready.</p>
       </div>

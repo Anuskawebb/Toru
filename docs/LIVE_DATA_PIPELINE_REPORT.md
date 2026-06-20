@@ -232,7 +232,7 @@ npx tsx scripts/rebuild-smart-money-signals.ts
 
 ## 8. Summary
 
-### Is Toro a Live System?
+### Is Toru a Live System?
 
 **Partially.** The BSC indexer is live and continuously ingesting trades. The `trades` and `wallet_metrics` tables are real-time. However, the signal layer (everything from `wallet_scores` onward) is batch-refreshed and is currently **~18 hours stale**. The decision and execution engines are not running at all.
 

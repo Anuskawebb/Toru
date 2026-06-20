@@ -1,4 +1,4 @@
-# Phase Status — Toro
+# Phase Status — Toru
 
 **Last updated:** 2026-06-19
 
@@ -107,7 +107,7 @@ Execution engine and agent portfolio tracking.
 
 ---
 
-### Phase 8A (API + Frontend) — Toro API Layer & Data Integration
+### Phase 8A (API + Frontend) — Toru API Layer & Data Integration
 
 Complete API layer and frontend data wiring (completed in this session).
 
@@ -167,12 +167,12 @@ Replace `mock-executor.ts` with real on-chain swap execution via TWAK.
 
 ### Phase 8C — BNB AI Agent SDK
 
-Give each Toro agent a verifiable on-chain identity in the BNB ecosystem.
+Give each Toru agent a verifiable on-chain identity in the BNB ecosystem.
 
 - Migrate agent registry from Mantle Sepolia to BNB chain
 - Wire BNB AI Agent SDK into agent lifecycle: create → fund → activate → pause → close
 - Each agent publishes its capabilities, risk parameters, and performance metrics on-chain
-- Composability: other BNB agents can query Toro agents' signals
+- Composability: other BNB agents can query Toru agents' signals
 
 ---
 

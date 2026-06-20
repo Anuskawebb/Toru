@@ -284,7 +284,7 @@ export const mockResearchArticles = [
     id: 1,
     title: 'Why CAKE Conviction Increased',
     summary: 'Deep analysis of smart wallet accumulation patterns and on-chain signals.',
-    source: 'Toro Intelligence',
+    source: 'Toru Intelligence',
     timestamp: '2 hours ago',
   },
   {

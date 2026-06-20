@@ -124,7 +124,7 @@ async function cleanup() {
 // ── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('Toro E2E Pipeline Validation');
+  console.log('Toru E2E Pipeline Validation');
   console.log('='.repeat(64));
 
   // Capture pre-test CAKE price state BEFORE any cleanup or mutation

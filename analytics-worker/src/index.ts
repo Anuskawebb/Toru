@@ -92,7 +92,7 @@ async function runCycle() {
 }
 
 async function main() {
-  console.log('Starting Toro Analytics Worker...');
+  console.log('Starting Toru Analytics Worker...');
   console.log(`Polling interval: ${POLL_INTERVAL_MS / 1000} seconds`);
 
   // Run immediately on startup

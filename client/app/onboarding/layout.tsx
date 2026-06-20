@@ -3,8 +3,8 @@ import OnboardingPrefill from '@/components/onboarding/prefill'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Setup Profile — Toro',
-  description: 'Set up your Toro profile to get started',
+  title: 'Setup Profile — Toru',
+  description: 'Set up your Toru profile to get started',
 }
 
 export default function OnboardingLayout({ children }: { children: React.ReactNode }) {
@@ -16,7 +16,7 @@ export default function OnboardingLayout({ children }: { children: React.ReactNo
           <div className="w-6 h-6 bg-orange-accent rounded flex items-center justify-center">
             <span className="text-white text-[10px] font-black">T</span>
           </div>
-          <span className="text-sm font-semibold text-foreground">Toro</span>
+          <span className="text-sm font-semibold text-foreground">Toru</span>
           <span className="text-muted-foreground mx-1">·</span>
           <span className="text-sm text-muted-foreground">Profile Setup</span>
         </header>

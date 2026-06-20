@@ -9,7 +9,7 @@ import { reconstructTrade } from '../reconstruction/trade-reconstructor.js';
 import { resolveTokenMeta } from '../cache/token-cache.js';
 import { formatAmount } from '../tokens/registry.js';
 import { getPoolFactory } from '../cache/factory-cache.js';
-import type { NormalizedTrade, RawEvent } from '../types/index.js';
+import type { NormalizedTrade } from '../types/index.js';
 
 const V2_SWAP_TOPIC = '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822';
 const V3_SWAP_TOPIC = '0xc42079f94a6350f444b8257297e9dca7f350240973e5fd6c41a3c9886af84079';
@@ -92,7 +92,7 @@ async function main() {
           topics: [[V2_SWAP_TOPIC, V3_SWAP_TOPIC]],
           fromBlock: current,
           toBlock: chunkEnd,
-        });
+        } as any);
         allLogs.push(...logs);
       } catch (err: any) {
         console.error(`  Failed to fetch chunk ${current} to ${chunkEnd}:`, err.message || err);

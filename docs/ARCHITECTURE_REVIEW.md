@@ -1,7 +1,7 @@
 # Architecture Review: Phase 8A.5 Live Analytics Automation
 
 ## Overview
-Phase 8A.5 transitions Toro's intelligence generation from manual rebuild scripts to a continuously running "live" system. As blockchain trades are ingested by the indexer, the intelligence layer now automatically recalculates wallet scores, token metrics, and smart money signals so the system and frontend always reflect near-real-time reality.
+Phase 8A.5 transitions Toru's intelligence generation from manual rebuild scripts to a continuously running "live" system. As blockchain trades are ingested by the indexer, the intelligence layer now automatically recalculates wallet scores, token metrics, and smart money signals so the system and frontend always reflect near-real-time reality.
 
 ## 1. Incremental vs. Batch Processing Feasibility
 A key technical decision was determining whether to adopt **incremental updates** (e.g., updating a single wallet and token's score upon a new trade) or continue using **batch recalculations**.

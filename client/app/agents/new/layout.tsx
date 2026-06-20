@@ -3,7 +3,7 @@ import AgentCreationPrefill from '@/components/agent/agent-creation-prefill'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Create Agent — Toro',
+  title: 'Create Agent — Toru',
   description: 'Create an autonomous trading agent',
 }
 
@@ -16,7 +16,7 @@ export default function AgentCreationLayout({ children }: { children: React.Reac
           <div className="w-6 h-6 bg-orange-accent rounded flex items-center justify-center">
             <span className="text-white text-[10px] font-black">T</span>
           </div>
-          <span className="text-sm font-semibold text-foreground">Toro</span>
+          <span className="text-sm font-semibold text-foreground">Toru</span>
           <span className="text-muted-foreground mx-1">·</span>
           <span className="text-sm text-muted-foreground">Create Agent</span>
         </header>

@@ -38,7 +38,7 @@ export default function AgentPage() {
         <div className="max-w-7xl mx-auto p-6">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-950 mb-2">Toro Agent</h1>
+            <h1 className="text-3xl font-bold text-gray-950 mb-2">Toru Agent</h1>
             <p className="text-gray-500">AI-powered trading signal generation and risk management</p>
           </div>
 

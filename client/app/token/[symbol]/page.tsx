@@ -158,7 +158,7 @@ export default async function TokenDetailPage({ params }: { params: Promise<{ sy
 
             {/* Agent Recommendation Card */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-950 mb-6">Toro Recommendation</h3>
+              <h3 className="text-lg font-semibold text-gray-950 mb-6">Toru Recommendation</h3>
               <div className="space-y-4">
                 <div>
                   <div className="text-xs text-gray-500 uppercase tracking-wide mb-2">Action</div>

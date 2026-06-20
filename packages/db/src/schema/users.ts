@@ -1,7 +1,7 @@
 import { pgTable, varchar, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
 
 /**
- * users — identity layer for Toro operators.
+ * users — identity layer for Toru operators.
  *
  * V1: system-only. The single default row represents the solo operator.
  * V2 (post-auth): privy_id is populated when Privy is wired in.

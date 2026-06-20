@@ -96,7 +96,7 @@ export default function TerminalPage() {
 
   // Live telemetry logs state
   const [logs, setLogs] = useState<LogEntry[]>([
-    { time: "16:40:01", tag: "SYS", msg: "Toro Agent Framework initialized." },
+    { time: "16:40:01", tag: "SYS", msg: "Toru Agent Framework initialized." },
     { time: "16:40:03", tag: "CONN", msg: "Listening to Mantle Sepolia Node (Chain ID 5003)." },
     { time: "16:40:05", tag: "WATCHER", msg: "Monitoring Agni swap pools & Smart Money address lists..." },
     { time: "16:40:08", tag: "HEARTBEAT", msg: "Heartbeat status: active [latency: 35ms]" },
@@ -289,9 +289,9 @@ export default function TerminalPage() {
             <div className="onboarding-logo-wrapper">
               <ToroMark size={64} className="text-color-green" />
             </div>
-            <h2>Welcome to Toro Terminal</h2>
+            <h2>Welcome to Toru Terminal</h2>
             <p>
-              Toro is an institutional-grade, AI-powered autonomous trading platform. 
+              Toru is an institutional-grade, AI-powered autonomous trading platform. 
               Configure custom guardrails, track smart money wallets, and deploy automated trading agents executing 24/7 on Mantle.
             </p>
             <div className="onboarding-steps">
@@ -328,7 +328,7 @@ export default function TerminalPage() {
       <aside className="terminal-sidebar">
         <div className="sidebar-brand">
           <ToroMark size={28} className="text-color-green" />
-          <span className="sidebar-brand-text">Toro</span>
+          <span className="sidebar-brand-text">Toru</span>
           <span className="sidebar-brand-badge">Terminal</span>
         </div>
 
@@ -370,7 +370,7 @@ export default function TerminalPage() {
         {/* ── Header Bar ── */}
         <header className="viewport-header">
           <div className="header-breadcrumbs">
-            <span className="crumb-parent">Toro</span>
+            <span className="crumb-parent">Toru</span>
             <span className="crumb-separator">/</span>
             <span className="crumb-current">{activeTab}</span>
           </div>
@@ -774,7 +774,7 @@ export default function TerminalPage() {
                 {/* Active Agents list */}
                 <div className="agents-list-panel">
                   <div className="panel-card-head">
-                    <h3 className="panel-title">Active Toro Agents</h3>
+                    <h3 className="panel-title">Active Toru Agents</h3>
                     <span className="panel-subtitle">Running automated execution processes</span>
                   </div>
                   <div className="agents-list">
@@ -962,7 +962,7 @@ export default function TerminalPage() {
                 <div className="forums-panel">
                   <div className="panel-card-head">
                     <h3 className="panel-title">Research Threads & Market Discussions</h3>
-                    <span className="panel-subtitle">Alpha sharing by Toro quants</span>
+                    <span className="panel-subtitle">Alpha sharing by Toru quants</span>
                   </div>
 
                   <div className="threads-list">
@@ -1028,7 +1028,7 @@ export default function TerminalPage() {
                 </div>
                 <div className="news-list">
                   {[
-                    { title: "Mantle Network liquidity passes $500M TVL milestones", time: "1h ago", source: "Toro News" },
+                    { title: "Mantle Network liquidity passes $500M TVL milestones", time: "1h ago", source: "Toru News" },
                     { title: "FusionX V2 pool upgrades: Lower slippage bounds predicted for WETH/USDC", time: "3h ago", source: "CoinMarketCap API" },
                     { title: "Privy Auth integration releases secure MPC vault recovery workflows", time: "5h ago", source: "Security Desk" },
                     { title: "ERC-8004 identity registry standard sees heavy adoption among AI agents", time: "1d ago", source: "Etherscan" },
@@ -1037,7 +1037,7 @@ export default function TerminalPage() {
                       <span className="news-source">{news.source} • {news.time}</span>
                       <h4>{news.title}</h4>
                       <p className="text-sm text-gray-400 mt-2">
-                        Toro scanner indexes show increased transactional volume matching these announcements. Setting up targeted risk guardrails is recommended.
+                        Toru scanner indexes show increased transactional volume matching these announcements. Setting up targeted risk guardrails is recommended.
                       </p>
                     </div>
                   ))}
@@ -1072,7 +1072,7 @@ export default function TerminalPage() {
                     <select className="form-select">
                       <option>Claude 3.5 Haiku (Balanced Speed/Conviction)</option>
                       <option>Claude 3.5 Sonnet (Deep Quant Reasoning)</option>
-                      <option>Toro Scorer Fallback (Deterministic Logic)</option>
+                      <option>Toru Scorer Fallback (Deterministic Logic)</option>
                     </select>
                   </div>
                   <button onClick={() => triggerToast("Terminal configurations updated.")} className="save-settings-btn mt-6">

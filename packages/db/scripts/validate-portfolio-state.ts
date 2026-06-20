@@ -16,7 +16,7 @@ import {
   type RouteType
 } from '../../../packages/agent-core/src/index.js';
 
-console.log('Toro Portfolio State Engine Validation Suite');
+console.log('Toru Portfolio State Engine Validation Suite');
 console.log('================================================================');
 
 let passCount = 0;

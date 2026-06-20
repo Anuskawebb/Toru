@@ -16,7 +16,7 @@ export default function AgentIntelligencePage() {
           {/* Agent Overview KPIs */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {[
-              { label: 'Agent Name', value: 'Toro Alpha', icon: '🤖' },
+              { label: 'Agent Name', value: 'Toru Alpha', icon: '🤖' },
               { label: 'Status', value: 'Running', icon: '▶️', highlight: true },
               { label: 'Portfolio Value', value: '$125,450', icon: '💰' },
               { label: 'Total PnL', value: '+$8,920', icon: '📈', positive: true },

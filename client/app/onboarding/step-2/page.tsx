@@ -44,7 +44,7 @@ export default function Step2Page() {
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-foreground mb-2">Your experience</h2>
         <p className="text-sm text-muted-foreground">
-          This helps Toro tailor agent defaults and recommendations for you.
+          This helps Toru tailor agent defaults and recommendations for you.
         </p>
       </div>
 

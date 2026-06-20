@@ -1,4 +1,4 @@
-# Frontend Roadmap — Toro
+# Frontend Roadmap — Toru
 
 **Polish priorities, ordered by impact per page.**  
 This document covers work to do **now**, using data already in the database. Phase 8B–8E items are not included — they require external integrations.
