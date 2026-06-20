@@ -1,117 +1,198 @@
-# Toro — AI-Powered Copy-Trading Protocol on Mantle
+# Toro
 
-Toro is an agent-first copy-trading protocol built natively on Mantle. It empowers users to deploy autonomous, AI-driven copy-trading agents that monitor leader activity on Mantle Mainnet (Agni Finance pools) and execute mirrored trades on Mantle Sepolia Testnet. By combining high-speed execution, non-custodial smart contract vaults, and AI-powered trade scoring, Toro makes institutional-grade automated trading accessible to everyone.
+AI-powered copy-trading on BSC. Users deploy autonomous agents that track smart-money wallets, score signals, and execute trades — all within configurable risk limits.
+
+---
 
 ## Architecture
 
 ```
-Mantle Mainnet (Agni) ──swap events──► Watcher Service ──score──► Claude Haiku (AI)
-                                              │                          │
-                                              └──────── decision ────────┘
-                                                         │
-                                                   Keeper Agent
-                                                         │
-                                              VaultManager.sol (on-chain)
-                                                         │
-                                                 User's Agent Vault
-                                      (deterministic address per follower+leader)
+BSC Mainnet
+    │
+    ▼
+indexer/              — ingests on-chain swaps into the database
+    │
+    ▼
+analytics-worker/     — rebuilds wallet scores, token metrics, smart-money signals every 60s
+    │
+    ▼
+packages/agent-core/  — DecisionEngine + ExecutionEngine (reads signals, places orders)
+    │
+    ▼
+TWAK sidecar          — custodial wallet service (swap execution on BSC)
+    │
+    ▼
+client/               — Next.js app (auth, onboarding, agent management UI)
+landing/              — marketing page
 ```
-
-## Technology Stack
-
-- **Frontend:** Next.js 16 (App Router), TailwindCSS, Wagmi, Viem, Privy Auth
-- **Backend / Watcher:** Node.js (TypeScript), Viem
-- **Database:** Prisma ORM, PostgreSQL (Supabase)
-- **Caching & Stats:** Upstash Redis
-- **AI Engine:** Claude Haiku (with fallback LLM reasoning)
-- **On-Chain Ecosystem:** Mantle Sepolia Testnet (Chain ID `5003`), customized `aUSD` stablecoin, smart contract-based agent vaults
 
 ---
 
-## Local Development Setup
+## Prerequisites
 
-To run Toro locally, configure the environment variables and boot up the frontend and watcher services.
+- Node.js ≥ 20
+- pnpm ≥ 9 (`npm install -g pnpm`)
+- PostgreSQL database (Supabase recommended)
+- TWAK sidecar running locally (see below)
 
-### 1. Environment Variables Configuration
+---
 
-#### Frontend (`landing/.env.local`)
-Create a `landing/.env.local` file with the following variables:
+## 1. Clone & Install
+
+```bash
+git clone https://github.com/Anuskawebb/Toru.git
+cd Toru
+pnpm install
+```
+
+---
+
+## 2. Environment Variables
+
+### Client (`client/.env.local`)
+
 ```env
-# WalletConnect
-NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=YOUR_PROJECT_ID_HERE
+# Database
+DATABASE_URL="postgresql://user:password@host:5432/db?pgbouncer=true"
 
-# Supabase Postgres URLs
-DATABASE_URL="postgresql://username:password@host:port/database?pgbouncer=true"
-DIRECT_URL="postgresql://username:password@host:port/database"
-
-# Upstash Redis
-UPSTASH_REDIS_REST_URL=https://your-redis-instance.upstash.io
-UPSTASH_REDIS_REST_TOKEN=your_redis_token_here
-
-# Mantle RPC URLs
-NEXT_PUBLIC_MANTLE_MAINNET_RPC=https://rpc.mantle.xyz
-NEXT_PUBLIC_MANTLE_SEPOLIA_RPC=https://rpc.sepolia.mantle.xyz
-
-# Privy Authentication
+# Auth — Privy (https://privy.io)
 NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id
 PRIVY_APP_SECRET=your_privy_app_secret
 
-# On-Chain Contract Addresses (Mantle Sepolia Testnet)
-NEXT_PUBLIC_FOLLOWER_REGISTRY_ADDRESS=0x...
-NEXT_PUBLIC_AUSDC_ADDRESS=0x...
-NEXT_PUBLIC_VAULT_MANAGER_ADDRESS=0x...
+# TWAK sidecar (custodial wallet service)
+TWAK_API_URL=http://127.0.0.1:3002
+TWAK_HMAC_SECRET=your_twak_hmac_secret
+TWAK_WALLET_PASSWORD=your_twak_wallet_password
 
-# Notifications & AI Keys (Optional / Fallbacks)
-RESEND_API_KEY="your_resend_api_key"
-OPENAI_API_KEY="your_openai_api_key"
+# Avatar uploads — Vercel Blob (https://vercel.com/storage/blob)
+BLOB_READ_WRITE_TOKEN=vercel_blob_rw_...
+
+# Funding threshold for agent activation (default: 0.005 BNB, use 0.001 for testing)
+MIN_REQUIRED_BNB=0.001
 ```
 
-#### Watcher (`watcher/.env`)
-Create a `watcher/.env` file with the following variables:
+### Indexer (`indexer/.env`)
+
 ```env
-# Database URLs
-DATABASE_URL="postgresql://username:password@host:port/database?pgbouncer=true"
-DIRECT_URL="postgresql://username:password@host:port/database"
+# Database
+DATABASE_URL="postgresql://user:password@host:5432/db?pgbouncer=true"
 
-# Upstash Redis
-UPSTASH_REDIS_REST_URL=https://your-redis-instance.upstash.io
-UPSTASH_REDIS_REST_TOKEN=your_redis_token_here
+# BSC RPC — use a private node for production (QuickNode, NodeReal, Ankr)
+BSC_RPC_URL=https://bsc-dataseed.binance.org
 
-# Contracts (Mantle Sepolia Testnet)
-FOLLOWER_REGISTRY_ADDRESS=0x...
-VAULT_MANAGER_ADDRESS=0x...
-AUSDC_ADDRESS=0x...
-
-# Keeper Wallet (triggers copy trades on-chain)
-KEEPER_PRIVATE_KEY=your_keeper_private_key
-
-# Copy-trade settings
-DEFAULT_COPY_PCT=20
+# Optional tuning
+CHECKPOINT_FILE=./checkpoint.json
+FETCH_CONCURRENCY=5
+BATCH_SIZE=100
+BATCH_DELAY_MS=200
+LOG_LEVEL=info
 ```
 
-### 2. Booting Services
+### Analytics Worker (`analytics-worker/.env`)
 
-Install dependencies and start development servers:
-
-#### Start Frontend
-```bash
-cd landing
-npm install
-npm run dev
-```
-
-#### Start Watcher
-```bash
-cd watcher
-npm install
-npm run dev
+```env
+DATABASE_URL="postgresql://user:password@host:5432/db?pgbouncer=true"
 ```
 
 ---
 
-## Design Highlights
+## 3. Database Setup
 
-- **Agent-First Design:** Implements deterministic smart contract vaults per follower-leader pair, non-custodial keeper delegation patterns, and fully automated monitoring loops that update and execute without user intervention.
-- **AI Trade Scoring:** Claude Haiku evaluates each leader trade against a vault's risk profile and produces natural-language reasoning explanations for every copy decision.
-- **Risk Controls:** Per-vault stop-loss mechanics with in-process registries, dynamic backtesting previews on deployment, and throughput statistic tracking.
-- **Autonomous Performance:** Operates on a rapid poll cycle with Redis heartbeat indicators, executing automated trade protection (stop-losses) and copy-trading triggers autonomously while broadcasting real-time logs to user pages.
+Run migrations from the db package:
+
+```bash
+cd packages/db
+pnpm db:migrate
+```
+
+---
+
+## 4. Running Services
+
+Open a terminal for each service.
+
+### Client (main app)
+
+```bash
+pnpm client
+# runs: pnpm --filter toro dev
+# → http://localhost:3000
+```
+
+### Landing page
+
+```bash
+pnpm dev
+# runs: pnpm --filter landing dev
+# → http://localhost:3001
+```
+
+### Indexer (BSC swap ingestion)
+
+```bash
+pnpm indexer
+# runs: pnpm --filter @toro/indexer start
+```
+
+### Analytics worker (scores + signals)
+
+```bash
+pnpm analytics-worker
+# runs: pnpm --filter @toro/analytics-worker start
+# rebuilds wallet_scores, token_metrics, smart_money_signals every 60s
+```
+
+---
+
+## 5. TWAK Sidecar
+
+TWAK is the custodial wallet service that handles BSC wallet creation and swap execution. It runs as a separate HTTP service.
+
+The client expects it at `TWAK_API_URL` (default `http://127.0.0.1:3002`).
+
+Without TWAK running:
+- Agent wallet creation will fail (503)
+- Balance checks will return 0
+- Trade execution will not work
+
+---
+
+## User Flow
+
+```
+Sign in (Privy)
+    → Onboarding (5 steps: profile, experience, goal, risk, capital)
+    → Create agent (name, risk level, trading mode)
+    → Provision wallet (TWAK creates a BSC wallet for the agent)
+    → Fund wallet (send BNB ≥ MIN_REQUIRED_BNB to the agent address)
+    → Activate agent (status → ACTIVE)
+    → Agent executes copy-trades based on smart-money signals
+```
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Next.js 16, TailwindCSS, Privy Auth |
+| Database | PostgreSQL + Drizzle ORM (`@toro/db`) |
+| Wallet custody | TWAK sidecar (BSC) |
+| Blockchain indexing | Custom BSC indexer (viem) |
+| Analytics | Background worker — wallet scores, token metrics |
+| Avatar storage | Vercel Blob |
+
+---
+
+## Monorepo Structure
+
+```
+client/               Next.js app (main product)
+landing/              Marketing landing page
+packages/
+  db/                 Shared database client + schema (Drizzle)
+  agent-core/         ExecutionEngine, DecisionEngine, TwakExecutor
+indexer/              BSC blockchain indexer
+analytics-worker/     Wallet scoring + signal generation
+docs/                 Architecture docs, audit reports
+```
