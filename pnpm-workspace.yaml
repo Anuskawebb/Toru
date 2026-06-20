@@ -4,7 +4,6 @@ packages:
   - indexer
   - client
   - landing
-  - watcher
 
 allowBuilds:
   '@prisma/client': set this to true or false
