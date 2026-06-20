@@ -12,7 +12,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@toro/db": "file:../db",
+    "@toro/db": "workspace:*",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.31.2",
     "zod": "^4.4.3"

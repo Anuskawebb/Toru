@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@toro/db": "workspace:*",
     "@paper-design/shaders-react": "^0.0.76",
     "@tailwindcss/postcss": "^4.3.0",
     "clsx": "^2.1.1",

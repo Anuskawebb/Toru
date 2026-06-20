@@ -3,40 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run dev --prefix landing",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint",
-    "contracts:compile": "npm --prefix contracts/web3 run compile",
-    "contracts:test": "npm --prefix contracts/web3 run test",
-    "contracts:deploy": "npm --prefix contracts/web3 run deploy",
-    "indexer": "npm --prefix indexer run start",
-    "analytics-worker": "npm --prefix analytics-worker run start",
-    "validate:twak": "npx tsx packages/agent-core/scripts/validate-twak.ts"
-  },
-  "dependencies": {
-    "@privy-io/react-auth": "^3.29.2",
-    "@privy-io/wagmi": "^4.0.11",
-    "@tailwindcss/postcss": "^4.3.0",
-    "@tanstack/react-query": "^5.101.0",
-    "@upstash/redis": "^1.38.0",
-    "framer-motion": "^12.40.0",
-    "lucide-react": "^1.17.0",
-    "next": "16.2.7",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "tailwindcss": "^4.3.0",
-    "viem": "^2.52.2",
-    "wagmi": "^2.19.5"
+    "dev": "pnpm --filter landing dev",
+    "client": "pnpm --filter toro dev",
+"indexer": "pnpm --filter @toro/indexer start",
+    "analytics-worker": "pnpm --filter @toro/analytics-worker start",
+    "validate:twak": "pnpm --filter @toro/agent-core validate:twak"
   },
   "devDependencies": {
-    "@prisma/client": "^5.22.0",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.7",
-    "prisma": "^5.22.0",
     "typescript": "^5"
   }
 }

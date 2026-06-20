@@ -46,8 +46,8 @@ export default function NewsPage() {
       id: 5,
       category: 'AI Analysis',
       title: 'Machine Learning Model Identifies 7 Emerging Opportunities',
-      summary: 'Aether AI identifies tokens with strong fundamentals and positive momentum indicators.',
-      source: 'Aether Intelligence',
+      summary: 'Toro AI identifies tokens with strong fundamentals and positive momentum indicators.',
+      source: 'Toro Intelligence',
       timestamp: '10 hours ago',
     },
     {

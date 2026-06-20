@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(timeout 10 npx next build)"
+      "Bash(timeout 10 npx next build)",
+      "Bash(gh pr *)",
+      "Bash(git pull *)"
     ]
   }
 }
