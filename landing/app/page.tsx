@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { CinematicFooter } from "@/components/ui/motion-footer";
 
 const APP_URL = "https://aether-trader.vercel.app/";
 
@@ -172,12 +173,108 @@ const TABS = [
   },
 ];
 
+// Masthead ticker row (placeholder prices).
+const TICKERS = [
+  { sym: "BTC", price: "$58,887", chg: "-1.35%", up: false },
+  { sym: "ETH", price: "$4,130", chg: "-1.42%", up: false },
+  { sym: "SOL", price: "$214", chg: "+5.98%", up: true },
+  { sym: "MNT", price: "$1.18", chg: "+7.09%", up: true },
+  { sym: "aUSD", price: "$1.00", chg: "+0.01%", up: true },
+];
+
 // "Two-columns" section — feature cards that fade in, staggered.
 const CARDS = [
   { title: "Copy the proven", sub: "Leaderboard", body: "Follow traders ranked by real on-chain win rate and 24h volume — not hype." },
   { title: "Stay in control", sub: "Non-custodial", body: "Your capital never leaves your vault. TORU can only trade within the rules you set." },
   { title: "Always on", sub: "Autonomous", body: "A keeper watches your leader 24/7 and mirrors every move, on-chain, in real time." },
 ];
+
+const FEATURED_ITEMS = [
+  {
+    title: "Smart Copy-Trading",
+    subtitle: "Mirror top traders' moves automatically — your agent watches 24/7 and executes on-chain in real time.",
+  },
+  {
+    title: "AI Risk Engine",
+    subtitle: "Built-in risk scoring evaluates every trade before execution, protecting your vault from reckless moves.",
+  },
+  {
+    title: "Non-Custodial Vaults",
+    subtitle: "Your funds stay in your smart-contract vault. TORU agents can only trade within the limits you define.",
+  },
+  {
+    title: "On-Chain Analytics",
+    subtitle: "Track every trade, win rate, and P&L transparently on-chain — no hidden data, no trust required.",
+  },
+];
+
+const PARTNERS = [
+  { name: "BNB Chain", img: "/bnb-logo.png" },
+  { name: "PancakeSwap", img: "/pancakeSwap-logo.png" },
+  { name: "Trust Wallet", img: "/trust-logo.png" },
+];
+
+function FeaturedSection() {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  return (
+    <section className="featured-section" id="features">
+      <div className="featured-inner">
+        <header className="featured-header">
+          <h2 className="featured-title">
+            Empowering traders<br />with autonomous agents.
+          </h2>
+        </header>
+
+        <div className="featured-grid">
+          {/* Main media card */}
+          <div className="featured-main-card">
+            <div className="featured-media">
+              {isPlaying ? (
+                <video
+                  src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/crm(1)(1)(1).mp4"
+                  autoPlay muted loop playsInline
+                  style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "12px" }}
+                />
+              ) : (
+                <div className="featured-media-inner" onClick={() => setIsPlaying(true)}>
+                  <img
+                    src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/crm-featured.png"
+                    alt="TORU Platform"
+                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "12px" }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Feature cards grid */}
+          <div className="featured-cards-grid">
+            {FEATURED_ITEMS.map((f, i) => (
+              <div className="featured-card" key={i}>
+                <div className="featured-card-thumb" />
+                <div className="featured-card-text">
+                  <h3 className="featured-card-title">{f.title}</h3>
+                  <p className="featured-card-sub">{f.subtitle}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Partners row */}
+        <div className="featured-partners">
+          {PARTNERS.map((p) => (
+            <div className="featured-partner" key={p.name}>
+              <img src={p.img} alt={p.name} className="featured-partner-img" />
+              <span className="featured-partner-name">{p.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   const [active, setActive] = useState(0);
@@ -186,12 +283,12 @@ export default function Home() {
   const anchorRef = useRef<HTMLSpanElement>(null);
   const pLeftRef = useRef<SVGGElement>(null);
   const pRightRef = useRef<SVGGElement>(null);
-  const heroBgRef = useRef<HTMLDivElement>(null);
-  const heroTextRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
   const revealRef = useRef<HTMLDivElement>(null);
   const revealWordRef = useRef<HTMLHeadingElement>(null);
   const revealKickRef = useRef<HTMLParagraphElement>(null);
   const startRef = useRef({ cx: 0, cy: 0, size: 56 });
+  const mouseRef = useRef({ x: -9999, y: -9999 });
 
   useEffect(() => {
     // easeInOutCubic
@@ -224,57 +321,152 @@ export default function Home() {
         setActive((prev) => (prev === idx ? prev : idx));
       }
 
-      // ── Eye logo: fly from the nav to the centre + shrink over the first
-      //    ~viewport of scroll, then hold centred for the rest of the page. ──
+      // ── Hero parallax: blur and fade as user scrolls toward reveal ──
+      const hero = heroRef.current;
+      if (hero) {
+        const heroH = hero.offsetHeight;
+        const p = Math.min(Math.max(window.scrollY / heroH, 0), 1);
+        const blur = p * 8;
+        const opacity = 1 - p * 1.3;
+        hero.style.filter = `blur(${blur}px)`;
+        hero.style.opacity = `${Math.max(opacity, 0)}`;
+      }
+
+      // ── Tile spotlight: closest row to eye/mouse gets full color ──
+      const eyeLogo = logoRef.current;
+      if (eyeLogo) {
+        const logoRect = eyeLogo.getBoundingClientRect();
+        const eyeCy = logoRect.top + logoRect.height / 2;
+        const { y: my } = mouseRef.current;
+        const tiles = document.querySelectorAll('.tile-img');
+        if (tiles.length === 20) {
+          // 4 rows x 5 cols — get the avg Y of the first tile in each row
+          const rowAvgY: number[] = [];
+          for (let r = 0; r < 4; r++) {
+            let sum = 0;
+            for (let c = 0; c < 5; c++) {
+              const tr = tiles[r * 5 + c].getBoundingClientRect();
+              sum += tr.top + tr.height / 2;
+            }
+            rowAvgY.push(sum / 5);
+          }
+          // Find the single closest row to the eye, and closest to the mouse
+          let eyeRow = -1, mouseRow = -1;
+          let eyeMin = Infinity, mouseMin = Infinity;
+          for (let r = 0; r < 4; r++) {
+            const eDist = Math.abs(eyeCy - rowAvgY[r]);
+            const mDist = Math.abs(my - rowAvgY[r]);
+            if (eDist < eyeMin) { eyeMin = eDist; eyeRow = r; }
+            if (mDist < mouseMin) { mouseMin = mDist; mouseRow = r; }
+          }
+          tiles.forEach((tile, i) => {
+            const row = Math.floor(i / 5);
+            if (row === eyeRow || row === mouseRow) {
+              tile.classList.add('in-spotlight');
+            } else {
+              tile.classList.remove('in-spotlight');
+            }
+          });
+        }
+      }
+
+      // ── Eye logo: sits in the nav initially, then after the reveal section
+      //    ends it flies from the nav to the centre + shrinks. ──
       const logo = logoRef.current;
-      if (logo) {
+      const rv2 = revealRef.current;
+      if (logo && rv2) {
+        const revealBottom = rv2.getBoundingClientRect().bottom + window.scrollY;
+        const scrollPastReveal = Math.max(window.scrollY - revealBottom, 0);
         const flyDist = window.innerHeight * 0.9;
-        const p = Math.min(Math.max(window.scrollY / flyDist, 0), 1);
+        const p = Math.min(scrollPastReveal / flyDist, 1);
         const e = ease(p);
         const { cx, cy, size } = startRef.current;
-        const dx = (1 - e) * (cx - window.innerWidth / 2);
-        const dy = (1 - e) * (cy - window.innerHeight / 2);
-        const endScale = size > 0 ? 42 / size : 0.75; // small in the centre
-        const scale = 1 + (endScale - 1) * e;
-        logo.style.transform = `translate3d(calc(-50% + ${dx}px), calc(-50% + ${dy}px), 0) scale(${scale})`;
+
+        if (scrollPastReveal <= 0) {
+          // Before reveal ends: pin logo at its nav position
+          logo.style.transform = `translate3d(calc(-50% + ${cx - window.innerWidth / 2}px), calc(-50% + ${cy - window.innerHeight / 2}px), 0) scale(1)`;
+        } else {
+          // After reveal ends: fly from nav to centre + shrink
+          const dx = (1 - e) * (cx - window.innerWidth / 2);
+          const dy = (1 - e) * (cy - window.innerHeight / 2);
+          const endScale = size > 0 ? 42 / size : 0.75;
+          const scale = 1 + (endScale - 1) * e;
+          logo.style.transform = `translate3d(calc(-50% + ${dx}px), calc(-50% + ${dy}px), 0) scale(${scale})`;
+        }
         logo.style.opacity = "1";
       }
 
-      // ── Hero background: zoom out + blur + fade as you scroll (adapted from
-      //    the reference's background-size shrink → a robust transform scale). ──
-      const heroP = Math.min(Math.max(window.scrollY / (window.innerHeight * 0.8), 0), 1);
-      const hero = heroBgRef.current;
-      if (hero) {
-        // Slight zoom-in keeps it covering the hero (no edge gaps), then fade out.
-        hero.style.transform = `scale(${1 + 0.1 * heroP})`;
-        hero.style.opacity = `${Math.max(1 - heroP * 1.1, 0)}`;
-      }
-      // Hero headline: blur out + fade away on scroll (mirrors the image).
-      const heroText = heroTextRef.current;
-      if (heroText) {
-        heroText.style.filter = `blur(${heroP * 6}px)`;
-        heroText.style.opacity = `${Math.max(1 - heroP * 1.2, 0)}`;
-      }
-
-      // ── Pupils roll with scroll — the eye-scroll motion. ──
-      const rot = window.scrollY * 0.18;
+      // ── Pupils roll with scroll — the eye-scroll motion (only after reveal). ──
+      const revealEnd = rv2 ? rv2.getBoundingClientRect().bottom + window.scrollY : 0;
+      const scrollAfterReveal = Math.max(window.scrollY - revealEnd, 0);
+      const rot = scrollAfterReveal * 0.18;
       if (pLeftRef.current) pLeftRef.current.style.transform = `rotate(${rot}deg)`;
       if (pRightRef.current) pRightRef.current.style.transform = `rotate(${rot}deg)`;
 
-      // ── Brand reveal: the word scales up + fades as the section scrolls past
-      //    (masthead-style), the kicker fades out early. ──
+      // ── Brand reveal: blooms in from small to large (flower-like) as the
+      //    section enters the viewport, then scales further as it scrolls past. ──
       const rv = revealRef.current;
       if (rv) {
         const rect = rv.getBoundingClientRect();
-        const total = Math.max(rv.offsetHeight - window.innerHeight, 1);
-        const p = Math.min(Math.max(-rect.top, 0), total) / total;
+        const vh = window.innerHeight;
+
+        // Phase 1: bloom-in — section enters viewport from bottom
+        // When rect.top == vh → just off-screen (enterP=0)
+        // When rect.top == 0  → fully entered (enterP=1)
+        const enterP = Math.min(Math.max(1 - rect.top / vh, 0), 1);
+        const bloomEase = enterP * enterP * (3 - 2 * enterP); // smoothstep
+
+        // Phase 2: scroll-through — section scrolls past (existing behavior)
+        const total = Math.max(rv.offsetHeight - vh, 1);
+        const throughP = Math.min(Math.max(-rect.top, 0), total) / total;
+
         if (revealWordRef.current) {
-          revealWordRef.current.style.transform = `scale(${1 + p * 4})`;
-          revealWordRef.current.style.opacity = `${p < 0.65 ? 1 : Math.max(1 - (p - 0.65) / 0.35, 0)}`;
+          // Bloom: 0.3 → 1.0 as it enters, then 1.0 → 5.0 as it scrolls past
+          const bloomScale = 0.3 + bloomEase * 0.7;
+          const scrollScale = 1 + throughP * 4;
+          const finalScale = enterP < 1 ? bloomScale : scrollScale;
+          const fadeOut = throughP < 0.65 ? 1 : Math.max(1 - (throughP - 0.65) / 0.35, 0);
+          revealWordRef.current.style.transform = `scale(${finalScale})`;
+          revealWordRef.current.style.opacity = `${bloomEase * fadeOut}`;
         }
         if (revealKickRef.current) {
-          revealKickRef.current.style.opacity = `${Math.max(1 - p / 0.4, 0)}`;
+          const kickFade = enterP < 1 ? bloomEase : Math.max(1 - throughP / 0.4, 0);
+          revealKickRef.current.style.opacity = `${kickFade}`;
+          revealKickRef.current.style.transform = `translateY(${(1 - bloomEase) * 30}px)`;
         }
+
+        // Bloom the floating logo squares too
+        const squares = rv.querySelector('.reveal-squares') as HTMLElement | null;
+        if (squares) {
+          const sqScale = 0.4 + bloomEase * 0.6;
+          squares.style.transform = `scale(${sqScale})`;
+          squares.style.opacity = `${bloomEase * 0.85}`;
+        }
+      }
+
+      // ── Parallax transition: "Why beginners" content shifts at different speeds ──
+      const sdTwo = document.querySelector('.sd-two .two-columns') as HTMLElement | null;
+      if (sdTwo) {
+        const sdRect = sdTwo.getBoundingClientRect();
+        const scrollPast = Math.max(-sdRect.top, 0);
+        const h2El = sdTwo.querySelector('h2') as HTMLElement | null;
+        const cardsEl = sdTwo.querySelector('.cards') as HTMLElement | null;
+        const previewEl = sdTwo.querySelector('.preview') as HTMLElement | null;
+        if (h2El) h2El.style.transform = `translateY(${scrollPast * 0.15}px)`;
+        if (cardsEl) cardsEl.style.transform = `translateY(${scrollPast * 0.08}px)`;
+        if (previewEl) previewEl.style.transform = `translateY(${scrollPast * 0.25}px)`;
+      }
+
+      // ── Parallax footer: layers move at different speeds ──
+      const pfSection = document.querySelector('.parallax-footer') as HTMLElement | null;
+      if (pfSection) {
+        const rect = pfSection.getBoundingClientRect();
+        const offset = -rect.top;
+        const layers = pfSection.querySelectorAll('.pf-layer');
+        const speeds = [0, 0.15, 0.3, 0.5]; // back to front
+        layers.forEach((layer, i) => {
+          (layer as HTMLElement).style.transform = `translateY(${offset * (speeds[i] || 0)}px)`;
+        });
       }
     };
 
@@ -283,61 +475,85 @@ export default function Home() {
       onScroll();
     };
 
+    const onMouseMove = (e: MouseEvent) => {
+      mouseRef.current = { x: e.clientX, y: e.clientY };
+      onScroll(); // re-run spotlight check on mouse move
+    };
+
     computeStart();
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("mousemove", onMouseMove);
     };
   }, []);
 
   return (
     <>
-      {/* Minimal top bar — brand slot + primary CTA, floating over the light
-          intro. The visible logo is the fixed .eye-logo below; this anchor just
-          reserves its resting position + keeps the top-left link clickable. */}
-      <header className="toru-nav">
-        <a href={APP_URL} className="toru-brand" aria-label="TORU home">
-          <span className="eye-anchor" ref={anchorRef} />
-        </a>
-        <a href={APP_URL} className="button is-green toru-nav-cta">
-          <span className="button-text">Try Demo</span>
-        </a>
-      </header>
-
-      {/* Eye logo — rests in the nav slot, flies to the centre on scroll and
-          rides along while its pupils roll (the eye-scroll effect). */}
+      {/* Eye logo — rests in the masthead logo slot, flies to the centre on
+          scroll and rides along while its pupils roll (the eye-scroll effect). */}
       <a href={APP_URL} className="eye-logo" ref={logoRef} aria-label="TORU home">
         <EyeLogo pupilLeft={pLeftRef} pupilRight={pRightRef} />
       </a>
 
-      {/* ── Intro — pinned statement on a light panel ─────────────────────── */}
-      <section className="intro-wrapper">
-        <div className="intro">
-          {/* Mountain background — fills the hero (cover) and recedes/fades on scroll */}
-          <div className="hero-bg" ref={heroBgRef} aria-hidden="true" />
-          {/* Split headline, stacked over several lines — green serif top-left,
-              black condensed bottom-right */}
-          <div className="hero-edit" ref={heroTextRef}>
-            <h1 className="hero-line-1">
-              Why<br />climb the<span className="hero-ink">mountain</span>
-            </h1>
-            <span className="hero-line-2">
-              when your<br />agent can?
-            </span>
+      {/* ── Head — editorial masthead (cloned layout) ─────────────────────── */}
+      <header className="mag" ref={heroRef}>
+        <div className="mag-masthead">
+          <a href={APP_URL} className="mag-logo" aria-label="TORU home">
+            <span className="eye-anchor" ref={anchorRef} />
+          </a>
+          <div className="mag-top-right">
+            <nav className="mag-menu">
+              <span className="mag-menu-title">Menu</span>
+              <a href="#about">About</a>
+              <a href="#how-it-works">How it works</a>
+              <a href="#features">Features</a>
+              <a href={APP_URL}>Try Demo</a>
+            </nav>
           </div>
         </div>
-      </section>
+
+        <div className="mag-grid">
+          {/* Lead story */}
+          <section className="mag-feature">
+            <h1 className="mag-headline">Why climb the mountain when your agent can?</h1>
+            <div className="mag-ph mag-feature-img">
+              <img src="/pepe-pic.jpeg" alt="Hero" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+          </section>
+
+          {/* Middle column — intentionally left empty for now */}
+          <section className="mag-news" aria-hidden="true" />
+
+          {/* Right column */}
+          <section className="mag-hot">
+            <div className="mag-ph mag-hot-img">
+              <img src="/bullish-bearishcropped.jpeg" alt="Bullish Bearish" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
+            </div>
+            <div className="mag-ph mag-hot-img">
+              <img src="/dolphin-bnb.jpeg" alt="Dolphin BNB" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+          </section>
+        </div>
+      </header>
 
       {/* ── Brand reveal — "Introducing TORU" masthead-style scroll reveal ── */}
-      <section className="reveal" ref={revealRef}>
+      <section className="reveal" id="about" ref={revealRef}>
         <div className="reveal-inner">
           <div className="reveal-squares" aria-hidden="true">
-            <span className="reveal-square s1" />
-            <span className="reveal-square s2" />
-            <span className="reveal-square s3" />
+            <span className="reveal-square s1">
+              <img src="/bnb-logo.png" alt="BNB" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+            </span>
+            <span className="reveal-square s2">
+              <img src="/pancakeSwap-logo.png" alt="PancakeSwap" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+            </span>
+            <span className="reveal-square s3">
+              <img src="/trust-logo.png" alt="Trust Wallet" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+            </span>
           </div>
           <div className="reveal-stack">
             <p className="reveal-kicker" ref={revealKickRef}>Introducing</p>
@@ -352,15 +568,21 @@ export default function Home() {
         <section className="sd-section sd-tiles" style={{ "--name": "--tiles-s" } as React.CSSProperties}>
           <div className="tile-section">
             <div className="tile-container">
-              {Array.from({ length: 20 }).map((_, i) => (
-                <span className="tile" key={i} />
-              ))}
+              {Array.from({ length: 20 }).map((_, i) => {
+                const imgs = ["/monkey-dealer.jpeg", "/genesis-block.jpeg", "/silhouette.jpeg"];
+                const src = imgs[i % imgs.length];
+                return (
+                  <span className="tile tile-img" key={i}>
+                    <img src={src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  </span>
+                );
+              })}
             </div>
           </div>
         </section>
 
         {/* Two columns — cards + a preview image that slides in from the right */}
-        <section className="sd-section sd-two" style={{ "--name": "--two-columns-s" } as React.CSSProperties}>
+        <section className="sd-section sd-two" id="how-it-works" style={{ "--name": "--two-columns-s" } as React.CSSProperties}>
           <div className="two-columns">
             <h2>Why beginners choose TORU</h2>
             <div className="content">
@@ -380,84 +602,13 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Subscribe — the form scales up into view */}
-        <section className="sd-section sd-subscribe" style={{ "--name": "--subscribe-s" } as React.CSSProperties}>
-          <div className="subscribe">
-            <h2>Ready to skip the climb?</h2>
-            <p>Get early access to TORU and let an agent trade like the best — while you watch the summit from the couch.</p>
-            <form onSubmit={(e) => e.preventDefault()}>
-              <input type="email" placeholder="Enter your email" aria-label="Email" />
-              <button className="sd-btn" type="submit"><span>Get early access</span></button>
-            </form>
-          </div>
-        </section>
       </div>
 
-      {/* ── Tabs — dark sticky scroll story ──────────────────────────────── */}
-      <section className="section_tabs">
-        <div className="padding-section-large">
-          <div className="tabs_height" ref={trackRef}>
-            <div className="tabs_sticky-wrapper">
-              <div className="tabs_container">
-                <div className="tabs_component">
-                  {/* Left: rotating copy + CTA */}
-                  <div className="tabs_left">
-                    <div className="tabs_left-top">
-                      {TABS.map((tab, i) => (
-                        <div className={`tabs_let-content${i === active ? " is-active" : ""}`} key={i}>
-                          <h2 className="heading-style-h4 text-color-gray100">{tab.heading}</h2>
-                          <div className="tabs_line" />
-                          <p className="text-size-small text-color-gray400">{tab.body}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="tabs_left-bottom">
-                      <a href={APP_URL} className="button is-green is-secondary">
-                        <div className="button-text">Try Demo</div>
-                        <div className="button-circle-wrapper">
-                          <div className="button-icon _1"><ArrowIcon /></div>
-                          <div className="button-icon _2"><ArrowIcon /></div>
-                        </div>
-                        <div className="button-circlee" />
-                      </a>
-                    </div>
-                  </div>
+      {/* ── Featured Section ─────────────────────────────────────────── */}
+      <FeaturedSection />
 
-                  {/* Right: rotating media panels */}
-                  <div className="tabs_right">
-                    {TABS.map((tab, i) => {
-                      const Panel = tab.Panel;
-                      return (
-                        <div className={`tabs_video${i === active ? " is-active" : ""}`} key={i}>
-                          <Panel />
-                        </div>
-                      );
-                    })}
-                    {/* Step indicator */}
-                    <div className="tabs_progress">
-                      {TABS.map((_, i) => (
-                        <span className={`tabs_dot${i === active ? " is-active" : ""}`} key={i} />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Closing strip */}
-        <footer className="toru-foot">
-          <a href={APP_URL} className="toru-brand">
-            <span className="toru-brand-mark"><ToruMark size={22} /></span>
-            <span className="toru-brand-text">TORU</span>
-          </a>
-          <span className="toru-foot-note">Autonomous on-chain copy-trading · Testnet demo</span>
-          <a href={APP_URL} className="button is-green toru-nav-cta">
-            <span className="button-text">Try Demo</span>
-          </a>
-        </footer>
-      </section>
+      {/* ── Cinematic Footer ──────────────────────────────────────────── */}
+      <CinematicFooter />
     </>
   );
 }
