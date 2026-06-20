@@ -11,6 +11,14 @@ const steps = [
   { icon: Zap,        label: 'Finish',     desc: '90 seconds total — then straight to your dashboard' },
 ]
 
+// Landing-page palette (the onboarding layout provides the cream background).
+const PAPER_SOFT = '#e6e2d6'
+const INK        = '#0d0d0d'
+const INK_MUTED  = 'rgba(13, 13, 13, 0.58)'
+const INK_FAINT  = 'rgba(13, 13, 13, 0.40)'
+const HAIRLINE   = 'rgba(13, 13, 13, 0.10)'
+const GREEN      = '#15a374'
+
 export default function OnboardingWelcomePage() {
   const router = useRouter()
   const { user } = usePrivy()
@@ -18,46 +26,52 @@ export default function OnboardingWelcomePage() {
   const firstName = user?.google?.name?.split(' ')[0] ?? user?.email?.address?.split('@')[0] ?? null
 
   return (
-    <div className="space-y-10">
-      <div>
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-accent/10 border border-orange-accent/20 mb-6">
-          <div className="w-1.5 h-1.5 rounded-full bg-orange-accent animate-pulse" />
-          <span className="text-xs text-orange-accent font-medium">Let&apos;s get you set up</span>
-        </div>
-        <h1 className="text-4xl font-bold text-foreground tracking-tight mb-3">
-          {firstName ? `Welcome, ${firstName}.` : 'Welcome to Toro.'}
-        </h1>
-        <p className="text-lg text-muted-foreground leading-relaxed">
-          Answer 5 quick questions so Toro can build a profile that matches your goals and risk tolerance.
-        </p>
-      </div>
+    <div>
+      <h1
+        className="mb-4 font-black uppercase leading-[0.92] tracking-tight"
+        style={{ color: INK, fontSize: 'clamp(2.5rem, 5vw, 3.5rem)' }}
+      >
+        {firstName ? `Welcome, ${firstName}.` : 'Welcome to Toru.'}
+      </h1>
+      <p className="mb-8 text-base leading-relaxed" style={{ color: INK_MUTED }}>
+        Answer 5 quick questions so Toru can build a profile that matches your goals and risk tolerance.
+      </p>
 
-      <div className="space-y-3">
+      {/* Steps */}
+      <div className="mb-9">
         {steps.map(({ icon: Icon, label, desc }, i) => (
-          <div key={label} className="flex items-start gap-4 p-4 bg-card border border-border rounded-xl">
-            <div className="w-8 h-8 rounded-lg bg-orange-accent/10 flex items-center justify-center shrink-0 mt-0.5">
-              <Icon size={15} className="text-orange-accent" />
+          <div
+            key={label}
+            className="flex items-start gap-3 border-t py-2.5"
+            style={{ borderColor: HAIRLINE }}
+          >
+            <div
+              className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-md"
+              style={{ backgroundColor: PAPER_SOFT, color: GREEN }}
+            >
+              <Icon size={14} />
             </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-0.5">
-                <span className="text-xs text-muted-foreground/60 font-mono">0{i + 1}</span>
-                <span className="text-sm font-semibold text-foreground">{label}</span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[11px]" style={{ color: INK_FAINT }}>0{i + 1}</span>
+                <span className="text-sm font-semibold" style={{ color: INK }}>{label}</span>
               </div>
-              <p className="text-xs text-muted-foreground">{desc}</p>
+              <p className="text-xs" style={{ color: INK_MUTED }}>{desc}</p>
             </div>
           </div>
         ))}
       </div>
 
+      {/* CTA */}
       <button
         onClick={() => router.push('/onboarding/step-1')}
-        className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-orange-accent text-white rounded-xl font-semibold text-sm hover:bg-orange-accent/90 transition-all shadow-sm group"
+        className="group flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3.5 text-sm font-semibold shadow-sm transition-opacity hover:opacity-90"
+        style={{ backgroundColor: GREEN, color: PAPER_SOFT }}
       >
         Get Started
-        <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+        <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
       </button>
-
-      <p className="text-center text-xs text-muted-foreground">Takes about 90 seconds</p>
+      <p className="mt-3 text-center text-xs" style={{ color: INK_MUTED }}>Takes about 90 seconds</p>
     </div>
   )
 }

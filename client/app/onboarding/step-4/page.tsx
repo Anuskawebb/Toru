@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation'
 import { useOnboarding, type RiskTolerance, type TradingPreference } from '@/context/onboarding-context'
-import ProgressBar from '@/components/onboarding/progress-bar'
 import StepNavigation from '@/components/onboarding/step-navigation'
 import { Check } from 'lucide-react'
 
@@ -30,13 +29,15 @@ function RadioRow<T extends string>({
             key={o.id}
             onClick={() => onSelect(o.id)}
             className={`text-left p-3 bg-card border rounded-xl transition-all ${
-              isSelected ? 'border-orange-accent ring-1 ring-orange-accent/30' : 'border-border hover:border-muted-foreground/30'
+              isSelected ? 'border-green-positive ring-1 ring-green-positive/40' : 'border-border hover:border-muted-foreground/30'
             }`}
           >
             <div className="flex items-start justify-between gap-1 mb-1.5">
-              {o.dotClass && <div className={`w-2 h-2 rounded-full mt-0.5 ${o.dotClass}`} />}
+              {o.dotClass
+                ? <div className={`w-2.5 h-2.5 rounded-full mt-0.5 transition-all duration-300 ${o.dotClass} ${isSelected ? 'grayscale-0 opacity-100' : 'grayscale opacity-60'}`} />
+                : <div className="w-2.5 h-2.5 mt-0.5" />}
               <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
-                isSelected ? 'border-orange-accent bg-orange-accent' : 'border-border'
+                isSelected ? 'border-green-positive bg-green-positive' : 'border-border'
               }`}>
                 {isSelected && <Check size={8} className="text-white" strokeWidth={3} />}
               </div>
@@ -64,8 +65,6 @@ export default function Step4Page() {
 
   return (
     <div>
-      <ProgressBar currentStep={4} />
-
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-foreground mb-2">Risk &amp; trading style</h2>
         <p className="text-sm text-muted-foreground">

@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { useOnboarding } from '@/context/onboarding-context'
 import { useAuth } from '@/context/auth-context'
 import { usePrivy } from '@privy-io/react-auth'
-import ProgressBar from '@/components/onboarding/progress-bar'
 import StepNavigation from '@/components/onboarding/step-navigation'
 import { AtSign, Camera, Check, Loader2, X, User } from 'lucide-react'
 
@@ -100,12 +99,10 @@ export default function Step1Page() {
 
   return (
     <div>
-      <ProgressBar currentStep={1} />
-
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-foreground mb-2">Create your profile</h2>
         <p className="text-sm text-muted-foreground">
-          Choose a username, display name, and avatar.
+          This is how you&apos;ll show up across Toru — choose a username, display name, and avatar.
         </p>
       </div>
 
@@ -123,8 +120,8 @@ export default function Step1Page() {
             {avatarUrl ? (
               <img src={avatarUrl} alt="Avatar" className="w-14 h-14 rounded-full object-cover" />
             ) : (
-              <div className="w-14 h-14 rounded-full bg-orange-accent/10 flex items-center justify-center">
-                <User size={22} className="text-orange-accent" />
+              <div className="w-14 h-14 rounded-full bg-[#15a374]/10 flex items-center justify-center">
+                <User size={22} className="text-[#15a374]" />
               </div>
             )}
             <div className="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -150,8 +147,8 @@ export default function Step1Page() {
             <div className="text-xs text-muted-foreground">
               {state.username ? `@${state.username}` : '@username'}
             </div>
-            <div className="text-[10px] text-muted-foreground/50 mt-1">
-              Click avatar to upload
+            <div className="text-[10px] text-muted-foreground/60 mt-1">
+              Select an image — this&apos;ll be your identity on the platform
             </div>
           </div>
         </div>
@@ -165,9 +162,9 @@ export default function Step1Page() {
             type="text"
             value={state.displayName}
             onChange={(e) => updateDisplayName(e.target.value)}
-            placeholder="e.g. Manobendra Mandal"
+            placeholder="e.g. Alex Carter"
             maxLength={100}
-            className="w-full px-4 py-3 bg-card border border-border rounded-xl text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-orange-accent focus:ring-1 focus:ring-orange-accent/30 transition-all text-sm"
+            className="w-full px-4 py-3 bg-card border border-border rounded-xl text-foreground placeholder:text-[rgba(13,13,13,0.42)] focus:outline-none focus:border-[#15a374] focus:ring-1 focus:ring-[#15a374]/30 transition-all text-sm"
           />
         </div>
 
@@ -176,6 +173,7 @@ export default function Step1Page() {
           <label className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
             Username
           </label>
+          <p className="text-xs text-muted-foreground/70">How do you want to be identified in Toru?</p>
           <div className="relative">
             <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground">
               <AtSign size={14} />
@@ -185,14 +183,14 @@ export default function Step1Page() {
               value={state.username}
               onChange={(e) => handleUsernameChange(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && canContinue && handleContinue()}
-              placeholder="manov"
+              placeholder="alexc"
               maxLength={30}
-              className={`w-full pl-9 pr-10 py-3 bg-card border rounded-xl text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 transition-all text-sm ${
+              className={`w-full pl-9 pr-10 py-3 bg-card border rounded-xl text-foreground placeholder:text-[rgba(13,13,13,0.42)] focus:outline-none focus:ring-1 transition-all text-sm ${
                 available === true
                   ? 'border-green-positive focus:border-green-positive focus:ring-green-positive/20'
                   : available === false
                     ? 'border-red-negative focus:border-red-negative focus:ring-red-negative/20'
-                    : 'border-border focus:border-orange-accent focus:ring-orange-accent/30'
+                    : 'border-border focus:border-[#15a374] focus:ring-[#15a374]/30'
               }`}
               autoFocus
             />
