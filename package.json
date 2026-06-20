@@ -5,10 +5,7 @@
   "scripts": {
     "dev": "pnpm --filter landing dev",
     "client": "pnpm --filter toro dev",
-    "contracts:compile": "pnpm --filter toro-contracts compile",
-    "contracts:test": "pnpm --filter toro-contracts test",
-    "contracts:deploy": "pnpm --filter toro-contracts deploy",
-    "indexer": "pnpm --filter @toro/indexer start",
+"indexer": "pnpm --filter @toro/indexer start",
     "analytics-worker": "pnpm --filter @toro/analytics-worker start",
     "validate:twak": "pnpm --filter @toro/agent-core validate:twak"
   },
