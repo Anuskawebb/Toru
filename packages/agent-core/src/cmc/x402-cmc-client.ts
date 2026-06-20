@@ -1,38 +1,49 @@
 /**
  * CMC Agent Hub client with x402 micropayment support.
  *
- * The x402 protocol (HTTP 402 Payment Required) lets the agent wallet pay
- * for CMC market data directly on-chain — no human API subscription needed.
+ * x402 protocol: agent wallet pays $0.01 USDC on Base per request — no API key needed.
+ * Payment is verifiable on-chain proof that the agent autonomously buys intelligence.
+ *
+ * Payment details (from CMC Agent Hub docs):
+ *   Network:  Base (chain ID 8453)
+ *   Token:    USDC on Base — 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
+ *   Amount:   $0.01 per request
+ *   Endpoint: https://pro-api.coinmarketcap.com/x402/...
+ *
+ * Available x402 paths:
+ *   GET /x402/v3/cryptocurrency/quotes/latest    — live token prices
+ *   GET /x402/v3/cryptocurrency/listings/latest  — top tokens (sortable by gainers)
+ *   GET /x402/v4/dex/pairs/quotes/latest         — DEX pair prices (BSC pairs!)
+ *   GET /x402/v1/dex/search                      — search DEX pairs
  *
  * Flow per request:
- *   1. Send request to CMC x402 endpoint (no API key)
- *   2. If 402 → parse X-Payment-Required details (amount, asset, payTo, network)
- *   3. TWAK sends BNB micropayment from agent wallet to CMC's payment address
- *   4. Retry request with X-Payment proof header (contains tx hash)
+ *   1. Send request to CMC x402 endpoint (no API key header)
+ *   2. CMC returns 402 with payment details (amount, payTo address, network)
+ *   3. TWAK sends USDC from agent wallet on Base to CMC's payment address
+ *   4. Retry with X-Payment proof header containing the tx hash
  *   5. CMC returns data
  *
- * Falls back to standard API key if:
- *   - CMC_X402=false env var
- *   - No TWAK sidecar available
- *   - x402 payment or retry fails
+ * Falls back to standard CMC_API_KEY for Fear & Greed (not in x402 catalogue).
+ * All x402 calls fall back to API key if TWAK sidecar is unreachable.
  */
 
 import { TwakClient } from '../execution/twak/twak-client.js';
 
-// CMC Agent Hub x402 base URL — override via CMC_X402_URL env var
-const CMC_X402_BASE = process.env.CMC_X402_URL ?? 'https://agents.coinmarketcap.com';
-const CMC_API_BASE  = 'https://pro-api.coinmarketcap.com';
+const CMC_BASE        = 'https://pro-api.coinmarketcap.com';
+const BASE_CHAIN      = 'base';
+const USDC_ON_BASE    = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
+// $0.01 USDC = 10000 in 6-decimal units
+const USDC_PER_REQUEST = '10000';
 
 // ── x402 protocol types ──────────────────────────────────────────────────────
 
 interface X402Accept {
   scheme:             string;   // "exact"
-  network:            string;   // "bsc-mainnet" | "base-mainnet" | ...
-  maxAmountRequired:  string;   // smallest unit (wei for BNB, μUSDC for USDC)
-  payTo:              string;   // CMC payment address
-  asset:              string;   // "native" | ERC-20 contract address
-  resource:           string;   // the original URL being purchased
-  description?:       string;
+  network:            string;   // "base-mainnet"
+  maxAmountRequired:  string;   // USDC in 6-decimal units (e.g. "10000" = $0.01)
+  payTo:              string;   // CMC's USDC payment address on Base
+  asset:              string;   // USDC contract address
+  resource:           string;   // the URL being purchased
   maxTimeoutSeconds?: number;
 }
 
@@ -47,111 +58,84 @@ interface X402PaymentProof {
   scheme:      string;
   network:     string;
   payload: {
-    from:   string;   // agent wallet address
-    to:     string;   // CMC payment address
-    txHash: string;   // on-chain payment tx
-    amount: string;   // amount in smallest unit
+    from:   string;
+    to:     string;
+    txHash: string;
+    amount: string;
     asset:  string;
   };
 }
 
-// ── helpers ──────────────────────────────────────────────────────────────────
-
-function networkToTwakChain(network: string): string {
-  if (network.startsWith('bsc'))  return 'smartchain';
-  if (network.startsWith('base')) return 'base';
-  if (network.startsWith('eth'))  return 'ethereum';
-  return 'smartchain'; // default: BSC (our trading chain)
-}
-
-// Convert smallest-unit amount to human-readable for TWAK.
-// CMC x402 payments are typically tiny: ~$0.001 expressed in wei or μUSDC.
-function toHumanAmount(raw: string, asset: string): string {
-  const n = BigInt(raw);
-  if (asset === 'native') {
-    // BNB: 18 decimals
-    const bnb = Number(n) / 1e18;
-    return bnb.toFixed(8);
-  }
-  // USDC: 6 decimals
-  const usdc = Number(n) / 1e6;
-  return usdc.toFixed(6);
-}
-
 // ── core x402 fetch ──────────────────────────────────────────────────────────
 
-export async function fetchWithX402(
-  path:          string,
-  agentWallet:   string,
-  twakClient:    TwakClient,
+async function fetchWithX402(
+  path:        string,
+  params:      Record<string, string | number>,
+  agentWallet: string,
+  twakClient:  TwakClient,
 ): Promise<unknown | null> {
-  const url = `${CMC_X402_BASE}${path}`;
+  const qs  = new URLSearchParams(Object.entries(params).map(([k, v]) => [k, String(v)]));
+  const url = `${CMC_BASE}${path}?${qs}`;
 
-  // Step 1 — initial request (no credentials)
+  // Step 1 — initial request with no API key (x402 flow)
   let res: Response;
   try {
-    res = await fetch(url, {
-      headers: { 'Accept': 'application/json' },
-    });
+    res = await fetch(url, { headers: { 'Accept': 'application/json' } });
   } catch (e) {
-    console.warn(`[x402] Fetch failed for ${path}:`, e instanceof Error ? e.message : e);
+    console.warn(`[x402] Initial fetch failed:`, e instanceof Error ? e.message : e);
     return null;
   }
 
+  // Already got data (endpoint doesn't require payment, or cached)
+  if (res.ok) return res.json();
+
   if (res.status !== 402) {
-    // Either the endpoint returned data (no payment required) or an error
-    if (res.ok) return res.json();
     console.warn(`[x402] Unexpected status ${res.status} for ${path}`);
     return null;
   }
 
-  // Step 2 — parse payment requirements
-  let paymentRequired: X402PaymentRequired;
+  // Step 2 — parse payment requirements from 402 response
+  let payReq: X402PaymentRequired;
   try {
-    paymentRequired = await res.json() as X402PaymentRequired;
+    payReq = await res.json() as X402PaymentRequired;
   } catch {
-    console.warn('[x402] Could not parse 402 response body');
+    console.warn('[x402] Could not parse 402 body');
     return null;
   }
 
-  const accept = paymentRequired.accepts?.[0];
+  const accept = payReq.accepts?.find(a => a.network.includes('base')) ?? payReq.accepts?.[0];
   if (!accept) {
-    console.warn('[x402] No payment scheme in 402 response');
+    console.warn('[x402] No Base payment scheme offered');
     return null;
   }
 
-  const chain     = networkToTwakChain(accept.network);
-  const token     = accept.asset === 'native' ? 'BNB' : accept.asset;
-  const amount    = toHumanAmount(accept.maxAmountRequired, accept.asset);
+  // Amount in human-readable USDC (6 decimals)
+  const usdcAmount = (Number(accept.maxAmountRequired) / 1e6).toFixed(6);
+  console.log(`[x402] Paying $${usdcAmount} USDC on Base from ${agentWallet.slice(0, 10)}... → ${accept.payTo.slice(0, 10)}...`);
 
-  console.log(
-    `[x402] Payment required: ${amount} ${token} on ${chain}` +
-    ` → ${accept.payTo.slice(0, 10)}...`
-  );
-
-  // Step 3 — pay from agent wallet via TWAK
+  // Step 3 — TWAK sends USDC on Base from agent wallet
   let txHash: string;
   try {
     const payment = await twakClient.transfer({
-      token,
+      chain:  BASE_CHAIN,
+      token:  accept.asset ?? USDC_ON_BASE,
       to:     accept.payTo,
-      amount,
-      chain,
+      amount: usdcAmount,
     });
 
     if (!payment.success || !payment.hash) {
-      console.warn('[x402] Payment tx failed:', payment.message ?? 'no hash returned');
+      console.warn('[x402] TWAK payment failed:', payment.message ?? 'no hash');
       return null;
     }
 
     txHash = payment.hash;
-    console.log(`[x402] Payment confirmed: ${txHash}`);
+    console.log(`[x402] Payment tx: ${txHash}`);
   } catch (e) {
-    console.warn('[x402] Payment error:', e instanceof Error ? e.message : e);
+    console.warn('[x402] TWAK transfer error:', e instanceof Error ? e.message : e);
     return null;
   }
 
-  // Step 4 — build payment proof and retry
+  // Step 4 — build proof and retry
   const proof: X402PaymentProof = {
     x402Version: 1,
     scheme:      accept.scheme,
@@ -161,17 +145,15 @@ export async function fetchWithX402(
       to:     accept.payTo,
       txHash,
       amount: accept.maxAmountRequired,
-      asset:  accept.asset,
+      asset:  accept.asset ?? USDC_ON_BASE,
     },
   };
-
-  const proofHeader = Buffer.from(JSON.stringify(proof)).toString('base64');
 
   try {
     const retryRes = await fetch(url, {
       headers: {
-        'Accept':     'application/json',
-        'X-Payment':  proofHeader,
+        'Accept':    'application/json',
+        'X-Payment': Buffer.from(JSON.stringify(proof)).toString('base64'),
       },
     });
 
@@ -180,7 +162,7 @@ export async function fetchWithX402(
       return null;
     }
 
-    console.log(`[x402] Data received after payment (tx: ${txHash})`);
+    console.log(`[x402] ✓ Data received — on-chain proof: ${txHash}`);
     return retryRes.json();
   } catch (e) {
     console.warn('[x402] Retry error:', e instanceof Error ? e.message : e);
@@ -188,12 +170,16 @@ export async function fetchWithX402(
   }
 }
 
-// ── CMC-specific x402 endpoints ──────────────────────────────────────────────
+// Fallback: standard API key
+function apiKeyHeaders() {
+  return { 'X-CMC_PRO_API_KEY': process.env.CMC_API_KEY ?? '', 'Accept': 'application/json' };
+}
+
+// ── Public API ───────────────────────────────────────────────────────────────
 
 export interface CmcFearAndGreed {
   value:          number;
   classification: string;
-  txHash?:        string;  // set when paid via x402 — on-chain proof
 }
 
 export interface CmcGainer {
@@ -203,40 +189,41 @@ export interface CmcGainer {
   price:         number;
 }
 
+export interface CmcTokenQuote {
+  symbol:          string;
+  name:            string;
+  price:           number;
+  percentChange24h: number;
+  marketCap:       number;
+  volume24h:       number;
+}
+
 export interface CmcGlobalMetrics {
-  totalMarketCapUsd:   number;
-  btcDominancePct:     number;
-  defiMarketCapUsd:    number;
-  totalVolume24hUsd:   number;
+  totalMarketCapUsd: number;
+  btcDominancePct:   number;
+  defiMarketCapUsd:  number;
+  totalVolume24hUsd: number;
+}
+
+export interface CmcDexPair {
+  baseSymbol:  string;
+  quoteSymbol: string;
+  price:       number;
+  volume24h:   number;
+  exchange:    string;
 }
 
 /**
- * Fetches Fear & Greed index via x402 (agent wallet pays), falls back to API key.
- * Returns the data plus the tx hash if x402 was used — for on-chain proof.
+ * Fear & Greed — not in x402 catalogue, uses API key only.
  */
 export async function getFearAndGreedX402(
-  agentWallet: string,
-  twakClient:  TwakClient,
+  _agentWallet: string,
+  _twakClient:  TwakClient,
 ): Promise<CmcFearAndGreed | null> {
-  if (process.env.CMC_X402 !== 'false') {
-    try {
-      const data = await fetchWithX402('/v3/fear-and-greed/latest', agentWallet, twakClient) as any;
-      if (data?.data?.value !== undefined) {
-        return {
-          value:          data.data.value,
-          classification: data.data.value_classification,
-        };
-      }
-    } catch { /* fall through to API key */ }
-  }
-
-  // Fallback: standard API key
   const key = process.env.CMC_API_KEY;
   if (!key) return null;
   try {
-    const res = await fetch(`${CMC_API_BASE}/v3/fear-and-greed/latest`, {
-      headers: { 'X-CMC_PRO_API_KEY': key, 'Accept': 'application/json' },
-    });
+    const res = await fetch(`${CMC_BASE}/v3/fear-and-greed/latest`, { headers: apiKeyHeaders() });
     if (!res.ok) return null;
     const json = await res.json() as any;
     return { value: json.data.value, classification: json.data.value_classification };
@@ -244,44 +231,45 @@ export async function getFearAndGreedX402(
 }
 
 /**
- * Fetches top gainers/losers via x402, falls back to API key.
- * Used to find momentum tokens that also have smart-money accumulation.
+ * Top gainers — via x402 (agent pays $0.01 USDC on Base), falls back to API key.
+ * Uses /x402/v3/cryptocurrency/listings/latest sorted by 24h % change.
  */
 export async function getTopGainersX402(
   agentWallet: string,
   twakClient:  TwakClient,
   limit = 10,
 ): Promise<CmcGainer[]> {
-  if (process.env.CMC_X402 !== 'false') {
-    try {
-      const data = await fetchWithX402(
-        `/v1/cryptocurrency/trending/gainers-losers?limit=${limit}&time_period=24h`,
-        agentWallet,
-        twakClient,
-      ) as any;
-      if (Array.isArray(data?.data)) {
-        return data.data.map((t: any) => ({
-          symbol:        t.symbol as string,
-          name:          t.name as string,
-          percentChange: t.quote?.USD?.percent_change_24h ?? 0,
-          price:         t.quote?.USD?.price ?? 0,
-        }));
-      }
-    } catch { /* fall through */ }
-  }
+  // Try x402 first
+  try {
+    const data = await fetchWithX402(
+      '/x402/v3/cryptocurrency/listings/latest',
+      { limit, sort: 'percent_change_24h', sort_dir: 'desc', convert: 'USD' },
+      agentWallet,
+      twakClient,
+    ) as any;
+    if (Array.isArray(data?.data)) {
+      return data.data.map((t: any) => ({
+        symbol:        t.symbol,
+        name:          t.name,
+        percentChange: t.quote?.USD?.percent_change_24h ?? 0,
+        price:         t.quote?.USD?.price ?? 0,
+      }));
+    }
+  } catch { /* fall through */ }
 
+  // Fallback: API key
   const key = process.env.CMC_API_KEY;
   if (!key) return [];
   try {
     const res = await fetch(
-      `${CMC_API_BASE}/v1/cryptocurrency/trending/gainers-losers?limit=${limit}&time_period=24h`,
-      { headers: { 'X-CMC_PRO_API_KEY': key, 'Accept': 'application/json' } },
+      `${CMC_BASE}/v1/cryptocurrency/listings/latest?limit=${limit}&sort=percent_change_24h&sort_dir=desc&convert=USD`,
+      { headers: apiKeyHeaders() },
     );
     if (!res.ok) return [];
     const json = await res.json() as any;
     return (json.data ?? []).map((t: any) => ({
-      symbol:        t.symbol as string,
-      name:          t.name as string,
+      symbol:        t.symbol,
+      name:          t.name,
       percentChange: t.quote?.USD?.percent_change_24h ?? 0,
       price:         t.quote?.USD?.price ?? 0,
     }));
@@ -289,34 +277,115 @@ export async function getTopGainersX402(
 }
 
 /**
- * Fetches global market metrics via x402, falls back to API key.
- * BTC dominance + DeFi market cap inform macro position sizing.
+ * Live price quotes for specific token symbols — via x402.
+ * Used to verify signal prices before executing trades.
  */
-export async function getGlobalMetricsX402(
+export async function getTokenQuotesX402(
+  symbols:     string[],
   agentWallet: string,
   twakClient:  TwakClient,
-): Promise<CmcGlobalMetrics | null> {
-  if (process.env.CMC_X402 !== 'false') {
-    try {
-      const data = await fetchWithX402('/v1/global-metrics/quotes/latest', agentWallet, twakClient) as any;
-      if (data?.data?.total_market_cap) {
-        const d = data.data;
-        return {
-          totalMarketCapUsd: d.quote?.USD?.total_market_cap ?? 0,
-          btcDominancePct:   d.btc_dominance ?? 0,
-          defiMarketCapUsd:  d.defi_market_cap ?? d.quote?.USD?.defi_market_cap ?? 0,
-          totalVolume24hUsd: d.quote?.USD?.total_volume_24h ?? 0,
-        };
+): Promise<Map<string, CmcTokenQuote>> {
+  const result = new Map<string, CmcTokenQuote>();
+  if (symbols.length === 0) return result;
+
+  try {
+    const data = await fetchWithX402(
+      '/x402/v3/cryptocurrency/quotes/latest',
+      { symbol: symbols.join(','), convert: 'USD' },
+      agentWallet,
+      twakClient,
+    ) as any;
+
+    if (data?.data) {
+      for (const [sym, entry] of Object.entries(data.data as Record<string, any>)) {
+        const q = (Array.isArray(entry) ? entry[0] : entry)?.quote?.USD;
+        if (!q) continue;
+        result.set(sym.toUpperCase(), {
+          symbol:           sym,
+          name:             entry[0]?.name ?? sym,
+          price:            q.price ?? 0,
+          percentChange24h: q.percent_change_24h ?? 0,
+          marketCap:        q.market_cap ?? 0,
+          volume24h:        q.volume_24h ?? 0,
+        });
       }
-    } catch { /* fall through */ }
+    }
+  } catch { /* fall through */ }
+
+  // Fallback for any missing symbols
+  const missing = symbols.filter(s => !result.has(s.toUpperCase()));
+  if (missing.length > 0 && process.env.CMC_API_KEY) {
+    try {
+      const res = await fetch(
+        `${CMC_BASE}/v2/cryptocurrency/quotes/latest?symbol=${missing.join(',')}&convert=USD`,
+        { headers: apiKeyHeaders() },
+      );
+      if (res.ok) {
+        const json = await res.json() as any;
+        for (const [sym, entries] of Object.entries(json.data as Record<string, any>)) {
+          const entry = Array.isArray(entries) ? entries[0] : entries;
+          const q = entry?.quote?.USD;
+          if (!q) continue;
+          result.set(sym.toUpperCase(), {
+            symbol:           sym,
+            name:             entry.name ?? sym,
+            price:            q.price ?? 0,
+            percentChange24h: q.percent_change_24h ?? 0,
+            marketCap:        q.market_cap ?? 0,
+            volume24h:        q.volume_24h ?? 0,
+          });
+        }
+      }
+    } catch { /* ignore */ }
   }
 
+  return result;
+}
+
+/**
+ * BSC DEX pair quotes — via x402 (/x402/v4/dex/pairs/quotes/latest).
+ * Gives live BSC DEX liquidity data for tokens we're considering buying.
+ */
+export async function getDexPairsX402(
+  tokenAddresses: string[],
+  agentWallet:    string,
+  twakClient:     TwakClient,
+): Promise<CmcDexPair[]> {
+  if (tokenAddresses.length === 0) return [];
+
+  try {
+    const data = await fetchWithX402(
+      '/x402/v4/dex/pairs/quotes/latest',
+      { address: tokenAddresses.join(','), network_slug: 'bsc' },
+      agentWallet,
+      twakClient,
+    ) as any;
+
+    if (Array.isArray(data?.data?.pairs)) {
+      return data.data.pairs.map((p: any) => ({
+        baseSymbol:  p.base_asset_symbol ?? '',
+        quoteSymbol: p.quote_asset_symbol ?? 'BNB',
+        price:       p.quote?.USD?.price ?? 0,
+        volume24h:   p.quote?.USD?.volume_24h ?? 0,
+        exchange:    p.exchange?.name ?? '',
+      }));
+    }
+  } catch { /* fall through */ }
+
+  return [];
+}
+
+/**
+ * Global market metrics — via API key (no x402 path available for this endpoint).
+ */
+export async function getGlobalMetricsX402(
+  _agentWallet: string,
+  _twakClient:  TwakClient,
+): Promise<CmcGlobalMetrics | null> {
   const key = process.env.CMC_API_KEY;
   if (!key) return null;
   try {
-    const res = await fetch(`${CMC_API_BASE}/v1/global-metrics/quotes/latest`, {
-      headers: { 'X-CMC_PRO_API_KEY': key, 'Accept': 'application/json' },
-    });
+    const res = await fetch(`${CMC_BASE}/v1/global-metrics/quotes/latest`, { headers: apiKeyHeaders() });
     if (!res.ok) return null;
     const json = await res.json() as any;
     const d = json.data;

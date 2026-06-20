@@ -33,8 +33,8 @@ import {
   getFearAndGreedX402,
   getTopGainersX402,
   getGlobalMetricsX402,
-  type CmcGainer,
-  type CmcGlobalMetrics,
+  getTokenQuotesX402,
+  getDexPairsX402,
 } from '../src/cmc/x402-cmc-client.js';
 import type { ExecutionPlan } from '../src/decision/trade-recommendation-types.js';
 
@@ -220,6 +220,38 @@ async function runAgentCycle(
   }
 
   console.log(`[${agent.id}] ${profiledPlans.length} plan(s) passed profile filter`);
+
+  // 4a. Pre-trade x402 price check — verify live CMC prices for BUY tokens
+  //     Uses /x402/v3/cryptocurrency/quotes/latest (agent pays $0.01 USDC on Base per call)
+  //     Also fetches BSC DEX pair data via /x402/v4/dex/pairs/quotes/latest
+  const buySymbols = [...new Set(
+    profiledRecs.filter(r => r.action === 'BUY').map(r => r.tokenSymbol).filter(Boolean)
+  )] as string[];
+
+  if (buySymbols.length > 0) {
+    const [cmcQuotes, dexPairs] = await Promise.all([
+      getTokenQuotesX402(buySymbols, walletAddress, twakClient),
+      getDexPairsX402(
+        profiledRecs.filter(r => r.action === 'BUY').map(r => r.tokenAddress).filter(Boolean) as string[],
+        walletAddress,
+        twakClient,
+      ),
+    ]);
+
+    if (cmcQuotes.size > 0) {
+      for (const sym of buySymbols) {
+        const q = cmcQuotes.get(sym.toUpperCase());
+        if (q) {
+          console.log(`[x402/quote] ${sym}: $${q.price.toFixed(4)} | 24h: ${q.percentChange24h.toFixed(1)}% | vol: $${(q.volume24h / 1e6).toFixed(1)}M`);
+        }
+      }
+    }
+
+    if (dexPairs.length > 0) {
+      const topPair = dexPairs[0];
+      console.log(`[x402/dex] ${topPair.baseSymbol}/${topPair.quoteSymbol} on ${topPair.exchange}: $${topPair.price.toFixed(4)} | 24h vol: $${(topPair.volume24h / 1e6).toFixed(1)}M`);
+    }
+  }
 
   // 4. Create orders from profiled plans
   const executor        = createExecutor();
