@@ -51,7 +51,7 @@ export default function SettingsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[
                     {
-                      name: 'Toro Alpha',
+                      name: 'Toru Alpha',
                       status: 'Running',
                       strategy: 'Trend Following',
                       risk: 'Balanced',
@@ -59,7 +59,7 @@ export default function SettingsPage() {
                       value: '$125,450',
                     },
                     {
-                      name: 'Toro Beta',
+                      name: 'Toru Beta',
                       status: 'Paused',
                       strategy: 'Mean Reversion',
                       risk: 'Conservative',
@@ -149,7 +149,7 @@ export default function SettingsPage() {
                   <div>
                     <h3 className="font-semibold text-foreground mb-3">Agent Wallets</h3>
                     <div className="space-y-2">
-                      {['0x8a4b...2e3f (Toro Alpha)', '0x9b5c...3f4g (Toro Beta)'].map((wallet) => (
+                      {['0x8a4b...2e3f (Toru Alpha)', '0x9b5c...3f4g (Toru Beta)'].map((wallet) => (
                         <div key={wallet} className="bg-secondary border border-border rounded-lg p-3">
                           <div className="flex items-center justify-between">
                             <div className="font-mono text-sm text-foreground">{wallet}</div>

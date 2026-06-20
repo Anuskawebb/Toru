@@ -95,7 +95,7 @@ export async function GET(req: NextRequest) {
         id: r.id as string,
         type: success ? 'agent' : 'risk',
         title: success
-          ? `Toro agent ${r.action === 'BUY' ? 'opened' : 'closed'} ${r.token_symbol} position${amountStr}`
+          ? `Toru agent ${r.action === 'BUY' ? 'opened' : 'closed'} ${r.token_symbol} position${amountStr}`
           : `${r.action} ${r.token_symbol} failed`,
         description: success ? 'Transaction confirmed on chain' : 'Execution failed — order cancelled',
         timestamp: executedAt.toISOString(),

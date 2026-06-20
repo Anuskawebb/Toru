@@ -15,7 +15,7 @@ import {
   IndexerStateRepository,
   PositionRepository,
   WalletMetricsRepository,
-} from '@toro/db';
+} from '../../packages/db/src/client.js';
 
 // ── Process lifecycle ─────────────────────────────────────────────────────────
 
@@ -50,7 +50,7 @@ process.on('uncaughtException', (err) => {
 process.on('unhandledRejection', (reason) => {
   logger.error('Unhandled rejection', {
     reason: reason instanceof Error ? reason.message : String(reason),
-    stack:  reason instanceof Error ? reason.stack  : undefined,
+    stack: reason instanceof Error ? reason.stack : undefined,
   });
   process.exit(1);
 });
@@ -71,7 +71,7 @@ async function printTrade(trade: NormalizedTrade): Promise<void> {
     resolveTokenMeta(trade.tokenOut),
   ]);
 
-  const amtIn  = formatAmount(trade.amountIn,  metaIn.decimals);
+  const amtIn = formatAmount(trade.amountIn, metaIn.decimals);
   const amtOut = formatAmount(trade.amountOut, metaOut.decimals);
   const watched = isWatched(trade);
 
@@ -111,10 +111,10 @@ async function printTrade(trade: NormalizedTrade): Promise<void> {
 // ── Batch-level receipt stats accumulator ─────────────────────────────────────
 
 const batchReceiptStats = {
-  totalTx:     0,
-  succeeded:   0,
-  failed:      0,
-  failed403:   0,
+  totalTx: 0,
+  succeeded: 0,
+  failed: 0,
+  failed403: 0,
   failedOther: 0,
   blocksWithFailures: 0,
 };
@@ -137,7 +137,7 @@ async function handleBlock(block: IndexedBlock, trades: NormalizedTrade[]): Prom
       });
     }
     logger.debug('Block processed — no swaps', {
-      block:   block.number.toString(),
+      block: block.number.toString(),
       txCount: block.transactionCount,
     });
     return;
@@ -172,43 +172,43 @@ async function handleBlock(block: IndexedBlock, trades: NormalizedTrade[]): Prom
   const tokensToUpsert = new Map<string, { address: string; symbol: string; decimals: number }>();
 
   for (const trade of trades) {
-    const metaIn  = metaMap.get(trade.tokenIn.toLowerCase());
+    const metaIn = metaMap.get(trade.tokenIn.toLowerCase());
     const metaOut = metaMap.get(trade.tokenOut.toLowerCase());
 
-    const tokenInSymbol  = metaIn?.symbol   ?? trade.tokenIn.slice(0, 8);
-    const tokenOutSymbol = metaOut?.symbol  ?? trade.tokenOut.slice(0, 8);
-    const decimalsIn     = metaIn?.decimals  ?? 18;
-    const decimalsOut    = metaOut?.decimals ?? 18;
+    const tokenInSymbol = metaIn?.symbol ?? trade.tokenIn.slice(0, 8);
+    const tokenOutSymbol = metaOut?.symbol ?? trade.tokenOut.slice(0, 8);
+    const decimalsIn = metaIn?.decimals ?? 18;
+    const decimalsOut = metaOut?.decimals ?? 18;
 
     tradesToInsert.push({
-      txHash:          trade.txHash.toLowerCase(),
-      blockNumber:     trade.blockNumber,
-      logIndex:        trade.logIndex,
-      timestamp:       new Date(trade.blockTimestampMs),
-      wallet:          trade.wallet.toLowerCase(),
-      dex:             trade.dex,
-      pairAddress:     trade.pairAddress.toLowerCase(),
-      tokenInAddress:  trade.tokenIn.toLowerCase(),
+      txHash: trade.txHash.toLowerCase(),
+      blockNumber: trade.blockNumber,
+      logIndex: trade.logIndex,
+      timestamp: new Date(trade.blockTimestampMs),
+      wallet: trade.wallet.toLowerCase(),
+      dex: trade.dex,
+      pairAddress: trade.pairAddress.toLowerCase(),
+      tokenInAddress: trade.tokenIn.toLowerCase(),
       tokenOutAddress: trade.tokenOut.toLowerCase(),
       tokenInSymbol,
       tokenOutSymbol,
-      tokenInDecimals:  decimalsIn,
+      tokenInDecimals: decimalsIn,
       tokenOutDecimals: decimalsOut,
-      amountIn:        trade.amountIn.toString(),
-      amountOut:       trade.amountOut.toString(),
+      amountIn: trade.amountIn.toString(),
+      amountOut: trade.amountOut.toString(),
     });
 
     if (!tokensToUpsert.has(trade.tokenIn.toLowerCase())) {
       tokensToUpsert.set(trade.tokenIn.toLowerCase(), {
-        address:  trade.tokenIn.toLowerCase(),
-        symbol:   tokenInSymbol,
+        address: trade.tokenIn.toLowerCase(),
+        symbol: tokenInSymbol,
         decimals: decimalsIn,
       });
     }
     if (!tokensToUpsert.has(trade.tokenOut.toLowerCase())) {
       tokensToUpsert.set(trade.tokenOut.toLowerCase(), {
-        address:  trade.tokenOut.toLowerCase(),
-        symbol:   tokenOutSymbol,
+        address: trade.tokenOut.toLowerCase(),
+        symbol: tokenOutSymbol,
         decimals: decimalsOut,
       });
     }
@@ -220,22 +220,22 @@ async function handleBlock(block: IndexedBlock, trades: NormalizedTrade[]): Prom
   // TradeInput is a strict subset of the row shape already built above —
   // field-for-field pick, no re-derivation.
   const tradeInputs = tradesToInsert.map((t) => ({
-    wallet:           t.wallet,
-    tokenInAddress:   t.tokenInAddress,
-    tokenOutAddress:  t.tokenOutAddress,
-    tokenInSymbol:    t.tokenInSymbol,
-    tokenOutSymbol:   t.tokenOutSymbol,
-    tokenInDecimals:  t.tokenInDecimals,
+    wallet: t.wallet,
+    tokenInAddress: t.tokenInAddress,
+    tokenOutAddress: t.tokenOutAddress,
+    tokenInSymbol: t.tokenInSymbol,
+    tokenOutSymbol: t.tokenOutSymbol,
+    tokenInDecimals: t.tokenInDecimals,
     tokenOutDecimals: t.tokenOutDecimals,
-    amountIn:         t.amountIn,
-    amountOut:        t.amountOut,
-    timestamp:        t.timestamp,
+    amountIn: t.amountIn,
+    amountOut: t.amountOut,
+    timestamp: t.timestamp,
   }));
 
   const tokenRows = [...tokensToUpsert.values()].map((t) => ({
-    address:  t.address,
-    symbol:   t.symbol,
-    name:     t.symbol + ' Token',
+    address: t.address,
+    symbol: t.symbol,
+    name: t.symbol + ' Token',
     decimals: t.decimals,
   }));
   const tokenAddresses = tokenRows.map((t) => t.address);
@@ -296,21 +296,21 @@ async function handleBlock(block: IndexedBlock, trades: NormalizedTrade[]): Prom
 
   // ── Receipt stats accumulator ─────────────────────────────────────────────
   const rs = lastReceiptStats;
-  batchReceiptStats.totalTx     += rs.total;
-  batchReceiptStats.succeeded   += rs.succeeded;
-  batchReceiptStats.failed      += rs.failed;
-  batchReceiptStats.failed403   += rs.failed403;
+  batchReceiptStats.totalTx += rs.total;
+  batchReceiptStats.succeeded += rs.succeeded;
+  batchReceiptStats.failed += rs.failed;
+  batchReceiptStats.failed403 += rs.failed403;
   batchReceiptStats.failedOther += rs.failedOther;
   if (rs.failed > 0) batchReceiptStats.blocksWithFailures++;
 
   const totalMs = Date.now() - t0;
   logger.info('Block processed', {
-    block:             block.number.toString(),
-    txCount:           block.transactionCount,
-    swapCount:         trades.length,
-    uniqueTokens:      tokensToUpsert.size,
-    tokensCached:      tokenCacheSize(),
-    receipts:          { succeeded: rs.succeeded, failed: rs.failed, failed403: rs.failed403 },
+    block: block.number.toString(),
+    txCount: block.transactionCount,
+    swapCount: trades.length,
+    uniqueTokens: tokensToUpsert.size,
+    tokensCached: tokenCacheSize(),
+    receipts: { succeeded: rs.succeeded, failed: rs.failed, failed403: rs.failed403 },
     metadataMs,
     tradeInsertMs,
     positionUpdateMs,
@@ -318,7 +318,7 @@ async function handleBlock(block: IndexedBlock, trades: NormalizedTrade[]): Prom
     tokenUpsertMs,
     queueInsertMs,
     checkpointMs,
-    dbTotalMs:         tradeInsertMs + positionUpdateMs + metricsUpdateMs + tokenUpsertMs + queueInsertMs + checkpointMs,
+    dbTotalMs: tradeInsertMs + positionUpdateMs + metricsUpdateMs + tokenUpsertMs + queueInsertMs + checkpointMs,
     totalMs,
   });
 }
@@ -338,9 +338,9 @@ function makeProcessor(): BlockProcessor {
     handleBlock,
     registry,
     {
-      batchSize:          100,
-      delayMs:            200,
-      fetchConcurrency:   env.FETCH_CONCURRENCY,
+      batchSize: 100,
+      delayMs: 200,
+      fetchConcurrency: env.FETCH_CONCURRENCY,
       receiptConcurrency: env.RECEIPT_CONCURRENCY,
     },
   );
@@ -351,8 +351,8 @@ function makeProcessor(): BlockProcessor {
 async function runBatch(startBlock: bigint, endBlock: bigint): Promise<void> {
   const t0 = Date.now();
   logger.info('Batch mode', {
-    from:        startBlock.toString(),
-    to:          endBlock.toString(),
+    from: startBlock.toString(),
+    to: endBlock.toString(),
     totalBlocks: (endBlock - startBlock + 1n).toString(),
   });
 
@@ -361,19 +361,19 @@ async function runBatch(startBlock: bigint, endBlock: bigint): Promise<void> {
 
   const mem = process.memoryUsage();
   logger.info('Batch complete', {
-    tokensCached:  tokenCacheSize(),
-    durationMs:    Date.now() - t0,
-    heapUsedMB:    Math.round(mem.heapUsed  / 1024 / 1024),
-    heapTotalMB:   Math.round(mem.heapTotal / 1024 / 1024),
-    rssMB:         Math.round(mem.rss       / 1024 / 1024),
+    tokensCached: tokenCacheSize(),
+    durationMs: Date.now() - t0,
+    heapUsedMB: Math.round(mem.heapUsed / 1024 / 1024),
+    heapTotalMB: Math.round(mem.heapTotal / 1024 / 1024),
+    rssMB: Math.round(mem.rss / 1024 / 1024),
     receiptStats: {
-      totalTx:            batchReceiptStats.totalTx,
-      succeeded:          batchReceiptStats.succeeded,
-      failed:             batchReceiptStats.failed,
-      failed403:          batchReceiptStats.failed403,
-      failedOther:        batchReceiptStats.failedOther,
+      totalTx: batchReceiptStats.totalTx,
+      succeeded: batchReceiptStats.succeeded,
+      failed: batchReceiptStats.failed,
+      failed403: batchReceiptStats.failed403,
+      failedOther: batchReceiptStats.failedOther,
       blocksWithFailures: batchReceiptStats.blocksWithFailures,
-      successRate:        batchReceiptStats.totalTx > 0
+      successRate: batchReceiptStats.totalTx > 0
         ? ((batchReceiptStats.succeeded / batchReceiptStats.totalTx) * 100).toFixed(1) + '%'
         : 'n/a',
     },
@@ -389,7 +389,7 @@ async function runLive(): Promise<void> {
   logger.info('Live mode — polling BSC every 3s for new blocks');
 
   const processor = makeProcessor();
-  const poller    = new BlockPoller(processor, env.POLL_INTERVAL_MS);
+  const poller = new BlockPoller(processor, env.POLL_INTERVAL_MS);
 
   await poller.start(); // blocks until SIGINT / SIGTERM / poller.stop()
 }
@@ -402,9 +402,9 @@ async function main(): Promise<void> {
   // Print chain head
   const head = await getLatestBlock();
   logger.info('Chain head', {
-    number:    head.number.toString(),
+    number: head.number.toString(),
     timestamp: new Date(head.timestampMs).toISOString(),
-    txCount:   head.transactionCount,
+    txCount: head.transactionCount,
   });
 
   // Quick 10-block summary on startup
@@ -412,16 +412,16 @@ async function main(): Promise<void> {
   const recent = await getBlocksInRange(from10, head.number);
   for (const block of recent) {
     logger.info('Block', {
-      number:    block.number.toString(),
+      number: block.number.toString(),
       timestamp: new Date(block.timestampMs).toISOString(),
-      txCount:   block.transactionCount,
+      txCount: block.transactionCount,
     });
   }
 
   // Mode selection: set both BLOCK_START + BLOCK_END for a one-shot backfill.
   // Leave them unset to stream live blocks as they arrive.
   const envStart = process.env['BLOCK_START'];
-  const envEnd   = process.env['BLOCK_END'];
+  const envEnd = process.env['BLOCK_END'];
 
   if (envStart !== undefined && envEnd !== undefined) {
     await runBatch(BigInt(envStart), BigInt(envEnd));
@@ -433,7 +433,7 @@ async function main(): Promise<void> {
 main().catch((err: unknown) => {
   logger.error('Fatal error', {
     error: err instanceof Error ? err.message : String(err),
-    stack: err instanceof Error ? err.stack  : undefined,
+    stack: err instanceof Error ? err.stack : undefined,
   });
   process.exit(1);
 });

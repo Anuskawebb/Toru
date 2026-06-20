@@ -1,5 +1,5 @@
 /**
- * Typed fetch helpers for the Toro API.
+ * Typed fetch helpers for the Toru API.
  *
  * Server components must use absolute URLs (process.env.NEXT_PUBLIC_API_URL).
  * Client components use relative paths (/api/...) — base() returns '' in the browser.

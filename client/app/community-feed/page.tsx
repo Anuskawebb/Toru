@@ -96,7 +96,7 @@ export default async function CommunityFeedPage() {
                 {[
                   { name: 'SmartMoney Tracker', followers: '12K' },
                   { name: 'Whale Monitor', followers: '8.5K' },
-                  { name: 'Toro Alpha', followers: '15K' },
+                  { name: 'Toru Alpha', followers: '15K' },
                 ].map((contributor) => (
                   <button key={contributor.name} className="w-full text-left px-3 py-2 rounded hover:bg-secondary transition-colors">
                     <div className="font-medium text-foreground text-sm">{contributor.name}</div>
@@ -126,7 +126,7 @@ export default async function CommunityFeedPage() {
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="font-semibold text-foreground">Toro Intelligence</span>
+                            <span className="font-semibold text-foreground">Toru Intelligence</span>
                             <span className={`text-xs px-2 py-0.5 rounded font-semibold ${config.color}`}>
                               {config.label}
                             </span>

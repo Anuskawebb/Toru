@@ -7,9 +7,9 @@
 
 ## What Is an Execution Account?
 
-An execution account is the on-chain identity through which Toro submits trades. Today this is a single `agentWallet` address hard-coded into `ExecutionEngineConfig`. The execution account abstraction replaces that hardcoded address with a structured record that tracks:
+An execution account is the on-chain identity through which Toru submits trades. Today this is a single `agentWallet` address hard-coded into `ExecutionEngineConfig`. The execution account abstraction replaces that hardcoded address with a structured record that tracks:
 
-- **Who owns it** (user or Toro system)
+- **Who owns it** (user or Toru system)
 - **What type it is** (TWAK, Smart Account, WalletConnect)
 - **Its lifecycle state** (PENDING → ACTIVE → SUSPENDED → REVOKED)
 - **The wallet address** it controls or delegates from
@@ -47,9 +47,9 @@ CREATE TABLE execution_accounts (
 
 | `account_type` | Description |
 |---|---|
-| `TWAK_AGENT` | TWAK-managed agent wallet. Toro controls keys via TWAK SDK. User has no direct key access. |
-| `SMART_ACCOUNT` | ERC-4337 smart account or Safe. Toro acts as a session key / delegated module. User retains ownership. |
-| `WALLETCONNECT` | User's external wallet connected via WalletConnect. Toro submits transactions; user signs each one. |
+| `TWAK_AGENT` | TWAK-managed agent wallet. Toru controls keys via TWAK SDK. User has no direct key access. |
+| `SMART_ACCOUNT` | ERC-4337 smart account or Safe. Toru acts as a session key / delegated module. User retains ownership. |
+| `WALLETCONNECT` | User's external wallet connected via WalletConnect. Toru submits transactions; user signs each one. |
 
 ### Status Lifecycle
 
@@ -105,30 +105,30 @@ PENDING ──► ACTIVE ──► SUSPENDED ──► REVOKED
 ### V1 — TWAK_AGENT (Custodial)
 
 ```
-Toro System
+Toru System
   └── TWAK SDK
-        └── Agent Wallet (Toro holds keys)
+        └── Agent Wallet (Toru holds keys)
               └── BSC Swaps
 ```
 
-- `user_id` is NULL — the account belongs to the Toro system
-- User authorizes Toro to trade on their behalf via the onboarding flow
-- No on-chain delegation; Toro simply controls the private key via TWAK
-- Risk: user must trust Toro with execution authority
+- `user_id` is NULL — the account belongs to the Toru system
+- User authorizes Toru to trade on their behalf via the onboarding flow
+- No on-chain delegation; Toru simply controls the private key via TWAK
+- Risk: user must trust Toru with execution authority
 
 ### V2 — SMART_ACCOUNT (Non-Custodial)
 
 ```
 User's Smart Account (user holds keys)
-  └── Delegates to Toro Session Key / Module
-        └── Toro executes within policy constraints
+  └── Delegates to Toru Session Key / Module
+        └── Toru executes within policy constraints
               └── BSC Swaps
 ```
 
 - `user_id` is set — the account belongs to the user
-- Toro never holds the user's private key
+- Toru never holds the user's private key
 - Trading authority is revokable on-chain by the user at any time
-- Toro's permissions are bounded by `execution_policies` (see `EXECUTION_POLICIES.md`)
+- Toru's permissions are bounded by `execution_policies` (see `EXECUTION_POLICIES.md`)
 
 ---
 
@@ -138,7 +138,7 @@ User's Smart Account (user holds keys)
 
 ```
 1. User completes onboarding wizard
-2. Toro calls TWAK SDK: createAgentWallet(userId, config)
+2. Toru calls TWAK SDK: createAgentWallet(userId, config)
 3. TWAK returns wallet_address
 4. INSERT execution_accounts (account_type=TWAK_AGENT, status=PENDING, ...)
 5. User funds the wallet (minimum balance check)
@@ -150,7 +150,7 @@ User's Smart Account (user holds keys)
 
 ```
 1. User connects existing Safe or ERC-4337 account
-2. Toro generates a session key (ephemeral keypair)
+2. Toru generates a session key (ephemeral keypair)
 3. User signs a delegation transaction (grants session key trading scope)
 4. INSERT execution_accounts (account_type=SMART_ACCOUNT, status=PENDING, metadata={...})
 5. Delegation confirmed on-chain

@@ -34,7 +34,7 @@ export default function TopNavigation() {
           <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
             <span className="text-primary-foreground text-sm font-bold">T</span>
           </div>
-          <span className="font-semibold text-sm text-foreground">Toro</span>
+          <span className="font-semibold text-sm text-foreground">Toru</span>
         </Link>
 
         {/* Navigation */}

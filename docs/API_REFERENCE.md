@@ -1,4 +1,4 @@
-# API Reference — Toro
+# API Reference — Toru
 
 All endpoints are Next.js Route Handlers under `client/app/api/`.  
 All routes are `force-dynamic` (no caching).  
@@ -349,7 +349,7 @@ Merged timeline of agent events — signal upgrades, executions, and recommendat
     {
       "id": "uuid",
       "type": "agent",
-      "title": "Toro agent opened WBNB position ($500)",
+      "title": "Toru agent opened WBNB position ($500)",
       "description": "Transaction confirmed on chain",
       "timestamp": "2026-06-18T10:05:00.000Z"
     }

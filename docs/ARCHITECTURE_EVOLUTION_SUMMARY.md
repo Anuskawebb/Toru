@@ -1,12 +1,12 @@
-# Architecture Evolution Summary — Toro
+# Architecture Evolution Summary — Toru
 
-**How Toro evolves from TWAK Agent Wallet today to Delegated Smart Account Trading in the future — without rewriting the intelligence layer.**
+**How Toru evolves from TWAK Agent Wallet today to Delegated Smart Account Trading in the future — without rewriting the intelligence layer.**
 
 ---
 
 ## The Core Constraint
 
-Toro's intelligence pipeline — indexer, analytics, decision engine, risk engine — must never be touched during execution architecture changes. These layers are chain-agnostic and account-agnostic. They produce signals and recommendations. How those recommendations are executed is a separate concern.
+Toru's intelligence pipeline — indexer, analytics, decision engine, risk engine — must never be touched during execution architecture changes. These layers are chain-agnostic and account-agnostic. They produce signals and recommendations. How those recommendations are executed is a separate concern.
 
 ```
 [INTELLIGENCE LAYER — never changes]
@@ -42,8 +42,8 @@ The `Executor` interface at `packages/agent-core/src/execution/executor.ts` is t
 
 ```
 User
-  ↓ authorizes Toro during onboarding
-Toro
+  ↓ authorizes Toru during onboarding
+Toru
   ↓
 TWAK SDK (holds agent private key)
   ↓
@@ -51,11 +51,11 @@ BSC (PancakeSwap swap)
 ```
 
 **Characteristics:**
-- Custodial — Toro (via TWAK) controls the private key
+- Custodial — Toru (via TWAK) controls the private key
 - Simple — no on-chain delegation, no session keys
 - Fast to ship — TWAK SDK handles key management
-- User trust model: "I trust Toro to trade on my behalf and not steal my funds"
-- Risk: Toro has full control of the agent wallet
+- User trust model: "I trust Toru to trade on my behalf and not steal my funds"
+- Risk: Toru has full control of the agent wallet
 
 **Implementation status:** `TwakExecutor` not yet built. `MockExecutor` is active. Phase 8B implements `TwakExecutor`.
 
@@ -92,7 +92,7 @@ TWAK SDK → PancakeSwap V3 on BSC
 ```
 User's Smart Account
   ↓ deploys or connects via ZeroDev / Biconomy
-Toro Session Key (ephemeral — Toro holds but cannot transfer user's funds)
+Toru Session Key (ephemeral — Toru holds but cannot transfer user's funds)
   ↓ UserOperation via ERC-4337 bundler
 BSC EntryPoint
   ↓
@@ -101,9 +101,9 @@ PancakeSwap V3
 
 **Characteristics:**
 - Non-custodial — user retains full ownership of their smart account
-- Toro holds only a scoped session key (can swap specific tokens up to policy limits, cannot transfer)
+- Toru holds only a scoped session key (can swap specific tokens up to policy limits, cannot transfer)
 - Session key has expiry (30 days) — user can also revoke on-chain at any time
-- User trust model: "I grant Toro a bounded permission. I can revoke it anytime. Toro cannot exceed my policy limits."
+- User trust model: "I grant Toru a bounded permission. I can revoke it anytime. Toru cannot exceed my policy limits."
 
 **What changes:**
 - `SmartAccountExecutor` implements `Executor`
@@ -203,7 +203,7 @@ The intelligence layer doesn't know or care whether the downstream executor is a
 | Phase | Executor | Account Type | Custodial | User Trust Model |
 |---|---|---|---|---|
 | 8A (today) | MockExecutor | — | N/A | Test only |
-| 8B | TwakExecutor | TWAK_AGENT | Yes | Trust Toro + TWAK |
+| 8B | TwakExecutor | TWAK_AGENT | Yes | Trust Toru + TWAK |
 | 8C | SmartAccountExecutor | SMART_ACCOUNT | No | Grant bounded session key |
 | 8C+ | WalletConnectExecutor | WALLETCONNECT | No | Sign each tx manually |
 | V2 | All above | Multi-account | Mixed | User chooses per account |

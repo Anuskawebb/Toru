@@ -1,4 +1,4 @@
-# Database Reference — Toro
+# Database Reference — Toru
 
 **Supabase PostgreSQL**, region `ap-southeast-1`  
 **Pooler:** pgbouncer transaction mode — port 6543, `prepare: false` required  

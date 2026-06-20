@@ -1,19 +1,19 @@
-# Toro: AI-Powered Copy-Trading Protocol on Mantle
+# Toru: AI-Powered Copy-Trading Protocol on Mantle
 
-**Toro is an agent-first, non-custodial copy-trading protocol built natively on Mantle.** It lets anyone deploy an autonomous, AI-driven trading agent that watches the best on-chain traders ("leaders") and automatically mirrors their moves, sized to your own risk profile, executed on-chain, with a plain-English reason attached to every trade.
+**Toru is an agent-first, non-custodial copy-trading protocol built natively on Mantle.** It lets anyone deploy an autonomous, AI-driven trading agent that watches the best on-chain traders ("leaders") and automatically mirrors their moves, sized to your own risk profile, executed on-chain, with a plain-English reason attached to every trade.
 
-Most people don't have the time, skill, or conviction to trade DeFi well, yet the talent already exists on-chain. Toro lets you delegate to that talent programmatically: pick a leader, fund a vault, and your agent handles the rest. No custody, no manual clicking, no staring at charts.
+Most people don't have the time, skill, or conviction to trade DeFi well, yet the talent already exists on-chain. Toru lets you delegate to that talent programmatically: pick a leader, fund a vault, and your agent handles the rest. No custody, no manual clicking, no staring at charts.
 
 ---
 
-## What Toro Does
+## What Toru Does
 
 - **Deploy an AI agent vault** for any follower and leader pair (a deterministic, non-custodial smart-contract vault).
 - **Watch leaders in real time** using an off-chain watcher that monitors leader swap activity on Mantle.
 - **Score every trade with AI.** Each candidate trade is evaluated against your vault's risk rules, producing a natural-language explanation of why it copied or skipped.
 - **Execute real on-chain DEX swaps.** Approved trades route through a UniswapV2 / FusionX-compatible router, so P&L is real swap proceeds rather than minted numbers.
 - **Manage risk autonomously** with per-vault stop-losses, position tracking, and live P&L, all enforced on-chain.
-- **Carry a verifiable agent identity.** The Toro agent is registered on-chain under the ERC-8004 identity standard.
+- **Carry a verifiable agent identity.** The Toru agent is registered on-chain under the ERC-8004 identity standard.
 
 ---
 

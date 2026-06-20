@@ -1,4 +1,4 @@
-# Architecture — Toro
+# Architecture — Toru
 
 ---
 

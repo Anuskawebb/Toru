@@ -10,7 +10,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Toro - Autonomous Trading Agent',
+  title: 'Toru - Autonomous Trading Agent',
   description: 'AI-powered autonomous trading powered by Smart Money Intelligence',
   generator: 'v0.app',
   icons: {

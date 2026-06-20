@@ -1,8 +1,8 @@
-# Toro Frontend → API Mapping
+# Toru Frontend → API Mapping
 
 ## Overview
 
-All routes are Next.js Route Handlers at `client/app/api/*`. They query the Toro PostgreSQL database directly via `postgres.js`. No separate backend service.
+All routes are Next.js Route Handlers at `client/app/api/*`. They query the Toru PostgreSQL database directly via `postgres.js`. No separate backend service.
 
 The fetch helper lives at `client/lib/api.ts` — server components call it via absolute URL (`NEXT_PUBLIC_API_URL ?? 'http://localhost:3000'`); client components use relative `/api/...` paths.
 
@@ -137,7 +137,7 @@ The fetch helper lives at `client/lib/api.ts` — server components call it via 
 
 | Component | Current Mock Data | DB Source | API Endpoint | Status |
 |---|---|---|---|---|
-| Toro Score gauge | `tokenIntelligenceData.toroScore` | `smart_money_signals.accumulation_score` | `GET /api/tokens/{address}` | Pending |
+| Toru Score gauge | `tokenIntelligenceData.toroScore` | `smart_money_signals.accumulation_score` | `GET /api/tokens/{address}` | Pending |
 | Score breakdown bars | `tokenIntelligenceData.scoreBreakdown` | `smart_money_signals.*` | `GET /api/tokens/{address}` | Pending |
 | Smart money activity | `tokenIntelligenceData.smartMoneyActivity` | `smart_money_signals.*` | `GET /api/tokens/{address}` | Pending |
 | Recent transactions table | `tokenIntelligenceData.recentTransactions` | `execution_orders` | `GET /api/tokens/{address}/activity` | Pending |

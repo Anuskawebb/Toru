@@ -1,4 +1,4 @@
-# Frontend Context — Toro
+# Frontend Context — Toru
 
 **For frontend developers, AI coding agents, and new Claude sessions.**
 

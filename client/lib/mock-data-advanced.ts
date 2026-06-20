@@ -85,7 +85,7 @@ export const communityPosts = [
   {
     id: 3,
     type: 'agent_strategy',
-    author: 'Toro Alpha',
+    author: 'Toru Alpha',
     avatar: 'TA',
     timestamp: '3 hours ago',
     content: 'Entering CAKE position size 8.5% following flow convergence signal. Risk/Reward: 1:3.2. Position managed autonomously.',
@@ -107,7 +107,7 @@ export const communityPosts = [
   {
     id: 5,
     type: 'signal_upgrade',
-    author: 'Toro Intelligence',
+    author: 'Toru Intelligence',
     avatar: 'TI',
     timestamp: '6 hours ago',
     content: 'CAKE signal upgraded from HOLD to BUY. Confidence increased to 78% as flow metrics improved significantly.',
@@ -121,7 +121,7 @@ export const communityPosts = [
 export const agentMarketplaceData = [
   {
     rank: 1,
-    name: 'Toro Alpha',
+    name: 'Toru Alpha',
     strategy: 'Trend Following',
     return: 287,
     winRate: 68,

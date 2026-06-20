@@ -1,4 +1,4 @@
-# Toro
+# Toru
 
 AI-powered copy-trading on BSC. Users deploy autonomous agents that track smart-money wallets, score signals, and execute trades — all within configurable risk limits.
 

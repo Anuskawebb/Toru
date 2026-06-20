@@ -1,13 +1,13 @@
-# Agent Handoff — Toro
+# Agent Handoff — Toru
 
 **Context package for AI coding agents entering this codebase.**  
 Read this before writing any code. It answers the questions you would otherwise spend 20 tool calls figuring out.
 
 ---
 
-## What is Toro?
+## What is Toru?
 
-Toro is a crypto intelligence and autonomous trading platform. It watches smart-money wallets on BSC, scores them, generates token accumulation signals, and (eventually) executes trades via a self-custodial agent wallet. The frontend is a Next.js 16 app that also hosts the API layer.
+Toru is a crypto intelligence and autonomous trading platform. It watches smart-money wallets on BSC, scores them, generates token accumulation signals, and (eventually) executes trades via a self-custodial agent wallet. The frontend is a Next.js 16 app that also hosts the API layer.
 
 ---
 

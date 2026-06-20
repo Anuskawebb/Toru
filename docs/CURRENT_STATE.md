@@ -1,4 +1,4 @@
-# Toro — Current State Audit
+# Toru — Current State Audit
 
 > Generated: 2026-06-20. Read-only audit of the `main` branch post-PR #6 merge.
 > This document describes what **exists today** — not what is planned.
@@ -7,8 +7,8 @@
 
 ## 1. Product Overview
 
-**What Toro Currently Is:**
-Toro is a decentralized autonomous agent platform for copy-trading on BSC. It allows users to deploy AI-driven agents that monitor smart-money wallet activity and execute copy-trades autonomously within configurable risk parameters.
+**What Toru Currently Is:**
+Toru is a decentralized autonomous agent platform for copy-trading on BSC. It allows users to deploy AI-driven agents that monitor smart-money wallet activity and execute copy-trades autonomously within configurable risk parameters.
 
 **Problem It Solves:**
 Enables non-technical users to follow institutional on-chain flows without managing private keys. TWAK handles custody; users configure risk profiles and the agent handles execution.

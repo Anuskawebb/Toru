@@ -1,12 +1,12 @@
-# Project Overview — Toro
+# Project Overview — Toru
 
 **BNB AI Trading Agent Hackathon Submission**
 
 ---
 
-## What Toro Is
+## What Toru Is
 
-Toro is a crypto intelligence and autonomous trading platform. It monitors smart-money wallet behaviour on BSC, scores wallets by conviction and execution quality, generates token signals, and executes trades through a self-custodial agent wallet — without requiring users to share keys.
+Toru is a crypto intelligence and autonomous trading platform. It monitors smart-money wallet behaviour on BSC, scores wallets by conviction and execution quality, generates token signals, and executes trades through a self-custodial agent wallet — without requiring users to share keys.
 
 ### Core thesis
 
@@ -58,7 +58,7 @@ Frontend       (client/)
 
 **Role: Data & market intelligence layer.**
 
-CMC provides verified price feeds, market cap, volume, token metadata, and trending token lists. In Phase 8D, Toro will replace placeholder price data and unresolved token symbols with CMC's canonical data. CMC Agent Hub also enables the explainability layer — Toro can attribute signals to market context that CMC quantifies.
+CMC provides verified price feeds, market cap, volume, token metadata, and trending token lists. In Phase 8D, Toru will replace placeholder price data and unresolved token symbols with CMC's canonical data. CMC Agent Hub also enables the explainability layer — Toru can attribute signals to market context that CMC quantifies.
 
 - Token symbols currently stored as raw hex addresses in `smart_money_signals` will resolve via CMC metadata API
 - Market cap and 24h volume will supplement the accumulation score
@@ -68,7 +68,7 @@ CMC provides verified price feeds, market cap, volume, token metadata, and trend
 
 **Role: Execution layer — on-chain swap execution.**
 
-TWAK is the execution bridge between Toro's decision engine and BSC liquidity pools. When the decision engine approves a trade recommendation, TWAK submits the swap transaction from the agent's self-custodial wallet. The user never shares private keys — TWAK holds and signs transactions on behalf of the agent wallet it manages.
+TWAK is the execution bridge between Toru's decision engine and BSC liquidity pools. When the decision engine approves a trade recommendation, TWAK submits the swap transaction from the agent's self-custodial wallet. The user never shares private keys — TWAK holds and signs transactions on behalf of the agent wallet it manages.
 
 - Currently: execution engine writes to `execution_orders` / `execution_transactions` (mock executor path)
 - Phase 8B: replace `mock-executor.ts` with TWAK calls
@@ -78,7 +78,7 @@ TWAK is the execution bridge between Toro's decision engine and BSC liquidity po
 
 **Role: Agent identity, orchestration, and on-chain registration.**
 
-BNB AI Agent SDK gives each Toro agent an on-chain identity (ERC-8004 compatible). Agents are registered with capabilities, metadata, and the vault they manage. This makes Toro agents verifiable, composable with other BNB ecosystem agents, and auditable on-chain.
+BNB AI Agent SDK gives each Toru agent an on-chain identity (ERC-8004 compatible). Agents are registered with capabilities, metadata, and the vault they manage. This makes Toru agents verifiable, composable with other BNB ecosystem agents, and auditable on-chain.
 
 - `AgentIdentityRegistry` contract already deployed on Mantle Sepolia (`0xF00ba1db267E1D4E8eBcE4405f5B8015426C6968`)
 - `contracts/web3/scripts/registerSubAgents.ts` registers copy-score and risk-management sub-agents
@@ -89,7 +89,7 @@ BNB AI Agent SDK gives each Toro agent an on-chain identity (ERC-8004 compatible
 ## User Journey
 
 ```
-User lands on Toro
+User lands on Toru
   ↓
 Review Smart Money Signals  (Markets page — live data)
   ↓

@@ -8,7 +8,7 @@ import {
   computeConfidenceBreakdown
 } from '../../../packages/agent-core/src/index.js';
 
-console.log('Toro Valuation Layer Validation Suite (v2)');
+console.log('Toru Valuation Layer Validation Suite (v2)');
 console.log('================================================================');
 
 let passCount = 0;

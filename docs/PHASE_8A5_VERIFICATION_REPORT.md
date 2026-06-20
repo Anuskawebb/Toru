@@ -93,5 +93,5 @@ The frontend monitoring APIs are live and responding immediately.
 4. **Are there any blockers before TWAK integration?**
    No. The underlying data feeds are verified as clean, locked, and predictably refreshed.
 
-5. **Is Toro ready to begin Phase 8B?**
+5. **Is Toru ready to begin Phase 8B?**
    **YES.** Proceed to execution phase.

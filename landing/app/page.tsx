@@ -33,7 +33,7 @@ const ToruMark = ({ size = 26, className }: { size?: number; className?: string 
   </svg>
 );
 
-// Re-exported under the "Toro" spelling so modules that do
+// Re-exported under the "Toru" spelling so modules that do
 // `import { ToroMark }` (e.g. terminal/page.tsx) resolve correctly.
 export { ToruMark as ToroMark };
 

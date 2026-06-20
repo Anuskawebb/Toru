@@ -7,9 +7,9 @@
 
 ## Problem Statement
 
-Toro V1 (TWAK) is custodial: the agent wallet's private key is managed by TWAK on behalf of the user. The user trusts Toro not to misuse it. This is fine for a hackathon demo but is a significant barrier for a real product — users with meaningful capital will not hand keys to a third party.
+Toru V1 (TWAK) is custodial: the agent wallet's private key is managed by TWAK on behalf of the user. The user trusts Toru not to misuse it. This is fine for a hackathon demo but is a significant barrier for a real product — users with meaningful capital will not hand keys to a third party.
 
-Smart accounts solve this: the user retains ownership of their wallet and grants Toro a bounded, revocable permission to trade on their behalf.
+Smart accounts solve this: the user retains ownership of their wallet and grants Toru a bounded, revocable permission to trade on their behalf.
 
 ---
 
@@ -17,12 +17,12 @@ Smart accounts solve this: the user retains ownership of their wallet and grants
 
 ### Option A — Safe (Gnosis Safe)
 
-A multisig smart contract wallet. Toro is added as a module or co-signer.
+A multisig smart contract wallet. Toru is added as a module or co-signer.
 
 **How it works:**
 - User deploys or connects an existing Safe
-- Toro is added as a Safe Module (can execute transactions within module permissions)
-- Module permissions define what Toro can do (specific tokens, max amounts, time bounds)
+- Toru is added as a Safe Module (can execute transactions within module permissions)
+- Module permissions define what Toru can do (specific tokens, max amounts, time bounds)
 - User can remove the module at any time
 
 **Pros:**
@@ -45,13 +45,13 @@ Standard interface for smart contract accounts on any EVM chain. Each account is
 
 **How it works:**
 - User creates an ERC-4337 account (via Biconomy, ZeroDev, Alchemy, or Candide)
-- Toro is granted as a session key or validator plugin
+- Toru is granted as a session key or validator plugin
 - Session key has scoped permissions: allowed tokens, max amounts, expiry date
-- No bundler cost for the user if Toro paymasters gas
+- No bundler cost for the user if Toru paymasters gas
 
 **Pros:**
 - Standard — works with any ERC-4337 account regardless of provider
-- Gas abstraction: Toro can paymaster gas fees for a smoother UX
+- Gas abstraction: Toru can paymaster gas fees for a smoother UX
 - Session keys can be tight-scoped (exact tokens, exact amounts, exact time window)
 - EIP-7702 (upcoming) will let EOAs adopt 4337 behavior retroactively
 
@@ -64,23 +64,23 @@ Standard interface for smart contract accounts on any EVM chain. Each account is
 
 ### Option C — Session Keys (EIP-7715 / Wallet-Native)
 
-Wallets like MetaMask, Coinbase Wallet, and Rabby are implementing native session key support. The user grants a session key to Toro directly through the wallet's UI.
+Wallets like MetaMask, Coinbase Wallet, and Rabby are implementing native session key support. The user grants a session key to Toru directly through the wallet's UI.
 
 **How it works:**
 - User connects wallet (EIP-6963 or WalletConnect)
-- Toro calls `wallet_grantPermissions` (EIP-7715)
-- Wallet returns a signed session key scoped to Toro's allowed actions
-- Toro uses the session key to submit transactions directly
+- Toru calls `wallet_grantPermissions` (EIP-7715)
+- Wallet returns a signed session key scoped to Toru's allowed actions
+- Toru uses the session key to submit transactions directly
 
 **Pros:**
 - No smart contract deployment required — works with EOAs
 - Permission grant happens in the user's existing wallet (no new account setup)
 - Upcoming standard — multiple wallet providers implementing simultaneously
-- Clean UX: "Grant Toro permission to trade on your behalf" → one click in wallet
+- Clean UX: "Grant Toru permission to trade on your behalf" → one click in wallet
 
 **Cons:**
 - EIP-7715 is not yet finalized — wallet support is still limited
-- Permissions are signed by the wallet but enforcement is off-chain (the wallet trusts Toro to honor scope)
+- Permissions are signed by the wallet but enforcement is off-chain (the wallet trusts Toru to honor scope)
 - No on-chain revocation — user must revoke via wallet UI, not verifiable by smart contract
 
 ---
@@ -90,8 +90,8 @@ Wallets like MetaMask, Coinbase Wallet, and Rabby are implementing native sessio
 Delegation registries allow an EOA to delegate actions to another address without giving up keys.
 
 **How it works:**
-- User calls `delegate.cash` registry to grant Toro's address a specific delegated right
-- Toro's executor checks the registry before acting on a user's behalf
+- User calls `delegate.cash` registry to grant Toru's address a specific delegated right
+- Toru's executor checks the registry before acting on a user's behalf
 - EIP-7702 (shipping in Ethereum Pectra, ~2025) allows EOAs to temporarily behave like smart contracts
 
 **Pros:**
@@ -105,7 +105,7 @@ Delegation registries allow an EOA to delegate actions to another address withou
 
 ---
 
-## Recommendation for Toro
+## Recommendation for Toru
 
 **Short term (Phase 8B):** TWAK custodial agent wallet. Get real execution working first.
 
@@ -113,24 +113,24 @@ Delegation registries allow an EOA to delegate actions to another address withou
 
 Rationale:
 1. ZeroDev and Biconomy both support BSC
-2. Session keys can be tightly scoped to Toro's exact use case (specific token list, max amount per trade, 30-day expiry)
+2. Session keys can be tightly scoped to Toru's exact use case (specific token list, max amount per trade, 30-day expiry)
 3. The `execution_accounts` table already has metadata JSONB to store session key address and expiry
 4. Gas abstraction via paymaster dramatically improves onboarding UX (user never pays gas during normal operation)
 5. ERC-4337 is the standard direction for the entire EVM ecosystem — future-proof
 
-**Long term (Phase 8D+):** Adopt **EIP-7715 session keys** when wallet support matures. This would let users grant Toro permissions directly in MetaMask/Rabby without deploying any contracts.
+**Long term (Phase 8D+):** Adopt **EIP-7715 session keys** when wallet support matures. This would let users grant Toru permissions directly in MetaMask/Rabby without deploying any contracts.
 
 ---
 
-## How Toro Would Receive Delegated Trading Permissions
+## How Toru Would Receive Delegated Trading Permissions
 
 ### ERC-4337 Implementation
 
 ```
-1. User creates ERC-4337 account (via ZeroDev SDK in Toro onboarding)
+1. User creates ERC-4337 account (via ZeroDev SDK in Toru onboarding)
    - Account factory deploys the user's smart account on BSC
 
-2. Toro generates an ephemeral session key (keypair)
+2. Toru generates an ephemeral session key (keypair)
    - Private key stored server-side in TWAK or encrypted KMS
    - Public key stored in execution_accounts.metadata.sessionKeyAddress
 
@@ -142,7 +142,7 @@ Rationale:
 
 4. Session key is active on-chain
 
-5. Toro's TwakExecutor (or SmartAccountExecutor):
+5. Toru's TwakExecutor (or SmartAccountExecutor):
    - Builds a UserOperation for the intended swap
    - Signs with the session key
    - Submits to bundler
@@ -158,9 +158,9 @@ Rationale:
 
 Two paths depending on account type:
 
-**TWAK_AGENT:** User clicks "Stop Trading" in Toro UI → Toro sets `execution_accounts.status = 'REVOKED'` → ExecutionEngine stops processing orders for this account. No on-chain action needed (Toro controls the key).
+**TWAK_AGENT:** User clicks "Stop Trading" in Toru UI → Toru sets `execution_accounts.status = 'REVOKED'` → ExecutionEngine stops processing orders for this account. No on-chain action needed (Toru controls the key).
 
-**SMART_ACCOUNT (ERC-4337):** User calls `disableSessionKey(sessionKeyAddress)` on their smart account. Toro also sets `execution_accounts.status = 'REVOKED'` in DB. Even if DB is not updated, the on-chain revocation means any UserOperation from the session key will be rejected by the EntryPoint.
+**SMART_ACCOUNT (ERC-4337):** User calls `disableSessionKey(sessionKeyAddress)` on their smart account. Toru also sets `execution_accounts.status = 'REVOKED'` in DB. Even if DB is not updated, the on-chain revocation means any UserOperation from the session key will be rejected by the EntryPoint.
 
 ### Revocation by Session Key Expiry
 
@@ -180,20 +180,20 @@ if (new Date(account.metadata.sessionExpiry) < new Date()) {
 
 ### Off-Chain Enforcement (Today + Phase 8B)
 
-The `RiskEngine` and `PolicyEngine` enforce limits in the Toro backend before any transaction is submitted. If a stop-loss is hit:
+The `RiskEngine` and `PolicyEngine` enforce limits in the Toru backend before any transaction is submitted. If a stop-loss is hit:
 1. `DecisionEngine` generates a SELL recommendation
 2. `ExecutionEngine` creates a SELL order
 3. `PolicyEngine` approves it (SELL orders are always approved if stop-loss triggered)
 4. Executor submits the SELL transaction
 
-This works for both TWAK and Smart Account — the enforcement is in Toro's code, not on-chain.
+This works for both TWAK and Smart Account — the enforcement is in Toru's code, not on-chain.
 
 ### On-Chain Enforcement (Future)
 
 For full trustlessness, risk limits could be encoded in a smart contract:
 
 ```solidity
-// Session key permission — only callable by Toro session key
+// Session key permission — only callable by Toru session key
 // Reverts if position loss exceeds stop-loss threshold
 function executeWithStopLoss(
   address tokenIn,
