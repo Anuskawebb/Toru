@@ -9,7 +9,9 @@
     }
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "agent:run": "tsx scripts/agent-runner.ts",
+    "validate:twak": "tsx scripts/validate-twak.ts"
   },
   "dependencies": {
     "@toro/db": "workspace:*",
@@ -19,6 +21,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
+    "tsx": "^4.22.4",
     "typescript": "^5.4.0"
   }
 }
