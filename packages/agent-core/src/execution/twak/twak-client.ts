@@ -1,7 +1,7 @@
 import { TwakConfig, TwakConfigSchema } from './twak-config.js';
 import {
   TwakHealth, TwakWalletStatus, TwakAddress, TwakBalance, TwakPortfolio,
-  TwakSwapResult, TwakSwapQuote, TwakTokenPrice,
+  TwakSwapResult, TwakSwapQuote, TwakTokenPrice, TwakTransferResult,
 } from './twak-types.js';
 
 export class TwakClient {
@@ -145,6 +145,24 @@ export class TwakClient {
       toChain:   'bsc',
       toToken:   params.toToken,
       amount:    params.amount,
+    });
+  }
+
+  /**
+   * Transfer native token or ERC-20 to an address.
+   * Used by the x402 client to send micropayments for data purchases.
+   */
+  async transfer(params: {
+    token: string;   // 'BNB' for native, or ERC-20 contract address
+    to: string;
+    amount: string;  // human-readable (e.g. "0.001")
+    chain?: string;
+  }): Promise<TwakTransferResult> {
+    return this.request<TwakTransferResult>('transfer', {
+      chain:  params.chain ?? 'smartchain',
+      token:  params.token,
+      to:     params.to,
+      amount: params.amount,
     });
   }
 

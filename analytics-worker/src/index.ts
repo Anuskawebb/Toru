@@ -6,14 +6,71 @@ import {
   WalletScoresRepository,
   TokenMetricsRepository,
   SmartMoneySignalsRepository,
+  smartMoneySignals,
   analyticsRuns,
   sql,
   eq,
+  inArray,
 } from '@toro/db';
+import { getFearAndGreed, getTrendingSymbols } from './cmc-client.js';
 
 const POLL_INTERVAL_MS = 60 * 1000; // 60 seconds
 
 let isCycleRunning = false;
+
+// Latest CMC sentiment — written every cycle, read by agent runner via /api/cmc/sentiment
+export let latestFearAndGreed: { value: number; classification: string; updatedAt: string } | null = null;
+
+/**
+ * Applies a CMC boost to signals whose token symbol appears in the CMC trending list.
+ * Boost: +10% on accumulation_score, capped at 100.
+ * Also logs the current Fear & Greed index.
+ */
+async function applyCmcBoost(): Promise<void> {
+  if (!process.env.CMC_API_KEY) return;
+
+  try {
+    // Fear & Greed — log sentiment for observability
+    const fg = await getFearAndGreed();
+    if (fg) {
+      latestFearAndGreed = { value: fg.value, classification: fg.classification, updatedAt: fg.updatedAt.toISOString() };
+      console.log(`[cmc] Fear & Greed: ${fg.value} — ${fg.classification}`);
+    }
+
+    // Trending tokens — boost accumulation_score for tokens we track that CMC is trending
+    const trendingSymbols = await getTrendingSymbols();
+    if (trendingSymbols.size === 0) return;
+
+    // Fetch all signals and find the ones that are CMC trending
+    const topSignals = await SmartMoneySignalsRepository.getTopSignals({ limit: 200, minScore: 0 });
+    const trendingAddresses = topSignals
+      .filter(s => trendingSymbols.has(s.tokenSymbol.toUpperCase()))
+      .map(s => s.tokenAddress);
+
+    if (trendingAddresses.length === 0) {
+      console.log('[cmc] No overlap between CMC trending and our signals this cycle');
+      return;
+    }
+
+    const trendingSymbolNames = topSignals
+      .filter(s => trendingAddresses.includes(s.tokenAddress))
+      .map(s => s.tokenSymbol);
+
+    console.log(`[cmc] Boosting ${trendingAddresses.length} CMC-trending signal(s): ${trendingSymbolNames.join(', ')}`);
+
+    // Apply +10% boost to accumulation_score, capped at 100
+    await db.update(smartMoneySignals)
+      .set({
+        accumulationScore: sql`LEAST(100, CAST(accumulation_score AS numeric) * 1.10)`,
+        computedAt: new Date(),
+      })
+      .where(inArray(smartMoneySignals.tokenAddress, trendingAddresses));
+
+  } catch (e) {
+    // CMC boost is non-critical — never fail the main analytics cycle
+    console.warn('[cmc] Boost step failed (non-fatal):', e instanceof Error ? e.message : e);
+  }
+}
 
 async function runCycle() {
   if (isCycleRunning) {
@@ -51,6 +108,9 @@ async function runCycle() {
     // 4. Smart Money Signals
     console.log('Rebuilding Smart Money Signals...');
     await SmartMoneySignalsRepository.rebuildAll();
+
+    // 5. CMC Signal Boost — cross-reference our signals with CMC trending + Fear & Greed
+    await applyCmcBoost();
 
     const durationMs = Date.now() - t0;
     const finishedAt = new Date();

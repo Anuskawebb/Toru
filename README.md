@@ -14,10 +14,12 @@ indexer/              — ingests on-chain swaps into the database
     │
     ▼
 analytics-worker/     — rebuilds wallet scores, token metrics, smart-money signals every 60s
-    │
+    │             ↑
+    │        CMC Agent Hub — Fear & Greed index + trending tokens boost signal scores
     ▼
 packages/agent-core/  — DecisionEngine + ExecutionEngine (reads signals, places orders)
-    │
+    │             ↑
+    │        CMC F&G gate — Extreme Fear pauses BUYs; Extreme Greed reduces position sizes
     ▼
 TWAK sidecar          — custodial wallet service (swap execution on BSC)
     │
@@ -69,6 +71,10 @@ BLOB_READ_WRITE_TOKEN=vercel_blob_rw_...
 
 # Funding threshold for agent activation (default: 0.005 BNB, use 0.001 for testing)
 MIN_REQUIRED_BNB=0.001
+
+# CoinMarketCap AI Agent Hub (https://coinmarketcap.com/api/agent)
+# Used for Fear & Greed index and trending token signal boost
+CMC_API_KEY=your_cmc_pro_api_key
 ```
 
 ### Indexer (`indexer/.env`)

@@ -58,3 +58,12 @@ export interface TwakTokenPrice {
   code?: string;
   message?: string;
 }
+
+export interface TwakTransferResult {
+  success: boolean;
+  hash?: string;
+  summary?: string;
+  explorer?: string;
+  code?: string;
+  message?: string;
+}
